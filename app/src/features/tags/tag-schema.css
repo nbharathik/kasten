@@ -1,0 +1,87 @@
+/* A tag's properties editor, in the Tag Database. */
+
+/* The properties editor */
+
+.kasten-schema {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(720px, calc(100vw - 32px));
+  max-height: 76vh;
+  overflow-y: auto;
+  padding: 22px 24px;
+  border-radius: var(--radius-2xl);
+  background: var(--color-canvas);
+  box-shadow: var(--shadow-modal);
+  animation: kasten-enter var(--motion-base) var(--ease-standard);
+
+  & h2 {
+    font-size: var(--text-20);
+    font-weight: 600;
+  }
+}
+
+.kasten-schema-note {
+  color: var(--color-muted);
+  font-size: var(--text-13);
+}
+
+.kasten-schema-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  & li {
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) 132px minmax(160px, 1.6fr) auto;
+    gap: 6px;
+    align-items: center;
+  }
+
+  & input,
+  & select {
+    height: 32px;
+    padding: 0 9px;
+    border-radius: var(--radius-lg);
+    background: var(--color-panel);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    font-size: var(--text-13);
+    outline: none;
+
+    &:focus {
+      box-shadow: inset 0 0 0 1.5px var(--color-accent);
+    }
+  }
+}
+
+.kasten-schema-tools {
+  display: flex;
+  gap: 2px;
+
+  & button {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-lg);
+    color: var(--color-muted);
+
+    &:hover:not(:disabled) {
+      background: var(--color-hover);
+      color: var(--color-ink);
+    }
+
+    &:disabled {
+      opacity: 0.35;
+    }
+  }
+}
+
+.kasten-schema-problem {
+  color: var(--notion-red, #e03e3e);
+  font-size: var(--text-13);
+}
+
+.kasten-schema-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

@@ -1,0 +1,64 @@
+/* Find and replace: a card that floats over the top right of the slide area,
+   so the slide stays in view and in reach while it is open. */
+.ks-dialog.ks-find {
+  position: fixed;
+  top: 118px;
+  right: 24px;
+  z-index: 70;
+  width: 348px;
+  max-height: none;
+  padding: 10px 14px 14px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ks-find-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ks-find .ks-dialog-title {
+  margin: 0;
+  font-size: 14px;
+}
+.ks-find-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ks-find-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ks-find-row .ks-input {
+  flex: 1;
+  min-width: 0;
+}
+.ks-find-fields > .ks-input {
+  width: 100%;
+}
+.ks-find-status {
+  flex: none;
+  min-width: 68px;
+  color: var(--ks-muted);
+  font-size: 12px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ks-find-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 12px;
+}
+.ks-find-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ks-find-steps {
+  display: inline-flex;
+  margin-right: auto;
+}

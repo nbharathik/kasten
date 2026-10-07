@@ -1,0 +1,8 @@
+{
+  "title": "A Zettelkasten primer",
+  "highlights": [
+    {"id":"01K5ZK00000000000000000001","page":1,"rects":[[72,596.47,499.01,608.2],[72,579.47,237.54,591.2]],"text":"A note should hold one idea, written in your own words, so that it can be understood without the context it came from.","color":"yellow","comment":"The rule the rest follows from.","created":"2026-09-20T09:12:00Z"},
+    {"id":"01K5ZK00000000000000000002","page":1,"rects":[[288.68,355.47,493.85,367.2],[72,338.47,137.84,350.2]],"text":"Structure is the result of the work, not its precondition.","color":"purple","created":"2026-09-20T09:14:00Z"},
+    {"id":"01K5ZK00000000000000000003","page":2,"rects":[[72,724.47,514.35,736.2],[72,707.47,167.23,719.2]],"text":"Keep the reference to the source with every note, so you can always return to the page an idea came from","color":"green","comment":"Exactly what a highlight card does.","created":"2026-09-21T17:40:00Z"}
+  ]
+}

@@ -1,0 +1,280 @@
+/* The reader's clip tool: a layer over the pages that takes the pointer while
+   a box is drawn, the box with its handles (it sits in its page), and the form
+   under it. Colours and radii come from the app's tokens. */
+
+.kasten-clip-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Stays in view at the top left of the pages while they scroll. */
+.kasten-clip-hint {
+  position: sticky;
+  top: 12px;
+  left: 12px;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  margin: 0;
+  padding: 5px 12px;
+  border: 1px solid var(--color-line);
+  border-radius: 99px;
+  background: var(--color-canvas);
+  box-shadow: var(--shadow-card);
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.kasten-clip-box {
+  position: absolute;
+  z-index: 6;
+  outline: 2px solid var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.kasten-clip-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--color-accent);
+  border-radius: 3px;
+  background: #fff;
+  touch-action: none;
+
+  &[data-handle="nw"] {
+    top: -6px;
+    left: -6px;
+    cursor: nwse-resize;
+  }
+
+  &[data-handle="n"] {
+    top: -6px;
+    left: calc(50% - 5px);
+    cursor: ns-resize;
+  }
+
+  &[data-handle="ne"] {
+    top: -6px;
+    right: -6px;
+    cursor: nesw-resize;
+  }
+
+  &[data-handle="e"] {
+    top: calc(50% - 5px);
+    right: -6px;
+    cursor: ew-resize;
+  }
+
+  &[data-handle="se"] {
+    right: -6px;
+    bottom: -6px;
+    cursor: nwse-resize;
+  }
+
+  &[data-handle="s"] {
+    bottom: -6px;
+    left: calc(50% - 5px);
+    cursor: ns-resize;
+  }
+
+  &[data-handle="sw"] {
+    bottom: -6px;
+    left: -6px;
+    cursor: nesw-resize;
+  }
+
+  &[data-handle="w"] {
+    top: calc(50% - 5px);
+    left: -6px;
+    cursor: ew-resize;
+  }
+}
+
+/* A box too small for eight handles keeps its corners. */
+.kasten-clip-box.is-small .kasten-clip-handle:is([data-handle="n"], [data-handle="e"], [data-handle="s"], [data-handle="w"]) {
+  display: none;
+}
+
+/* The form under the box */
+
+.kasten-clip-form {
+  position: absolute;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 320px;
+  padding: 12px;
+  translate: -50% 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--color-canvas);
+  box-shadow: var(--shadow-lift, 0 12px 32px -8px rgb(15 15 15 / 0.28));
+  color: var(--color-ink);
+  font-size: var(--text-13);
+}
+
+.kasten-clip-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+
+  & strong {
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & span {
+    flex: none;
+    margin-left: auto;
+    color: var(--color-muted);
+    font-size: var(--text-12);
+  }
+}
+
+.kasten-clip-size,
+.kasten-clip-note {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  line-height: 1.4;
+
+  &.is-problem {
+    color: var(--notion-red);
+  }
+}
+
+.kasten-clip-size {
+  font-variant-numeric: tabular-nums;
+}
+
+.kasten-clip-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  & > span {
+    color: var(--color-muted);
+    font-size: var(--text-12);
+    font-weight: 500;
+  }
+
+  & input {
+    width: 100%;
+    height: 30px;
+    padding: 0 9px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    outline: none;
+    background: var(--color-canvas);
+    font-size: var(--text-13);
+
+    &:focus {
+      border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+    }
+
+    &[aria-invalid="true"] {
+      border-color: var(--notion-red);
+    }
+  }
+}
+
+.kasten-clip-key {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kasten-clip-works {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-canvas);
+  box-shadow: var(--shadow-lift, 0 12px 32px -8px rgb(15 15 15 / 0.28));
+
+  & li {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 8px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+
+    &:hover,
+    &.is-active {
+      background: var(--color-hover);
+    }
+  }
+}
+
+.kasten-clip-work-key {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: var(--text-12);
+  font-weight: 600;
+}
+
+.kasten-clip-work-line {
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-clip-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 2px;
+
+  & button {
+    height: 30px;
+    padding: 0 12px;
+    border-radius: var(--radius-lg);
+    color: var(--color-muted);
+    font-size: var(--text-13);
+    font-weight: 550;
+
+    &:hover:not(:disabled) {
+      background: var(--color-hover);
+      color: var(--color-ink);
+    }
+  }
+
+  & .kasten-clip-save {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 600;
+
+    &:hover:not(:disabled) {
+      background: var(--color-accent);
+      color: var(--color-on-accent);
+      filter: brightness(1.08);
+    }
+
+    &:disabled {
+      opacity: 0.55;
+    }
+  }
+}

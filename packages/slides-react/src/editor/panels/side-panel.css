@@ -1,0 +1,84 @@
+/* The panel on the right: a strip of tabs over a body that scrolls. It adds to
+   the layout rules of the shell, which fix its width and border. */
+.ks-side-panel.ks-sp {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.ks-sp-tabs {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 40px;
+  padding: 0 6px 0 6px;
+  border-bottom: 1px solid var(--ks-line);
+}
+.ks-sp-tab {
+  height: 40px;
+  padding: 0 8px;
+  border-radius: 0;
+  color: var(--ks-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.ks-sp-tab:hover {
+  color: var(--ks-ink);
+}
+.ks-sp-tab[aria-selected="true"] {
+  color: var(--ks-ink);
+}
+.ks-sp-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--ks-accent);
+}
+.ks-sp-tab:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -3px;
+}
+.ks-sp-close {
+  margin-left: auto;
+}
+.ks-sp-body {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Comments and an assistant that is not available: a calm empty state. */
+.ks-sp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px 28px 16px;
+  text-align: center;
+  color: var(--ks-muted);
+}
+.ks-sp-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ks-hover);
+  color: var(--ks-muted);
+}
+.ks-sp-empty h3 {
+  margin: 4px 0 0;
+  color: var(--ks-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+.ks-sp-empty p {
+  margin: 0;
+  line-height: 1.5;
+}

@@ -1,0 +1,14 @@
+//! The agent layer: sessions, the ops agents
+//! may run, and proposals, the ops that wait for a person's review. The
+//! guardrails that decide between running, proposing and refusing live in
+//! the engine, next to the ops they guard.
+
+mod import;
+mod op;
+mod proposal;
+mod session;
+
+pub use import::{DeckImport, ImportedDeck};
+pub use op::AgentOp;
+pub use proposal::{PROPOSALS, Proposal, ProposalStatus, Target};
+pub use session::{Session, Tally, load_trust, save_trust};

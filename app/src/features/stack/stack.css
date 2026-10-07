@@ -1,0 +1,41 @@
+/* The side stack: a column of note cards beside the panes, as in Heptabase. */
+
+.kasten-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: 0;
+  border-left: 1px solid var(--color-line);
+  background: color-mix(in srgb, var(--color-panel) 70%, transparent);
+}
+
+.kasten-stack-card {
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--color-canvas);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  transition:
+    border-color var(--motion-base) var(--ease-standard),
+    box-shadow var(--motion-base) var(--ease-standard);
+}
+
+.kasten-stack-card:hover,
+.kasten-stack-card:focus-within {
+  border-color: var(--color-line-hover);
+  box-shadow: var(--shadow-hover);
+}
+
+.kasten-stack-card-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 6px 6px 4px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.kasten-stack-card-body {
+  max-height: 60vh;
+  overflow: auto;
+}

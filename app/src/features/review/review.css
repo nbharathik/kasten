@@ -1,0 +1,129 @@
+/* Colours the review queue and the history view add to the theme tokens
+   (styles.css). Layout stays in Tailwind classes. */
+
+/* Additions, deletions and statuses take the theme's one green, red and
+   amber (styles.css), so they follow light and dark by themselves. */
+:root {
+  --kr-add: var(--color-success);
+  --kr-add-bg: color-mix(in srgb, var(--color-success) 10%, transparent);
+  --kr-add-mark: color-mix(in srgb, var(--color-success) 27%, transparent);
+  --kr-del: var(--color-danger);
+  --kr-del-bg: color-mix(in srgb, var(--color-danger) 9%, transparent);
+  --kr-del-mark: color-mix(in srgb, var(--color-danger) 26%, transparent);
+  --kr-warn-bg: color-mix(in srgb, var(--color-warning) 12%, transparent);
+  --kr-warn-line: color-mix(in srgb, var(--color-warning) 26%, transparent);
+  --kr-warn-ink: var(--color-warning);
+  --kr-ok-bg: color-mix(in srgb, var(--color-success) 10%, transparent);
+  --kr-ok-line: color-mix(in srgb, var(--color-success) 22%, transparent);
+  --kr-ok-ink: var(--color-success);
+  --kr-bad-bg: color-mix(in srgb, var(--color-danger) 8%, transparent);
+  --kr-bad-line: color-mix(in srgb, var(--color-danger) 24%, transparent);
+  --kr-bad-ink: var(--color-danger);
+  --kr-badge-l: 36%;
+  --kr-badge-a: 0.12;
+  --kr-shadow: var(--shadow-card);
+}
+
+:root[data-theme="dark"] {
+  --kr-badge-l: 76%;
+  --kr-badge-a: 0.17;
+}
+
+/* An agent client's badge; `--kr-hue` comes from the client's name. */
+.kr-client {
+  background: hsl(var(--kr-hue) 80% 50% / var(--kr-badge-a));
+  color: hsl(var(--kr-hue) 62% var(--kr-badge-l));
+}
+
+/* Diffs: a table, so both sides of a row stay level when lines wrap. */
+.kr-diff {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: var(--text-13);
+  line-height: 1.6;
+}
+
+.kr-diff td {
+  padding: 0 10px 0 4px;
+  vertical-align: top;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.kr-diff td.kr-num {
+  padding: 0 6px 0 0;
+  text-align: right;
+  color: var(--color-muted);
+  opacity: 0.75;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.kr-diff td.kr-sign {
+  padding: 0;
+  text-align: center;
+  user-select: none;
+}
+
+.kr-diff .kr-del {
+  background: var(--kr-del-bg);
+}
+
+.kr-diff .kr-add {
+  background: var(--kr-add-bg);
+}
+
+.kr-diff .kr-del.kr-sign {
+  color: var(--kr-del);
+}
+
+.kr-diff .kr-add.kr-sign {
+  color: var(--kr-add);
+}
+
+.kr-diff .kr-del mark,
+.kr-diff .kr-add mark {
+  border-radius: var(--radius-xs);
+  color: inherit;
+}
+
+.kr-diff .kr-del mark {
+  background: var(--kr-del-mark);
+}
+
+.kr-diff .kr-add mark {
+  background: var(--kr-add-mark);
+}
+
+/* A side with no partner line. */
+.kr-diff .kr-none {
+  background: repeating-linear-gradient(-45deg, transparent 0 5px, color-mix(in srgb, var(--color-line) 55%, transparent) 5px 6px);
+}
+
+.kr-diff tr.kr-fold td {
+  padding: 0;
+  background: color-mix(in srgb, var(--color-panel) 80%, transparent);
+}
+
+/* Leaving cards fold up and fade; people who ask for less motion see them go at once. */
+.kr-leave {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows var(--motion-slow) var(--ease-standard),
+    opacity var(--motion-base) var(--ease-standard),
+    transform var(--motion-slow) var(--ease-standard);
+}
+
+.kr-leave[data-leaving="true"] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-4px) scale(0.99);
+}
+
+:root[data-motion="off"] {
+  .kr-leave {
+    transition: none;
+  }
+}

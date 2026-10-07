@@ -1,0 +1,268 @@
+/* The Import view: where the notes are, the folder, what comes in. */
+
+.kasten-import {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 32px 96px;
+}
+
+.kasten-import-head {
+  & h1 {
+    margin: 0;
+    font-size: var(--text-28);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  & p {
+    max-width: 600px;
+    margin: 6px 0 0;
+    color: var(--color-muted);
+    font-size: var(--text-14);
+    line-height: 1.55;
+  }
+}
+
+.kasten-import-kinds {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+}
+
+.kasten-import-kind {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 14px 14px 13px;
+  border-radius: var(--radius-2xl);
+  background: var(--color-canvas);
+  box-shadow: 0 0 0 1px var(--color-line);
+  text-align: left;
+  transition:
+    box-shadow var(--motion-base),
+    transform var(--motion-base);
+
+  & strong {
+    font-size: var(--text-14);
+  }
+
+  & > span:last-child {
+    color: var(--color-muted);
+    font-size: var(--text-13);
+    line-height: 1.45;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &[aria-checked="true"] {
+    box-shadow:
+      0 0 0 2px var(--color-accent),
+      0 8px 24px -12px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+}
+
+.kasten-import-kind-icon {
+  font-size: var(--text-24);
+}
+
+.kasten-import-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px 20px;
+  border-radius: var(--radius-2xl);
+  background: var(--color-panel);
+}
+
+.kasten-import-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-left: 20px;
+  list-style: decimal;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  line-height: 1.5;
+}
+
+.kasten-import-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  & > span:not(.kasten-import-pick) {
+    font-size: var(--text-13);
+    font-weight: 600;
+  }
+
+  & input {
+    min-width: 0;
+    flex: 1;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    outline: none;
+    background: var(--color-canvas);
+    font-size: var(--text-14);
+
+    &:focus {
+      border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent);
+    }
+  }
+
+  & small {
+    color: var(--color-muted);
+    font-size: var(--text-12);
+  }
+}
+
+/* The folder box with Browse beside it. */
+.kasten-import-pick {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kasten-import-look,
+.kasten-import-go {
+  align-self: flex-start;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--radius-xl);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: var(--text-13);
+  font-weight: 600;
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+.kasten-import-quiet {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--radius-xl);
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  font-weight: 550;
+
+  &:hover:not(:disabled) {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+}
+
+.kasten-import-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border-radius: var(--radius-2xl);
+  background: var(--color-canvas);
+  box-shadow:
+    0 0 0 1px var(--color-line),
+    0 12px 32px -18px rgb(15 15 15 / 0.25);
+
+  &.is-done .kasten-import-found > span {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-right: 6px;
+    border-radius: 99px;
+    background: color-mix(in srgb, #1a9a5f 18%, transparent);
+    color: #1a9a5f;
+    font-size: var(--text-13);
+  }
+}
+
+.kasten-import-found {
+  margin: 0;
+  font-size: var(--text-16);
+}
+
+.kasten-import-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & li {
+    display: flex;
+    flex-direction: column;
+    min-width: 110px;
+    padding: 10px 14px;
+    border-radius: var(--radius-xl);
+    background: var(--color-panel);
+  }
+
+  & strong {
+    font-size: var(--text-24);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  & span {
+    color: var(--color-muted);
+    font-size: var(--text-13);
+  }
+
+  & small {
+    margin-top: 2px;
+    color: var(--color-muted);
+    font-size: var(--text-12);
+  }
+}
+
+.kasten-import-warnings {
+  font-size: var(--text-13);
+
+  & summary {
+    cursor: pointer;
+    color: var(--color-muted);
+    font-weight: 550;
+  }
+
+  & ul {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0 0;
+    padding-left: 18px;
+    line-height: 1.5;
+  }
+}
+
+.kasten-import-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  & > span {
+    color: var(--color-muted);
+    font-size: var(--text-13);
+  }
+}
+
+.kasten-import-error {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+  color: color-mix(in srgb, var(--color-danger) 80%, var(--color-ink));
+  font-size: var(--text-13);
+  line-height: 1.5;
+}

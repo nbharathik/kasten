@@ -1,0 +1,13 @@
+name: paper
+color: blue
+properties:
+  - {key: status, type: select, options: [Idea, Drafting, Submitted, Revision, Accepted]}
+  - {key: venue, type: text}
+  - {key: deadline, type: date}
+  - {key: coauthors, type: multi_select}
+  - {key: repo, type: url}
+  - {key: related, type: relation}
+views:
+  - {name: Pipeline, type: kanban, group_by: status}
+  - {name: Deadlines, type: calendar, date: deadline}
+  - {name: All, type: table, sort: [{key: deadline, dir: asc}]}

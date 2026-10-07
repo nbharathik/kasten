@@ -1,0 +1,51 @@
+{
+	"nodes": [
+		{
+			"id": "n1",
+			"type": "file",
+			"file": "Travel/Summer trip.md",
+			"x": 0,
+			"y": 0,
+			"width": 400,
+			"height": 300
+		},
+		{
+			"id": "n2",
+			"type": "file",
+			"file": "Attachments/map.png",
+			"x": 460,
+			"y": 0,
+			"width": 300,
+			"height": 300
+		},
+		{
+			"id": "n3",
+			"type": "text",
+			"text": "Which month?",
+			"x": 0,
+			"y": 360,
+			"width": 250,
+			"height": 60,
+			"color": "4"
+		},
+		{
+			"id": "n4",
+			"type": "file",
+			"file": "Nowhere/Gone.md",
+			"x": 460,
+			"y": 360,
+			"width": 250,
+			"height": 60
+		}
+	],
+	"edges": [
+		{
+			"id": "e1",
+			"fromNode": "n3",
+			"fromSide": "top",
+			"toNode": "n1",
+			"toSide": "bottom",
+			"label": "decide"
+		}
+	]
+}

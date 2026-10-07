@@ -1,0 +1,229 @@
+/* The filmstrip: the slides in a column to pick from, drag about and scroll.
+   The row heights here are the numbers in model.ts (a row is a thumbnail, its
+   border and 6px above and below), which the scrolling and dragging rely on. */
+.ks-filmstrip {
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+.ks-fs-list {
+  position: relative;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ks-fs-list.is-dragging,
+.ks-fs-list.is-dragging * {
+  cursor: grabbing;
+}
+
+/* ---- a slide */
+.ks-fs-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  height: var(--fs-row);
+  padding: 6px 3px;
+  cursor: pointer;
+}
+.ks-fs-row.is-backup {
+  padding-left: 15px;
+}
+.ks-fs-row:hover {
+  background: var(--ks-hover);
+}
+.ks-fs-row.is-selected {
+  background: var(--ks-soft);
+}
+.ks-fs-row.is-dragging {
+  opacity: 0.45;
+}
+
+.ks-fs-num {
+  flex: none;
+  width: 20px;
+  padding-top: 1px;
+  color: var(--ks-muted);
+  font-size: 11px;
+  line-height: 16px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ks-fs-row.is-shown .ks-fs-num {
+  color: var(--ks-accent);
+  font-weight: 600;
+}
+.ks-fs-row.is-skipped .ks-fs-num {
+  opacity: 0.6;
+}
+
+.ks-fs-slot {
+  position: relative;
+  flex: none;
+}
+.ks-fs-frame {
+  position: relative;
+  flex: none;
+  width: var(--fs-w);
+  height: var(--fs-h);
+  border: 1px solid var(--ks-line-strong);
+  border-radius: 2px;
+  background: var(--ks-canvas);
+}
+/* Too far from the window to be drawn yet: a quiet box of the same size. */
+.ks-fs-frame.is-far {
+  background: color-mix(in srgb, var(--ks-ink) 5%, var(--ks-canvas));
+}
+.ks-fs-row.is-backup .ks-fs-frame,
+.ks-fs-row.is-backup .ks-fs-stack {
+  width: var(--fs-bw);
+  height: var(--fs-bh);
+}
+/* The slide that is shown has the accent ring; the others picked with it, a lighter one. */
+.ks-fs-row.is-selected:not(.is-shown) .ks-fs-frame {
+  border-color: color-mix(in srgb, var(--ks-accent) 55%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ks-accent) 55%, transparent);
+}
+.ks-fs-row.is-shown .ks-fs-frame {
+  border-color: var(--ks-accent);
+  box-shadow: 0 0 0 1px var(--ks-accent);
+}
+.ks-fs-list:focus-visible .ks-fs-row.is-shown .ks-fs-frame {
+  box-shadow:
+    0 0 0 1px var(--ks-accent),
+    0 0 0 3px color-mix(in srgb, var(--ks-accent) 32%, transparent);
+}
+
+/* A slide that is skipped when presenting is dimmed and carries an eye with a line through it. */
+.ks-fs-row.is-skipped .ks-thumb {
+  opacity: 0.5;
+}
+.ks-fs-skipped {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ks-canvas) 92%, transparent);
+  color: var(--ks-muted);
+  box-shadow: 0 0 0 1px var(--ks-line);
+}
+
+/* A backup slide sits in under the slide above it, with a second edge behind it like a pile. */
+.ks-fs-stack {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  border: 1px solid var(--ks-line-strong);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--ks-ink) 10%, var(--ks-panel));
+}
+/* The tag sits on the top edge, so it does not cover what is on the slide. */
+.ks-fs-tag {
+  position: absolute;
+  left: 8px;
+  top: -8px;
+  z-index: 1;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--ks-muted);
+  color: var(--ks-canvas);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ---- a section */
+.ks-fs-section {
+  display: flex;
+  align-items: center;
+  height: var(--fs-section);
+  padding: 0 6px 0 4px;
+}
+.ks-btn.ks-fs-fold {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  height: 24px;
+  padding: 0 6px 0 2px;
+  color: var(--ks-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: left;
+}
+.ks-btn.ks-fs-fold:hover {
+  background: var(--ks-hover);
+  color: var(--ks-ink);
+}
+.ks-fs-section-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-fs-section-count {
+  color: var(--ks-faint);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+/* The name of a section while it is being changed. */
+.ks-fs-section.is-renaming {
+  gap: 4px;
+  padding-left: 4px;
+  color: var(--ks-muted);
+}
+.ks-input.ks-fs-section-input {
+  flex: 1;
+  min-width: 0;
+  height: 24px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+/* ---- where a drag would land */
+.ks-fs-drop {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  z-index: 2;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--ks-accent);
+  pointer-events: none;
+}
+.ks-fs-drop::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ks-accent);
+}
+
+/* ---- adding */
+.ks-btn.ks-fs-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: calc(100% - 16px);
+  height: 32px;
+  margin: 2px 8px 16px;
+  border: 1px dashed var(--ks-line-strong);
+  color: var(--ks-muted);
+}
+.ks-btn.ks-fs-add:hover {
+  background: var(--ks-hover);
+  color: var(--ks-ink);
+}

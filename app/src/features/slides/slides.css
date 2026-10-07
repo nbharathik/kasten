@@ -1,0 +1,32 @@
+/* The Slides editor wears Kasten's tokens: light, dark and the accent follow the app. */
+.ks-host .ks-editor {
+  --ks-canvas: var(--color-canvas);
+  --ks-panel: var(--color-panel);
+  --ks-well: var(--color-well);
+  --ks-ink: var(--color-ink);
+  --ks-muted: var(--color-muted);
+  --ks-faint: var(--color-faint);
+  --ks-line: var(--color-line);
+  --ks-line-strong: var(--color-line-strong);
+  --ks-accent: var(--color-accent);
+  --ks-on-accent: var(--color-on-accent);
+  --ks-danger: var(--color-danger);
+  --ks-success: var(--color-success);
+  --ks-warning: var(--color-warning);
+  --ks-scrim: var(--color-scrim);
+  --ks-font: var(--font-sans);
+  --ks-mono: var(--font-mono);
+  --ks-shadow-pop: var(--shadow-pop);
+  --ks-shadow-page: var(--shadow-lift);
+  color-scheme: inherit;
+}
+
+/* Full screen: the editor is fixed over the whole window, above the sidebar, tabs and chat dock but under the palette, toasts and tooltips
+   (as a board that presents is). A pane contains its layout for its container queries, which would make it the frame for the fixed
+   editor and clip it to the pane; not while the deck is full screen. */
+.ks-host .ks-editor {
+  --ks-fullscreen-z: 55;
+}
+.kasten-pane:has(.ks-editor.is-fullscreen) {
+  container-type: normal;
+}

@@ -1,0 +1,11 @@
+name: travel
+color: teal
+properties:
+  - {key: status, type: select, options: [Idea, Planning, Booked, Done]}
+  - {key: start, type: date}
+  - {key: end, type: date}
+  - {key: budget, type: number}
+views:
+  - {name: Trips, type: table, sort: [{key: start, dir: desc}]}
+  - {name: By status, type: kanban, group_by: status}
+  - {name: Calendar, type: calendar, date: start}

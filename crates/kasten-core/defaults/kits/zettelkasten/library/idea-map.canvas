@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {"id": "fleeting", "type": "text", "text": "**Fleeting note**\nA thought, caught fast", "x": 0, "y": 0, "width": 240, "height": 100, "color": "3"},
+    {"id": "literature", "type": "text", "text": "**Literature note**\nAn idea from a source, in your words", "x": 320, "y": 0, "width": 240, "height": 100, "color": "5"},
+    {"id": "permanent", "type": "text", "text": "**Permanent note**\nOne idea, linked to others", "x": 640, "y": 0, "width": 240, "height": 100, "color": "4"},
+    {"id": "map", "type": "text", "text": "**Map of content**\nThe way in to a topic", "x": 640, "y": 180, "width": 240, "height": 100, "color": "6"}
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "fleeting", "fromSide": "right", "toNode": "permanent", "toSide": "left", "label": "worth keeping"},
+    {"id": "e2", "fromNode": "literature", "fromSide": "right", "toNode": "permanent", "toSide": "left"},
+    {"id": "e3", "fromNode": "permanent", "fromSide": "bottom", "toNode": "map", "toSide": "top", "label": "gathered in"}
+  ]
+}

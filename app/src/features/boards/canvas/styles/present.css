@@ -1,0 +1,87 @@
+/* Presenting a board: the board takes the whole window, above
+   the app's bars and menus but under the palette and toasts, and shows
+   only the slide and its controls. */
+
+.kasten-board.is-presenting {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+}
+
+/* A pane contains its layout for its container queries, which would make
+   it the frame for the fixed board and clip it; not while it presents. */
+.kasten-pane:has(.kasten-board.is-presenting) {
+  container-type: normal;
+}
+
+.kasten-board.is-presenting .react-flow__handle,
+.kasten-board.is-presenting .react-flow__attribution {
+  display: none;
+}
+
+/* Hidden, keeping its room: the section's label stays where it was. */
+.kasten-board.is-presenting .kasten-section-fold {
+  visibility: hidden;
+}
+
+/* A slide is looked at, not worked on: a click on it goes to the next
+   one, never to a task's box, a fold or a link inside it. */
+.kasten-board.is-presenting .react-flow__node {
+  cursor: default;
+}
+
+.kasten-board.is-presenting .react-flow__node > * {
+  pointer-events: none;
+}
+
+.kasten-present {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-2xl);
+  background: var(--board-card);
+  box-shadow: var(--shadow-lift);
+  color: var(--color-ink);
+  opacity: 0.35;
+  transform: translateX(-50%);
+  transition: opacity var(--motion-slow) var(--ease-standard);
+  user-select: none;
+}
+
+.kasten-present:hover,
+.kasten-present:focus-within {
+  opacity: 1;
+}
+
+.kasten-present-where {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 64px;
+  padding: 0 8px;
+  justify-content: center;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.kasten-present-label {
+  max-width: 280px;
+  overflow: hidden;
+  color: var(--color-ink);
+  font-weight: 550;
+  text-overflow: ellipsis;
+}
+
+:root[data-motion="off"] {
+  .kasten-present {
+    transition: none;
+  }
+}

@@ -1,0 +1,226 @@
+/* The message box: context chips, the growing text box, the model and Send.
+   The menus that open above it are in menus.css. */
+
+.kasten-chat-foot {
+  flex: none;
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 4px 28px 20px;
+}
+
+.kasten-chat-composer {
+  position: relative;
+  border-radius: var(--radius-2xl);
+  background: var(--notion-menu-bg);
+  box-shadow:
+    0 0 0 1px var(--notion-line),
+    0 2px 8px rgb(15 15 15 / 0.05);
+  transition: box-shadow var(--motion-fast) var(--ease-standard);
+
+  &:focus-within {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--notion-accent) 60%, transparent),
+      0 0 0 4px color-mix(in srgb, var(--notion-accent) 13%, transparent);
+  }
+
+  & textarea {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    max-height: 220px;
+    padding: 10px 14px 4px;
+    resize: none;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: var(--text-14);
+    line-height: 1.5;
+
+    &::placeholder {
+      color: var(--notion-text-3);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.kasten-chat-composer-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 4px 8px 8px 8px;
+}
+
+.kasten-chat-grow {
+  flex: 1;
+}
+
+.kasten-chat .kasten-chat-send {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--notion-accent);
+  color: var(--color-on-accent, #fff);
+  transition:
+    filter var(--motion-fast) var(--ease-standard),
+    opacity var(--motion-fast) var(--ease-standard);
+
+  & svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+.kasten-chat .kasten-chat-stop {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 13px 0 11px;
+  border-radius: var(--radius-2xl);
+  box-shadow: inset 0 0 0 1px var(--notion-line);
+  color: var(--notion-text);
+  font-size: var(--text-13);
+  font-weight: 500;
+
+  &:hover:not(:disabled) {
+    background: var(--notion-hover);
+  }
+
+  &:disabled {
+    color: var(--notion-text-3);
+  }
+}
+
+.kasten-chat-stop-mark {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-xs);
+  background: currentColor;
+}
+
+/* Context chips. */
+.kasten-chat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 10px 0;
+}
+
+.kasten-chat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 240px;
+  height: 24px;
+  padding: 0 3px 0 8px;
+  border-radius: var(--radius-lg);
+  background: var(--notion-hover);
+  color: var(--notion-text);
+  font-size: var(--text-13);
+
+  & button {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-md);
+    color: var(--notion-text-3);
+    font-size: var(--text-14);
+    line-height: 1;
+
+    &:hover {
+      background: var(--notion-press);
+      color: var(--notion-text);
+    }
+  }
+}
+
+.kasten-chat-chip-icon {
+  flex: none;
+  color: var(--notion-text-2);
+  font-size: var(--text-12);
+}
+
+.kasten-chat-chip-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-chat-add {
+  position: relative;
+  display: inline-flex;
+}
+
+.kasten-chat .kasten-chat-add-button {
+  height: 24px;
+  padding: 0 8px;
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 0 0 1px var(--notion-line);
+  color: var(--notion-text-2);
+  font-size: var(--text-13);
+  white-space: nowrap;
+
+  &:hover,
+  &[aria-expanded="true"] {
+    background: var(--notion-hover);
+    color: var(--notion-text);
+  }
+}
+
+/* In the right panel: the box fills the width, and its menus open from the
+   box's left edge, as wide as it at most, so they stay inside the panel. */
+.kasten-chat:is([data-variant="panel"], [data-variant="dock"]) {
+  & .kasten-chat-composer textarea {
+    font-size: var(--text-13);
+  }
+
+  & .kasten-chat-add,
+  & .kasten-chat-model {
+    position: static;
+  }
+
+  & .kasten-chat-menu,
+  & .kasten-chat-add > [role="dialog"],
+  & .kasten-chat-model-menu {
+    left: 0;
+    width: min(18rem, 100%);
+  }
+
+  & .kasten-chat-model-name {
+    display: none;
+  }
+}
+
+/* The page picker @ or [[ opens, over the box (the menu hangs above
+   this spot at the box's top). */
+.kasten-chat-mention {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 0;
+  height: 0;
+}

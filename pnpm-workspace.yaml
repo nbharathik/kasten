@@ -1,0 +1,13 @@
+# pnpm 12 reads its settings from this file, not from package.json.
+
+# The desktop app and the Slides packages share one install and one lockfile.
+# The editor spike under dev/ keeps a workspace of its own.
+packages:
+  - app
+  - packages/*
+
+# prosemirror-model 1.25.12 (2026-09-21) rejects the null image titles Milkdown
+# passes, so the editor silently drops every image without a title. Remove the
+# pin once Milkdown ships a fix; the round-trip tests will tell.
+overrides:
+  prosemirror-model: 1.25.11

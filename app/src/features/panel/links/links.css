@@ -1,0 +1,90 @@
+/* The Links tab: backlinks and unlinked mentions, each with its snippet. */
+
+.kasten-side-panel {
+  & .kasten-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0 -6px;
+    padding: 0;
+    list-style: none;
+  }
+
+  & .kasten-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    border-radius: var(--radius-lg);
+    transition: background-color var(--motion-fast) var(--ease-standard);
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+  }
+
+  & .kasten-link-open {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: 6px;
+    border-radius: var(--radius-lg);
+    text-align: left;
+  }
+
+  & .kasten-link-title {
+    overflow: hidden;
+    font-size: var(--text-13);
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & .kasten-link-where {
+    color: var(--notion-text-2);
+    font-weight: 400;
+  }
+
+  & .kasten-link-snippet {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--notion-text-2);
+    font-size: var(--text-12);
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    & mark {
+      padding: 0 1px;
+      border-radius: var(--radius-xs);
+      background: var(--notion-yellow-bg);
+      color: inherit;
+    }
+  }
+
+  & .kasten-link-it {
+    margin: 6px 6px 0 0;
+  }
+
+  & .kasten-link-badge {
+    margin-left: 6px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--notion-hover);
+    color: var(--notion-text-2);
+    font-size: var(--text-11);
+    font-weight: 500;
+    vertical-align: 1px;
+  }
+
+  /* A link that finds no page. */
+  & .kasten-link.is-broken .kasten-link-title {
+    color: var(--color-muted);
+  }
+
+  & .kasten-link-broken-count {
+    color: var(--color-danger);
+    font-weight: 400;
+  }
+}

@@ -1,0 +1,236 @@
+/* A vault page around the editor: the day switcher, the empty-page prompt,
+   sub-pages and backlinks below, and the Markdown file's bar. The right
+   panel has its own styles (features/panel). */
+
+.kasten-note-message {
+  padding: 96px 24px;
+  color: var(--notion-text-3);
+  font-size: var(--text-14);
+  text-align: center;
+}
+
+.kasten-note-banner {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--notion-yellow-bg);
+  color: var(--notion-text);
+  font-size: var(--text-13);
+
+  & span {
+    flex: 1;
+  }
+
+  & button {
+    padding: 2px 8px;
+    border-radius: var(--radius);
+    font-weight: 500;
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+  }
+}
+
+/* An archived project's page: quieter than a conflict, and it
+   scrolls away with the page. */
+.kasten-note-banner.is-archived {
+  position: static;
+  justify-content: center;
+  padding: 5px 16px;
+  background: var(--notion-gray-bg);
+  color: var(--notion-text-2);
+
+  & span {
+    flex: none;
+  }
+
+  & button {
+    border: 1px solid var(--notion-line);
+    color: var(--notion-text);
+  }
+}
+
+/* The space below the last block: a click there continues the page. */
+.kasten-page-tail {
+  height: 120px;
+  cursor: text;
+}
+
+/* Below the page: quiet toggles (PageFooter), closed until asked. */
+.kasten-page-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+  padding: 14px 0 30vh;
+  border-top: 1px solid var(--notion-line-soft);
+  font-family: var(--notion-font);
+
+  & .ui-disclosure-body {
+    display: flex;
+    flex-direction: column;
+    padding: 2px 0 10px 14px;
+  }
+}
+
+.kasten-footer-link {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  text-align: left;
+
+  &:hover {
+    background: var(--notion-hover);
+  }
+}
+
+.kasten-footer-link-title {
+  overflow: hidden;
+  color: var(--notion-text);
+  font-size: var(--text-14);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-footer-link-detail {
+  overflow: hidden;
+  color: var(--notion-text-2);
+  font-size: var(--text-13);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-page-details {
+  display: grid;
+  margin: 0;
+  padding: 2px 8px 0;
+  font-size: var(--text-13);
+
+  & > div {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 12px;
+    padding: 3px 0;
+  }
+
+  & dt {
+    color: var(--notion-text-3);
+  }
+
+  & dd {
+    overflow: hidden;
+    margin: 0;
+    color: var(--notion-text-2);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.kasten-page-source-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  color: var(--notion-text-2);
+  font-size: var(--text-12);
+  font-weight: 600;
+
+  & button {
+    padding: 0 4px;
+    border-radius: var(--radius);
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+  }
+}
+
+/* A compact page (a side stack card, a journal day): no cover, a smaller
+   title, a narrow gutter. */
+.kasten-page.is-compact {
+  --page-width: 100%;
+  --page-gutter: 18px;
+  height: auto;
+  font-size: calc(var(--page-font-size, 16px) - 1px);
+}
+
+.kasten-page.is-compact .kasten-page-main {
+  overflow: visible;
+}
+
+.kasten-page.is-compact .kasten-page-cover,
+.kasten-page.is-compact .kasten-page-cover-actions {
+  display: none;
+}
+
+.kasten-page.is-compact .kasten-page-title {
+  font-size: var(--text-24);
+}
+
+.kasten-page.is-compact .kasten-page-icon {
+  width: 40px;
+  height: 40px;
+  font-size: var(--text-28);
+}
+
+.kasten-page.is-compact .kasten-page-tail {
+  min-height: 24px;
+}
+
+.kasten-page.is-compact .kasten-page-heading {
+  padding-top: 14px;
+}
+
+.kasten-page.is-compact .kasten-page-icon-wrap {
+  margin-bottom: 0;
+}
+
+/* A headless page (a journal day): the feed shows the day, so the page
+   starts with its text. */
+.kasten-page.is-headless .kasten-page-body {
+  padding-top: 4px;
+}
+
+/* A highlight card's way back to its PDF (features/sources/SourceStrip). */
+.kasten-source-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: calc(100% - 2 * var(--page-gutter, 24px));
+  max-width: var(--page-width, 720px);
+  margin: -4px auto 14px;
+  padding: 8px 12px;
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, #f2c500 12%, var(--color-canvas));
+  box-shadow: inset 3px 0 0 #f2c500;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+
+  & strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  & button {
+    margin-left: auto;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: var(--radius-lg);
+    color: var(--color-accent);
+    font-weight: 600;
+
+    &:hover {
+      background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    }
+  }
+}

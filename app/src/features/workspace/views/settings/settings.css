@@ -1,0 +1,70 @@
+/* The Settings page: the groups, with the list of them beside it when the
+   pane is wide enough. */
+
+.kasten-settings {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 48px 96px;
+}
+
+.kasten-settings-body {
+  min-width: 0;
+  max-width: 720px;
+  flex: 1;
+}
+
+.kasten-settings-nav {
+  position: sticky;
+  top: 40px;
+  align-self: flex-start;
+  width: 168px;
+  flex-shrink: 0;
+  padding-top: 84px;
+}
+
+.kasten-settings-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kasten-settings-nav a {
+  display: block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  text-decoration: none;
+  transition: background-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard);
+}
+
+.kasten-settings-nav a:hover {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}
+
+.kasten-settings-nav a[aria-current="true"] {
+  background: var(--color-selected);
+  color: var(--color-ink);
+  font-weight: 500;
+}
+
+@container pane (max-width: 900px) {
+  .kasten-settings {
+    max-width: 816px;
+    padding: 40px 48px 96px;
+  }
+
+  .kasten-settings-nav {
+    display: none;
+  }
+}
+
+@container pane (max-width: 640px) {
+  .kasten-settings {
+    padding: 32px 24px 96px;
+  }
+}

@@ -1,0 +1,109 @@
+/* Gallery tiles on dashboards and in gallery views: a cover or a tint,
+   an icon, a title and a detail line. */
+
+.kasten-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(164px, 1fr));
+  gap: 10px;
+}
+.kasten-tiles.is-four {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.kasten-tiles.is-three {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.kasten-tile {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--color-canvas);
+  text-align: left;
+  transition:
+    border-color var(--motion-base) var(--ease-standard),
+    box-shadow var(--motion-base) var(--ease-standard);
+}
+.kasten-tile:hover {
+  border-color: var(--color-line-hover);
+  box-shadow: var(--shadow-hover);
+}
+.kasten-tile-cover {
+  height: 44px;
+}
+.kasten-tile-sketch {
+  height: 88px;
+  padding: 6px;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-panel);
+}
+.kasten-tile-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 0 10px 10px;
+}
+.kasten-tile.is-board .kasten-tile-body {
+  padding-top: 8px;
+}
+/* One height for an emoji and a line icon alike, so titles line up. */
+.kasten-tile-icon {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin-top: -15px;
+  font-size: var(--text-24);
+  line-height: 1;
+}
+.kasten-tile-title {
+  display: -webkit-box;
+  margin-top: 6px;
+  overflow: hidden;
+  font-size: var(--text-13);
+  font-weight: 500;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.kasten-tile.is-board .kasten-tile-title {
+  margin-top: 0;
+}
+.kasten-tile-excerpt {
+  display: -webkit-box;
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.kasten-tile-detail {
+  margin-top: auto;
+  padding-top: 6px;
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* A gallery view's "+ New" tile. */
+.kasten-tile.is-new {
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+}
+.kasten-tile.is-new .kasten-tile-body {
+  flex: none;
+  padding: 0;
+}
+.kasten-tile .kasten-tile-detail .kasten-tag-value {
+  font-size: var(--text-11);
+}

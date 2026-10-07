@@ -1,0 +1,335 @@
+/* The small live pictures in the feature tiles: the journal, tasks, the
+   library, tag databases, PDFs and importing. */
+
+/* Journal: a week, today picked. */
+
+.viz-journal {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 12px;
+  padding: 14px;
+}
+
+.vj-days {
+  display: flex;
+  gap: 6px;
+}
+
+.vj-days span {
+  display: grid;
+  flex: 1;
+  justify-items: center;
+  padding: 5px 0;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.vj-days b {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.vj-days .is-today {
+  background: var(--btn);
+  color: color-mix(in srgb, var(--on-btn) 70%, transparent);
+}
+
+.vj-days .is-today b {
+  color: var(--on-btn);
+}
+
+.vj-page {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.vj-date {
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.vj-todo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-2);
+  font-size: 13.5px;
+}
+
+.vj-todo i {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 4px;
+}
+
+/* Tasks: to-dos from different pages, ticked in turn. */
+
+.viz-tasks {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  margin-top: -4px;
+  padding: 16px;
+  list-style: none;
+}
+
+.viz-tasks li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  font-size: 14px;
+}
+
+.viz-tasks i {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: var(--accent);
+  color: #fff;
+  animation: tick 6s ease-in-out infinite;
+}
+
+.viz-tasks li:nth-child(2) i {
+  animation-delay: 1s;
+}
+
+.viz-tasks li:nth-child(3) i {
+  animation-delay: 2s;
+}
+
+.viz-tasks i .i {
+  width: 12px;
+  height: 12px;
+  stroke-width: 3;
+}
+
+.viz-tasks span {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--well);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Library: the real thing, cropped. */
+
+.viz-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 30%;
+  transform: scale(1.35);
+  transform-origin: 62% 30%;
+  transition: transform 600ms var(--ease);
+}
+
+.t-library:hover .viz-shot img {
+  transform: scale(1.42);
+}
+
+/* Tags: a database as a table. */
+
+.viz-table {
+  padding: 12px 14px;
+  font-size: 13px;
+}
+
+.vt-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.vt-tabs span {
+  padding: 3px 9px;
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vt-tabs .is-on {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.vt-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 0.7fr;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
+.vt-head {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.vt-row em {
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-style: normal;
+}
+
+.pill-purple {
+  background: var(--hl-purple);
+}
+
+.pill-green {
+  background: var(--hl-green);
+}
+
+.pill-gray {
+  background: var(--hl-gray);
+}
+
+/* PDF: a highlight becomes a card. */
+
+.vpdf-page {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  width: 58%;
+  bottom: -10px;
+  padding: 16px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.vpdf-page .vp-line {
+  background: #ecebe8;
+}
+
+.vpdf-hl {
+  display: block;
+  margin: 2px 0 10px;
+  color: #3b3a37;
+  font: italic 12.5px/1.4 Georgia, serif;
+  background: linear-gradient(rgb(248 230 165), rgb(248 230 165)) no-repeat 0 0 / 0% 100%;
+  animation: highlight 5s var(--ease) infinite;
+}
+
+.vpdf-card {
+  position: absolute;
+  right: 16px;
+  bottom: 22px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  width: 44%;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  font-size: 12.5px;
+  animation: card-out 5s var(--ease) infinite;
+}
+
+.vpdf-card .i {
+  color: var(--ok);
+}
+
+.vpdf-card small {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@keyframes highlight {
+  0% { background-size: 0% 100%; }
+  25%,
+  100% { background-size: 100% 100%; }
+}
+
+@keyframes card-out {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translate(-30px, -30px) scale(0.9);
+  }
+
+  45%,
+  90% {
+    opacity: 1;
+    transform: none;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Import: other apps' notes into Kasten. */
+
+.viz-import {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: min(520px, 55%);
+  height: auto;
+  margin: 0;
+  padding: 18px;
+}
+
+.vi-src {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.vi-arrow {
+  flex: 1;
+  min-width: 30px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--faint) 0 6px, transparent 6px 11px);
+  animation: slide 1s linear infinite;
+}
+
+.vi-dst {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 9px;
+  background: var(--btn);
+  color: var(--on-btn);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.vi-dst svg {
+  width: 17px;
+  height: 17px;
+}
+
+@keyframes slide {
+  to {
+    background-position: 11px 0;
+  }
+}

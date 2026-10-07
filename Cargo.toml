@@ -1,0 +1,59 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/kasten-core",
+    "crates/kasten-cli",
+    "crates/kasten-mcp",
+    "crates/slides-assets",
+    "crates/slides-core",
+    "crates/slides-cli",
+    "crates/slides-pptx",
+    "crates/slides-render",
+    "packages/slides-wasm",
+    "app/src-tauri",
+]
+
+[workspace.package]
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.98"
+license = "MIT"
+publish = false
+
+[workspace.dependencies]
+kasten-core = { path = "crates/kasten-core" }
+kasten-mcp = { path = "crates/kasten-mcp" }
+slides-assets = { path = "crates/slides-assets" }
+slides-core = { path = "crates/slides-core" }
+slides-pptx = { path = "crates/slides-pptx" }
+slides-render = { path = "crates/slides-render" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.151", features = ["preserve_order"] }
+tauri = { version = "2.11.6", features = ["protocol-asset", "tray-icon", "image-png"] }
+tauri-build = { version = "2.6.3", features = [] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
+
+[profile.release]
+lto = "thin"
+strip = true
+
+# `tauri dev` and tests run debug builds. Optimising the dependencies
+# (SQLite, git, parsers) and lightly the core makes them two to three times
+# faster at run time, and lighter on the stack, for a longer first build
+# only; our own crates still rebuild quickly.
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.dev.package.kasten-core]
+opt-level = 1
+
+# The generated protocol bindings of the render host's browser driver are a
+# very large crate; building them optimised takes minutes and gigabytes.
+[profile.dev.package.chromiumoxide_cdp]
+opt-level = 0

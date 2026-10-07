@@ -1,0 +1,249 @@
+/* Ranges as bars: in lanes over each month row, under the day
+   numbers, and in the week's all-day band. Tinted in their tag colour like
+   chips, rounded where a range starts or ends that week and flat where it
+   runs on past it. Light and dark follow the theme tokens. */
+
+/* Where bars sit. A month row's lanes start under the day numbers (cell
+   padding 5px, number row 25px, gap 3px) and step by a chip's line (22px and
+   a 3px gap, grid.css); the week's start under the 50px column heads. */
+.kasten-cal-row,
+.kasten-cal-weekgrid {
+  --bar-top: 33px;
+  --bar-pitch: 25px;
+  --bar-h: 22px;
+  /* A cell's padding, which rounded ends keep to, like chips. */
+  --bar-in: 6px;
+  position: relative;
+}
+
+.kasten-cal-weekgrid {
+  --bar-top: 56px;
+  --bar-pitch: 28px;
+  --bar-h: 24px;
+  --bar-in: 7px;
+}
+
+/* Over a week's cells or columns: the row's (or grid's) whole area, however
+   far it scrolls; only the bars take the pointer. */
+.kasten-cal-bars {
+  position: absolute;
+  z-index: 2;
+  grid-row: 1;
+  grid-column: 1 / -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kasten-cal-bar {
+  --chip-fg: var(--color-accent);
+  --chip-bg: var(--color-soft);
+  --in-start: 0px;
+  --in-end: 0px;
+  position: absolute;
+  top: calc(var(--bar-top) + var(--lane) * var(--bar-pitch));
+  /* Past the first column, a cell's 1px border comes first. */
+  left: calc(var(--from) * 100% / 7 + var(--in-start) + min(var(--from), 1) * 1px);
+  width: calc(var(--span) * 100% / 7 - var(--in-start) - var(--in-end) - min(var(--from), 1) * 1px);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: var(--bar-h);
+  padding: 0 8px;
+  outline: none;
+  background: color-mix(in srgb, var(--chip-fg) 17%, var(--chip-bg));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--chip-fg) 16%, transparent);
+  color: var(--color-ink);
+  font-size: var(--text-13);
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: grab;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  container-type: inline-size;
+  transition: background-color var(--motion-fast), box-shadow var(--motion-fast), opacity var(--motion-base);
+
+  &:hover {
+    background: color-mix(in srgb, var(--chip-fg) 25%, var(--chip-bg));
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--chip-fg) 24%, transparent),
+      var(--shadow-card);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 70%, transparent);
+  }
+}
+
+/* Where the range starts this week: a rounded end, kept to the cell's
+   padding, with the tag colour down it as on chips. */
+.kasten-cal-bar.is-start {
+  --in-start: var(--bar-in);
+  padding-left: 11px;
+  border-top-left-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-lg);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 3px;
+    width: 3px;
+    border-radius: var(--radius-xs);
+    background: var(--chip-fg);
+  }
+}
+
+.kasten-cal-bar.is-end {
+  --in-end: var(--bar-in);
+  padding-right: 12px;
+  border-top-right-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+.kasten-cal-bar.is-dragging {
+  opacity: 0.35;
+}
+
+.kasten-cal-bar.is-resizing {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--chip-fg) 60%, transparent);
+}
+
+/* While anything is dragged, drops reach the days under the bars. */
+.kasten-cal[data-dragging] .kasten-cal-bar {
+  pointer-events: none;
+}
+
+.kasten-cal-bar-icon {
+  flex-shrink: 0;
+  font-size: var(--text-12);
+  line-height: 1;
+}
+
+.kasten-cal-bar-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Its days, where the bar is wide enough. */
+.kasten-cal-bar-span {
+  flex-shrink: 0;
+  color: color-mix(in srgb, var(--chip-fg) 65%, var(--color-ink));
+  font-size: var(--text-12);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@container (max-width: 300px) {
+  .kasten-cal-bar-span {
+    display: none;
+  }
+}
+
+@container (max-width: 64px) {
+  .kasten-cal-bar-icon {
+    display: none;
+  }
+}
+
+.kasten-cal-bar.is-done {
+  opacity: 0.72;
+
+  & .kasten-cal-bar-title {
+    color: var(--color-muted);
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in srgb, var(--color-muted) 70%, transparent);
+  }
+}
+
+/* The handle on a range's last day: drag it to change only the end. */
+.kasten-cal-bar-end {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  cursor: ew-resize;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    right: 3px;
+    bottom: 5px;
+    width: 3px;
+    border-radius: var(--radius-xs);
+    background: color-mix(in srgb, var(--chip-fg) 75%, transparent);
+    opacity: 0;
+    transition: opacity var(--motion-fast);
+  }
+}
+
+.kasten-cal-bar:hover .kasten-cal-bar-end::after,
+.kasten-cal-bar:focus-visible .kasten-cal-bar-end::after,
+.kasten-cal-bar.is-resizing .kasten-cal-bar-end::after {
+  opacity: 1;
+}
+
+/* A month cell's room for the lanes over it, before its own entries. */
+.kasten-cal-lanes {
+  flex-shrink: 0;
+  height: calc(var(--lanes) * 25px - 3px);
+}
+
+/* The week's band: each column keeps its height free, with "+N more" (or
+   "Show fewer") on the line under the lanes, and the line under the band
+   runs across the week. */
+.kasten-cal-col-band {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-end;
+  height: var(--band);
+  padding: 0 var(--bar-in) 10px;
+  border-bottom: 1px solid var(--color-line);
+
+  /* On the line under the lanes, not under the bars' layer. */
+  & .kasten-cal-more {
+    align-self: flex-end;
+  }
+}
+
+/* A range in a day's list ("+N more"): a bar's tint, and its days. */
+.kasten-cal-chip.is-range {
+  background: color-mix(in srgb, var(--chip-fg) 17%, var(--chip-bg));
+
+  &:hover {
+    background: color-mix(in srgb, var(--chip-fg) 25%, var(--chip-bg));
+  }
+}
+
+.kasten-cal-chip-span {
+  flex-shrink: 0;
+  color: color-mix(in srgb, var(--chip-fg) 65%, var(--color-ink));
+  font-size: var(--text-12);
+  white-space: nowrap;
+}
+
+/* Narrow panes: bars keep their titles; the week's scrolls with its columns. */
+@container pane (max-width: 760px) {
+  .kasten-cal-bar {
+    padding: 0 6px;
+  }
+
+  .kasten-cal-bar.is-start {
+    padding-left: 9px;
+  }
+
+  .kasten-cal-bar.is-end {
+    padding-right: 10px;
+  }
+}

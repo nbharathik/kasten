@@ -1,0 +1,333 @@
+/* The History tab: a slider and a timeline of versions on top, the chosen
+   version's text or changes below, each part scrolling on its own. */
+
+.kasten-side-panel {
+  & .kasten-history {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+    padding-top: 4px;
+  }
+
+  & .kasten-history-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 40px 12px;
+    color: var(--notion-text-3);
+    text-align: center;
+
+    & p {
+      max-width: 240px;
+      margin: 0;
+      font-size: var(--text-13);
+    }
+  }
+
+  & .kasten-scrub {
+    flex: none;
+
+    & input[type="range"] {
+      width: 100%;
+      margin: 0;
+      accent-color: var(--notion-accent);
+      cursor: pointer;
+    }
+  }
+
+  & .kasten-scrub-ends {
+    display: flex;
+    justify-content: space-between;
+    color: var(--notion-text-3);
+    font-size: var(--text-11);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Versions on a rail, newest first; the chosen one has a filled dot. */
+  & .kasten-timeline {
+    flex: 0 1 auto;
+    min-height: 64px;
+    max-height: 38%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+    scrollbar-width: thin;
+
+    & li {
+      position: relative;
+      padding-left: 18px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 7px;
+        width: 1px;
+        background: var(--notion-line);
+      }
+
+      &:first-child::before {
+        top: 14px;
+      }
+
+      &:last-child::before {
+        bottom: calc(100% - 14px);
+      }
+
+      &:only-child::before {
+        display: none;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 11px;
+        left: 4px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--notion-bg);
+        box-shadow: inset 0 0 0 1.5px var(--notion-text-3);
+      }
+
+      &.is-selected::after {
+        background: var(--notion-accent);
+        box-shadow: 0 0 0 3px var(--kasten-panel-focus);
+      }
+    }
+
+    & button {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      width: 100%;
+      padding: 5px 8px;
+      border-radius: var(--radius-lg);
+      text-align: left;
+
+      &:hover {
+        background: var(--notion-hover);
+      }
+    }
+
+    & li.is-selected button {
+      background: var(--notion-hover);
+    }
+  }
+
+  & .kasten-version-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  & .kasten-version-when {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  & .kasten-version-who,
+  & .kasten-version-what {
+    overflow: hidden;
+    font-size: var(--text-12);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & .kasten-version-who {
+    color: var(--notion-text-3);
+  }
+
+  & .kasten-version-what {
+    color: var(--notion-text-2);
+  }
+
+  & .kasten-agent-badge {
+    flex: none;
+    padding: 0 5px;
+    border-radius: var(--radius);
+    background: var(--notion-purple-bg);
+    color: var(--notion-purple);
+    font-size: var(--text-11);
+    font-weight: 500;
+    line-height: 16px;
+  }
+
+  /* The chosen version. */
+  & .kasten-version {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 200px;
+    padding-top: 10px;
+    border-top: 1px solid var(--notion-line-soft);
+  }
+
+  & .kasten-version-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  & .kasten-version-title {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    & strong {
+      font-weight: 600;
+    }
+
+    & span {
+      overflow: hidden;
+      color: var(--notion-text-3);
+      font-size: var(--text-12);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  & .kasten-switch {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 6px;
+    color: var(--notion-text-2);
+    font-size: var(--text-12);
+    white-space: nowrap;
+    cursor: pointer;
+
+    & input {
+      position: relative;
+      width: 26px;
+      height: 15px;
+      margin: 0;
+      border-radius: var(--radius-lg);
+      background: var(--notion-press);
+      appearance: none;
+      cursor: pointer;
+      transition: background-color var(--motion-base) var(--ease-standard);
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: var(--color-knob);
+        box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+        transition: transform var(--motion-base) var(--ease-standard);
+      }
+
+      &:checked {
+        background: var(--notion-accent);
+      }
+
+      &:checked::after {
+        transform: translateX(11px);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--notion-accent);
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  & .kasten-restore-button {
+    align-self: flex-start;
+  }
+
+  & .kasten-restore {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border-radius: var(--radius-lg);
+    background: var(--notion-blue-bg);
+
+    & p {
+      margin: 0;
+      font-size: var(--text-13);
+    }
+
+    & div {
+      display: flex;
+      gap: 6px;
+    }
+  }
+
+  & .kasten-diff-legend {
+    margin: 0;
+    color: var(--notion-text-3);
+    font-size: var(--text-12);
+
+    & del {
+      color: var(--notion-red);
+    }
+
+    & ins {
+      color: var(--notion-green);
+      text-decoration: none;
+    }
+  }
+
+  & .kasten-version-text {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    padding: 10px 12px;
+    overflow: auto;
+    border-radius: var(--radius-lg);
+    background: var(--notion-code-bg);
+    box-shadow: inset 0 0 0 1px var(--notion-line-soft);
+    color: var(--notion-text);
+    font-size: var(--text-13);
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+    scrollbar-width: thin;
+
+    /* Changes are lines, each kept, removed or added. */
+    &.is-diff {
+      font-size: var(--text-13);
+      white-space: pre-wrap;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--notion-accent);
+      outline-offset: 1px;
+    }
+
+    & > span,
+    & > del,
+    & > ins {
+      display: block;
+      min-height: 1.6em;
+      margin: 0 -4px;
+      padding: 0 4px;
+      border-radius: var(--radius-sm);
+    }
+
+    & > del {
+      background: var(--notion-red-bg);
+      color: var(--notion-red);
+      text-decoration: line-through;
+    }
+
+    & > ins {
+      background: var(--notion-green-bg);
+      color: var(--notion-green);
+      text-decoration: none;
+    }
+  }
+}

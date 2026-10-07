@@ -1,0 +1,10 @@
+name: assignment
+color: orange
+properties:
+  - {key: course, type: text}
+  - {key: due, type: date}
+  - {key: status, type: select, options: [To do, Doing, Handed in, Graded]}
+  - {key: grade, type: text}
+views:
+  - {name: Board, type: kanban, group_by: status}
+  - {name: Due, type: calendar, date: due}

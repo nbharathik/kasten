@@ -1,0 +1,235 @@
+/* The Properties tab: one row per property, with a typed editor that
+   reads as text until you point at it. Chips are in chips.css. */
+
+:is(.kasten-side-panel, .kasten-page-props) {
+  /* One row per property: its name, then its editor. */
+  & .kasten-props {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin: 0;
+  }
+
+  & .kasten-prop {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(72px, 34%) minmax(0, 1fr);
+    align-items: start;
+    gap: 8px;
+
+    & dt {
+      overflow: hidden;
+      padding-top: 5px;
+      color: var(--notion-text-2);
+      line-height: 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    & dd {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      min-width: 0;
+      min-height: 30px;
+      margin: 0;
+    }
+
+    &:hover .kasten-prop-remove {
+      opacity: 1;
+    }
+  }
+
+  & .kasten-prop-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 28px;
+    padding: 0 6px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    outline: none;
+    background: transparent;
+    color: var(--notion-text);
+    font: inherit;
+    font-size: var(--text-13);
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      border-color var(--motion-fast) var(--ease-standard);
+
+    &::placeholder {
+      color: var(--notion-text-3);
+    }
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+
+    &:focus {
+      border-color: var(--notion-accent);
+      background: var(--notion-bg);
+      box-shadow: 0 0 0 3px var(--kasten-panel-focus);
+    }
+
+    &[type="number"] {
+      appearance: textfield;
+      font-variant-numeric: tabular-nums;
+    }
+
+    &[type="number"]::-webkit-inner-spin-button,
+    &[type="number"]::-webkit-outer-spin-button {
+      margin: 0;
+      appearance: none;
+    }
+
+    &[type="date"] {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  & .kasten-prop-check {
+    width: 15px;
+    height: 15px;
+    margin: 0 7px;
+    accent-color: var(--notion-accent);
+    cursor: pointer;
+  }
+
+  & .kasten-select {
+    position: relative;
+    display: inline-flex;
+    max-width: 100%;
+    border-radius: var(--radius-md);
+
+    & select {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    &:hover .kasten-pill.is-empty {
+      background: var(--notion-hover);
+    }
+
+    &:has(select:focus-visible) {
+      box-shadow: 0 0 0 2px var(--notion-accent);
+    }
+  }
+
+  & .kasten-pill {
+    display: inline-block;
+    max-width: 100%;
+    height: 22px;
+    padding: 0 8px;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--chip-bg, var(--notion-gray-bg));
+    color: var(--chip-fg, var(--notion-text));
+    font-size: var(--text-12);
+    line-height: 22px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.is-empty {
+      height: 28px;
+      padding: 0 6px;
+      background: transparent;
+      color: var(--notion-text-3);
+      font-size: var(--text-13);
+      line-height: 28px;
+    }
+  }
+
+  & .kasten-url {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  & .kasten-url-open {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-md);
+    color: var(--notion-text-3);
+
+    &:hover {
+      background: var(--notion-hover);
+      color: var(--notion-accent);
+    }
+  }
+
+  & .kasten-prop-remove {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius);
+    color: var(--notion-text-3);
+    font-size: var(--text-14);
+    line-height: 1;
+    opacity: 0;
+
+    &:hover {
+      background: var(--notion-hover);
+      color: var(--notion-text);
+    }
+
+    &:focus-visible {
+      opacity: 1;
+    }
+  }
+
+  & .kasten-prop-raw {
+    flex: 1;
+    min-width: 0;
+    padding: 0 6px;
+    overflow: hidden;
+    color: var(--notion-text-2);
+    font-family: var(--notion-font-code);
+    font-size: var(--text-12);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & .kasten-prop-new {
+    display: grid;
+    grid-template-columns: minmax(72px, 34%) minmax(0, 1fr);
+    gap: 6px 8px;
+    margin-top: 6px;
+
+    & .kasten-prop-input {
+      border-color: var(--notion-line);
+    }
+
+    & .kasten-prop-input:focus {
+      border-color: var(--notion-accent);
+    }
+  }
+
+  & .kasten-prop-new-actions {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+}
+
+/* A tag group's name opens the tag's database. */
+.kasten-panel-group-link {
+  border-radius: var(--radius);
+  color: inherit;
+  font: inherit;
+  text-underline-offset: 2px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

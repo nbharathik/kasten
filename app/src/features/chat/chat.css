@@ -1,0 +1,291 @@
+/* The chat: the Chat view (threads beside a conversation) and the right
+   panel's Chat tab, which share the conversation. Colours come from the page
+   palette (pages/editor/styles/tokens.css), so light and dark follow the
+   theme. The thread list is in threads.css, messages in messages.css, the
+   message box in composer.css and its menus in menus.css, answers' Markdown
+   in markdown/markdown.css. */
+
+.kasten-chat-view {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  background: var(--notion-bg);
+  color: var(--notion-text);
+  font-family: var(--notion-font);
+  container: kasten-chat-view / inline-size;
+}
+
+/* A conversation: header, messages, message box. */
+.kasten-chat {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  background: var(--notion-bg);
+  color: var(--notion-text);
+  font-family: var(--notion-font);
+  container: kasten-chat / inline-size;
+}
+
+.kasten-chat-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 8px 20px;
+}
+
+.kasten-chat-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--text-14);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-chat .kasten-chat-head-button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 0 0 1px var(--notion-line);
+  color: var(--notion-text-2);
+  font-size: var(--text-13);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard);
+
+  &:hover:not(:disabled) {
+    background: var(--notion-hover);
+    color: var(--notion-text);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+}
+
+.kasten-chat .kasten-chat-icon-button {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-lg);
+  color: var(--notion-text-2);
+
+  &:hover:not(:disabled) {
+    background: var(--notion-hover);
+    color: var(--notion-text);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+/* The header's thread menu stands in for the list when the pane is narrow. */
+.kasten-chat-thread-menu {
+  display: none;
+}
+
+@container kasten-chat-view (max-width: 719px) {
+  .kasten-chat-threads {
+    display: none;
+  }
+
+  .kasten-chat-thread-menu {
+    display: inline-flex;
+  }
+}
+
+.kasten-chat-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.kasten-chat-column {
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 12px 28px 16px;
+}
+
+.kasten-chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* An empty thread: what to do first. */
+.kasten-chat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 9vh 12px 24px;
+  text-align: center;
+
+  & h2 {
+    margin: 12px 0 0;
+    font-size: var(--text-20);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  & p {
+    max-width: 440px;
+    margin: 6px 0 0;
+    color: var(--notion-text-2);
+    font-size: var(--text-13);
+    line-height: 1.55;
+  }
+}
+
+.kasten-chat-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--notion-hover);
+  font-size: var(--text-24);
+}
+
+.kasten-chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 560px;
+  margin-top: 20px;
+
+  & button {
+    padding: 6px 12px;
+    border-radius: var(--radius-2xl);
+    box-shadow: inset 0 0 0 1px var(--notion-line);
+    color: var(--notion-text-2);
+    font-size: var(--text-13);
+    line-height: 1.35;
+    text-align: left;
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+
+    &:hover {
+      background: var(--notion-hover);
+      color: var(--notion-text);
+    }
+  }
+}
+
+.kasten-chat .kasten-chat-primary {
+  margin-top: 18px;
+  padding: 7px 14px;
+  border-radius: var(--radius-lg);
+  background: var(--notion-accent);
+  color: var(--color-on-accent, #fff);
+  font-size: var(--text-13);
+  font-weight: 500;
+  transition: filter var(--motion-fast) var(--ease-standard);
+
+  &:hover {
+    filter: brightness(1.08);
+  }
+}
+
+/* In the right panel: narrower and a little smaller, the message box close
+   to the bottom edge. */
+.kasten-chat:is([data-variant="panel"], [data-variant="dock"]) {
+  & .kasten-chat-head {
+    min-height: 40px;
+    padding: 0 10px 4px 12px;
+  }
+
+  & .kasten-chat-title {
+    color: var(--notion-text-2);
+    font-size: var(--text-13);
+    font-weight: 500;
+  }
+
+  & .kasten-chat-head-button {
+    height: 26px;
+    padding: 0 8px;
+    font-size: var(--text-12);
+  }
+
+  & .kasten-chat-column {
+    padding: 6px 12px 12px;
+  }
+
+  & .kasten-chat-log {
+    gap: 16px;
+  }
+
+  & .kasten-chat-bubble,
+  & .kasten-chat-answer {
+    font-size: var(--text-13);
+  }
+
+  & .kasten-chat-empty {
+    padding-top: 28px;
+
+    & h2 {
+      margin-top: 0;
+      font-size: var(--text-16);
+    }
+
+    & p {
+      font-size: var(--text-13);
+    }
+  }
+
+  & .kasten-chat-suggestions {
+    flex-direction: column;
+    align-items: stretch;
+
+    & button {
+      border-radius: var(--radius-xl);
+      font-size: var(--text-13);
+    }
+  }
+
+  & .kasten-chat-foot {
+    padding: 0 10px 12px;
+  }
+}
+
+@keyframes kasten-chat-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes kasten-chat-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* The window's chat, docked at the right (ChatDock). */
+.kasten-chat-dock {
+  display: flex;
+  width: clamp(340px, 30vw, 460px);
+  flex-shrink: 0;
+  flex-direction: column;
+  border-left: 1px solid var(--color-line);
+  background: var(--notion-bg);
+}

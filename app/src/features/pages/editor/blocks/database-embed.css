@@ -1,0 +1,20 @@
+/* A tag database inside a page (database-embed.ts): its views, live, in a
+   frame that scrolls on its own once it is tall. */
+
+.kasten-page-editor .kasten-embed.kasten-db-embed {
+  border-left-width: 1px;
+  cursor: default;
+
+  & .kasten-embed-head {
+    box-sizing: border-box;
+    height: 36px;
+  }
+}
+
+.kasten-page-editor .kasten-db-embed-body {
+  max-height: 560px;
+  overflow: auto;
+  padding: 4px 10px 10px;
+  font-family: var(--font-sans);
+  font-size: var(--text-13);
+}

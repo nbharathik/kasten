@@ -1,0 +1,7 @@
+name: meeting
+color: orange
+properties:
+  - {key: date, type: date}
+  - {key: attendees, type: multi_select}
+views:
+  - {name: Calendar, type: calendar, date: date}

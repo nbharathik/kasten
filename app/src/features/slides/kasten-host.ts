@@ -1,0 +1,69 @@
+// The Slides editor's host inside Kasten: a deck is a file in the vault, saved
+// through the core with the hash it was read with; images are vault files.
+
+import type { SaveOutcome, SlidesHost } from "@kasten-slides/react";
+
+import { inTauri } from "../../lib/api";
+import { fillScreen } from "../../lib/fullscreen";
+import { fileUrl } from "../../lib/vault/file-url";
+import type { VaultClient } from "../../lib/vault/types";
+import { contentHash } from "../workspace/preview/vault-text";
+import { AiTab } from "./AiTab";
+import { galleryHost } from "./gallery-host";
+import { onBibFiles } from "./events";
+import { allowEmbeds, embeddedPages, openTauriPresenter } from "./presenter-link";
+
+export interface KastenHost extends SlidesHost {
+  /** The hash of the file as the editor last read or wrote it. */
+  readonly baseHash: string;
+}
+
+/** A host for the deck at `path`, whose text was read with `hash`. */
+export function kastenHost(client: VaultClient, path: string, hash: string, notify: (message: string) => void): KastenHost {
+  let base = hash;
+  return {
+    deckPath: path,
+    // The assistant tab: Kasten's chat, told which slide and elements are selected.
+    aiPanel: AiTab,
+    // The images drawer: the vault's assets, their small copies, where each is used.
+    ...galleryHost(client),
+    get baseHash() {
+      return base;
+    },
+    // The editor took a version from outside: saves build on that one.
+    synced(text) {
+      base = contentHash(text);
+    },
+    async save(text, options): Promise<SaveOutcome> {
+      // Saving over what changed is a choice the person made: take the file's current version as the base.
+      if (options?.overwrite) base = (await client.deck(path)).hash;
+      const saved = await client.saveDeck(path, text, base);
+      if (saved.status === "conflict") return { status: "conflict", theirs: saved.deck.text, copy: saved.copy };
+      base = saved.deck.hash;
+      return { status: "saved" };
+    },
+    // The vault's `.bib` files are the bibliography citations are looked up in; a change to one is told to the editor.
+    references: () => client.references(),
+    watchReferences: (onChange) => onBibFiles(onChange),
+    imageUrl: (image) => fileUrl(image) ?? undefined,
+    readImage: (image) => client.readAsset(image).catch(() => undefined),
+    // The desktop app saves into Downloads under a name that is free; the preview downloads.
+    async deliver(file) {
+      const where = await client.saveDownload(file.name, file.bytes, file.type);
+      notify(where === file.name ? `${file.name} downloaded.` : `Saved ${where}`);
+    },
+    notify,
+    // Presenting in the desktop app: the presenter's view is a window of its own, the screen is the window's, and the pages the deck embeds
+    // may load in their frames for as long as it is presented. In a browser the editor's own ways serve.
+    ...(inTauri()
+      ? {
+          openPresenter: () => openTauriPresenter(path),
+          fillScreen,
+          async willPresent(deck: unknown) {
+            await allowEmbeds(embeddedPages(deck));
+            return () => void allowEmbeds([]);
+          },
+        }
+      : {}),
+  };
+}

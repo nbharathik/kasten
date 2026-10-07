@@ -1,0 +1,296 @@
+/* The features: a bento of tiles, each with a small live picture. */
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 200ms, box-shadow 200ms, transform 200ms var(--ease);
+}
+
+.tile:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.tile h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.tile h3 .i {
+  color: var(--accent);
+}
+
+.tile p {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.t-pages {
+  grid-column: span 7;
+}
+
+.t-boards {
+  grid-column: span 5;
+}
+
+.t-journal,
+.t-tasks,
+.t-library {
+  grid-column: span 4;
+}
+
+.t-tags,
+.t-pdf {
+  grid-column: span 6;
+}
+
+.t-import {
+  grid-column: span 12;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+}
+
+.t-import > div:last-child {
+  display: grid;
+  gap: 8px;
+  max-width: 34em;
+}
+
+.viz {
+  position: relative;
+  height: 200px;
+  margin: -4px -4px 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+
+.t-pages .viz,
+.t-boards .viz {
+  height: 250px;
+}
+
+/* Pages: a slash menu choosing a block. */
+
+.vp-doc {
+  position: absolute;
+  inset: 18px 22px 0;
+}
+
+.vp-title {
+  margin-bottom: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.vp-line {
+  display: block;
+  width: var(--w, 80%);
+  height: 8px;
+  margin: 0 0 10px;
+  border-radius: 4px;
+  background: var(--well);
+}
+
+.vp-slash {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.vp-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1em;
+  margin-left: 1px;
+  background: var(--ink);
+  vertical-align: -0.12em;
+  animation: caret 1s steps(2) infinite;
+}
+
+.vp-menu {
+  position: absolute;
+  top: 88px;
+  left: 6px;
+  width: 190px;
+  margin: 0;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  list-style: none;
+  font-size: 13.5px;
+}
+
+.vp-menu::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--well);
+  animation: menu-walk 6s steps(1) infinite;
+}
+
+.vp-menu li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 30px;
+  padding: 0 8px;
+  color: var(--ink-2);
+}
+
+.vp-menu .i {
+  color: var(--muted);
+}
+
+@keyframes menu-walk {
+  0% { translate: 0 0; }
+  16.6% { translate: 0 30px; }
+  33.3% { translate: 0 60px; }
+  50% { translate: 0 90px; }
+  66.6% { translate: 0 120px; }
+  83.3% { translate: 0 150px; }
+}
+
+/* Whiteboards: cards, a section, arrows and a pen stroke. */
+
+.viz-board svg {
+  width: 100%;
+  height: 100%;
+}
+
+.vb-section {
+  fill: color-mix(in srgb, var(--hl-blue) 45%, transparent);
+  stroke: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.vb-label {
+  fill: var(--ink-2);
+  font: 600 11px var(--font);
+}
+
+.vb-card rect:first-child {
+  fill: var(--surface);
+  stroke: var(--line-strong);
+}
+
+.vb-card text,
+.vb-sticky text {
+  fill: var(--ink);
+  font: 600 10.5px var(--font);
+}
+
+.vb-bar {
+  fill: var(--well);
+}
+
+.vb-sticky rect {
+  fill: var(--hl-yellow);
+}
+
+.vb-edge,
+.vb-pen path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.vb-edge {
+  stroke-dasharray: 5 5;
+  animation: dash 1.4s linear infinite;
+}
+
+.vb-pen path {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-dasharray: 90;
+  animation: draw 4s var(--ease) infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+@keyframes draw {
+  0% { stroke-dashoffset: 90; }
+  45%,
+  100% { stroke-dashoffset: 0; }
+}
+
+@media (max-width: 960px) {
+  .t-pages,
+  .t-boards,
+  .t-tags,
+  .t-pdf {
+    grid-column: span 12;
+  }
+
+  .t-journal,
+  .t-tasks,
+  .t-library {
+    grid-column: span 6;
+  }
+
+  .t-library {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 640px) {
+  .bento > .tile {
+    grid-column: span 12;
+  }
+
+  .t-import {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .viz-import {
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vp-menu::before,
+  .vb-edge,
+  .vb-pen path,
+  .vi-arrow,
+  .viz-tasks i,
+  .vpdf-hl,
+  .vpdf-card {
+    animation: none;
+  }
+
+  .vpdf-hl {
+    background-size: 100% 100%;
+  }
+}

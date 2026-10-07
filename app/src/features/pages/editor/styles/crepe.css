@@ -1,0 +1,21 @@
+/* Crepe's theme (common/style.css), part by part, with its reset in the
+   `crepe` cascade layer: `.milkdown *` loses its margins and padding and
+   `.milkdown button` its border and background there, below Kasten's own
+   styles. A whiteboard or tag database shown inside a page keeps its look;
+   styles.css puts the layer above Tailwind's base. */
+
+@import "@milkdown/crepe/theme/common/prosemirror.css";
+@import "@milkdown/crepe/theme/common/reset.css" layer(crepe);
+@import "@milkdown/crepe/theme/common/block-edit.css";
+@import "@milkdown/crepe/theme/common/code-mirror.css";
+@import "@milkdown/crepe/theme/common/cursor.css";
+@import "@milkdown/crepe/theme/common/image-block.css";
+@import "@milkdown/crepe/theme/common/link-tooltip.css";
+@import "@milkdown/crepe/theme/common/list-item.css";
+@import "@milkdown/crepe/theme/common/placeholder.css";
+@import "@milkdown/crepe/theme/common/toolbar.css";
+@import "@milkdown/crepe/theme/common/table.css";
+@import "@milkdown/crepe/theme/common/latex.css";
+@import "@milkdown/crepe/theme/common/top-bar.css";
+@import "@milkdown/crepe/theme/common/diff.css";
+@import "@milkdown/crepe/theme/common/ai.css";

@@ -1,0 +1,273 @@
+/* Format options: sections that fold, rows of a label and its control. */
+.ks-sp-summary {
+  margin: 0;
+  padding: 10px 14px 8px;
+  color: var(--ks-muted);
+  font-size: 12px;
+  border-bottom: 1px solid var(--ks-line);
+}
+.ks-sp-section {
+  border-bottom: 1px solid var(--ks-line);
+}
+.ks-sp-section-title {
+  margin: 0;
+  font: inherit;
+}
+.ks-sp-section-toggle {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 38px;
+  padding: 0 14px;
+  border: 0;
+  background: transparent;
+  color: var(--ks-ink);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.ks-sp-section-toggle:hover {
+  background: var(--ks-hover);
+}
+.ks-sp-section-toggle:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -2px;
+}
+.ks-sp-section-toggle .ks-icon {
+  color: var(--ks-faint);
+}
+.ks-sp-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2px 14px 14px;
+}
+.ks-sp-section-body[hidden] {
+  display: none;
+}
+
+.ks-sp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+}
+.ks-sp-row.is-wide {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+.ks-sp-label {
+  flex: none;
+  width: 76px;
+  color: var(--ks-muted);
+  font-size: 12px;
+}
+.ks-sp-row.is-wide .ks-sp-label {
+  width: auto;
+}
+.ks-sp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ks-sp-field > .ks-sp-label {
+  width: auto;
+}
+.ks-sp-control {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ks-sp-row.is-wide .ks-sp-control {
+  display: block;
+}
+.ks-sp-cluster {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ks-sp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 10px;
+}
+.ks-sp-grid .ks-field-label {
+  min-width: 1.4em;
+}
+.ks-sp-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ks-sp-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+.ks-sp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ks-sp-value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-sp-plain .ks-field-label {
+  display: none;
+}
+.ks-sp-short {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ks-sp-short > .ks-field-label {
+  min-width: 1.4em;
+}
+.ks-sp-count {
+  min-width: 26px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.ks-sp-hint {
+  margin: 0;
+  color: var(--ks-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.ks-sp-hint.is-error {
+  color: var(--ks-danger);
+}
+.ks-sp-toggle {
+  min-height: 24px;
+}
+.ks-sp-select {
+  flex: 1;
+  min-width: 0;
+}
+.ks-sp-text,
+.ks-sp-area {
+  width: 100%;
+}
+.ks-sp-area {
+  height: auto;
+  padding: 6px 8px;
+  resize: vertical;
+  line-height: 1.4;
+}
+.ks-input[aria-invalid="true"] {
+  border-color: var(--ks-danger);
+}
+
+/* A colour: a swatch and its name, opening the palette. */
+.ks-sp-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px 0 4px;
+  border: 1px solid var(--ks-line-strong);
+  background: var(--ks-canvas);
+}
+.ks-sp-color:hover:not(:disabled) {
+  background: var(--ks-hover);
+}
+.ks-sp-color:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -1px;
+}
+.ks-sp-swatch {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--ks-canvas);
+  box-shadow: inset 0 0 0 1px var(--ks-line-strong);
+}
+.ks-sp-swatch.is-none {
+  background: linear-gradient(135deg, transparent 45%, var(--ks-danger) 45%, var(--ks-danger) 55%, transparent 55%), var(--ks-canvas);
+}
+.ks-sp-swatch.is-mixed {
+  background: repeating-conic-gradient(var(--ks-line-strong) 0 25%, transparent 0 50%) 50% / 8px 8px;
+}
+.ks-sp-color-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.ks-sp-color .ks-icon {
+  color: var(--ks-faint);
+}
+
+/* A slider with its value beside it. */
+.ks-sp-slider {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ks-sp-slider input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  accent-color: var(--ks-accent);
+}
+.ks-sp-slider input[data-mixed] {
+  opacity: 0.5;
+}
+.ks-sp-percent {
+  flex: none;
+  width: 36px;
+  text-align: right;
+  color: var(--ks-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The segmented buttons of the shared set show no focus of their own: here they do. */
+.ks-sp-body .ks-seg:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -2px;
+}
+
+/* Tooltips stay inside the panel, which is often at the edge of the window: at the
+   right of a row they open leftward, and the first two buttons of a row open rightward. */
+.ks-sp-body .ks-sp-buttons > [data-tip]:hover::after,
+.ks-sp-body .ks-sp-buttons > [data-tip]:focus-visible::after,
+.ks-sp-body .ks-sp-cluster.is-end > [data-tip]:hover::after,
+.ks-sp-body .ks-sp-cluster.is-end > [data-tip]:focus-visible::after,
+.ks-sp-body .ks-segmented > [data-tip]:last-child:hover::after,
+.ks-sp-body .ks-segmented > [data-tip]:last-child:focus-visible::after {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+.ks-sp-body .ks-sp-buttons > [data-tip]:nth-child(-n + 2):hover::after,
+.ks-sp-body .ks-sp-buttons > [data-tip]:nth-child(-n + 2):focus-visible::after {
+  left: 0;
+  right: auto;
+  transform: none;
+}
+
+/* The panel is narrow: a row of choices with words on them takes a little less room. */
+.ks-sp-body .ks-seg {
+  min-width: 28px;
+  padding: 0 6px;
+}

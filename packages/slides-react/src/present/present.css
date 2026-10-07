@@ -1,0 +1,269 @@
+/* Presenting: the window-sized stage and the tools on it. The stage is black round the slide and its tools are
+   light on dark; a slide's own colours and fonts come from the deck's theme and are never set here. reveal.js's
+   stylesheet is put in the page only while a presentation is open (reveal-css.ts), and everything here sits under
+   `.ks-show`. The page that scrolls is in scroll.css, and the notes in notes.css. */
+
+.ks-show {
+  --ks-pr-tool-bg: rgb(24 24 27 / 0.92);
+  --ks-pr-tool-fg: #f4f4f5;
+  --ks-pr-tool-dim: #a1a1aa;
+  --ks-pr-tool-line: rgb(255 255 255 / 0.16);
+  --ks-pr-laser: #ff2d2d;
+  /* reveal.js's own variables: its progress bar, arrows and overlays. */
+  --r-link-color: rgb(255 255 255 / 0.85);
+  --r-link-color-hover: #fff;
+  --r-background-color: #000;
+  --r-main-color: #fff;
+  --r-overlay-element-bg-color: 0, 0, 0;
+  --r-overlay-element-fg-color: 240, 240, 240;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  overflow: hidden;
+  background: #000;
+  color: var(--ks-pr-tool-fg);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+  outline: none;
+}
+
+.ks-show.is-starting {
+  visibility: hidden;
+}
+
+.ks-show .ks-show-reveal {
+  position: absolute;
+  inset: 0;
+  background: #000;
+}
+
+/* The slide is its own; reveal.js gives it a place to be and nothing else. */
+.ks-show .reveal .slides section {
+  text-align: left;
+  font: inherit;
+}
+
+.ks-show .ks-show-slide {
+  position: relative;
+}
+
+.ks-show .ks-show-slide .ks-slide[data-mode="present"] {
+  user-select: none;
+}
+
+/* A step that dims or lights an element does it with a fade rather than a cut. */
+.ks-show .ks-slide[data-mode="present"] .ks-el,
+.ks-show .ks-slide[data-mode="present"] .ks-group,
+.ks-show .ks-slide[data-mode="present"] .ks-p {
+  transition: opacity 0.3s ease;
+}
+
+/* A picture opens large when it is clicked. */
+.ks-show .ks-slide[data-mode="present"] .ks-image-pic {
+  cursor: zoom-in;
+}
+
+/* The markers reveal.js counts as steps are read out and never seen. */
+.ks-show .ks-show-step {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ks-show .reveal .pause-overlay .resume-button {
+  display: none;
+}
+
+/* The black screen comes at once. */
+.ks-show .reveal .pause-overlay {
+  transition:
+    opacity 0.12s ease,
+    visibility 0.12s ease;
+}
+
+/* The arrows and the progress bar are in a colour that shows on a light slide and on a dark one; the arrows only while the pointer moves. */
+.ks-show .reveal .controls {
+  color: #8a8f98;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.ks-show.is-active .reveal .controls {
+  opacity: 1;
+}
+
+.ks-show .reveal .progress {
+  color: #4f8cff;
+  background-color: rgb(128 128 128 / 0.25);
+}
+
+/* The embeds and videos, over the slide, in its own coordinates. */
+.ks-show .ks-show-live {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.ks-show .ks-show-live-item {
+  overflow: hidden;
+}
+
+.ks-show .ks-show-live-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  transition: opacity 0.2s ease;
+}
+
+.ks-show .ks-show-live-video {
+  pointer-events: auto;
+  object-fit: contain;
+  background: #000;
+}
+
+/* The tools sit over everything, in the window's own pixels. */
+.ks-show .ks-show-chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ks-show .ks-show-chrome > * {
+  pointer-events: auto;
+}
+
+.ks-show.ks-show-laser-on,
+.ks-show.ks-show-laser-on * {
+  cursor: none !important;
+}
+
+/* A page in a frame would take the pointer away from the dot. */
+.ks-show.ks-show-laser-on .ks-show-live-frame {
+  pointer-events: none;
+}
+
+.ks-show .ks-show-laser {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 6;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  background: var(--ks-pr-laser);
+  box-shadow:
+    0 0 6px 2px var(--ks-pr-laser),
+    0 0 18px 6px rgb(255 45 45 / 0.45);
+  pointer-events: none;
+}
+
+.ks-show .ks-show-laser[hidden],
+.ks-show .ks-show-jump[hidden] {
+  display: none;
+}
+
+.ks-show .ks-show-jump {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 5;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--ks-pr-tool-bg);
+  color: var(--ks-pr-tool-fg);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ks-show .ks-show-hintbar {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 5;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--ks-pr-tool-bg);
+  color: var(--ks-pr-tool-dim);
+  font-size: 12px;
+  white-space: nowrap;
+  transition: opacity 0.6s ease;
+}
+
+.ks-show .ks-show-hintbar.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ks-show .ks-show-hints {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 7;
+  transform: translate(-50%, -50%);
+  min-width: min(440px, 90vw);
+  padding: 18px 22px 20px;
+  border: 1px solid var(--ks-pr-tool-line);
+  border-radius: 12px;
+  background: var(--ks-pr-tool-bg);
+  color: var(--ks-pr-tool-fg);
+  box-shadow: 0 16px 48px rgb(0 0 0 / 0.5);
+}
+
+.ks-show .ks-show-hints-title {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ks-show .ks-show-hints-list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 18px;
+  margin: 0;
+}
+
+.ks-show .ks-show-hints-keys {
+  margin: 0;
+  color: var(--ks-pr-tool-fg);
+  font-weight: 600;
+  white-space: pre;
+}
+
+.ks-show .ks-show-hints-what {
+  margin: 0;
+  color: var(--ks-pr-tool-dim);
+}
+
+.ks-show .ks-show-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  background: rgb(0 0 0 / 0.92);
+  cursor: zoom-out;
+  outline: none;
+}
+
+.ks-show .ks-show-lightbox img {
+  max-width: 100%;
+  max-height: calc(100% - 40px);
+  object-fit: contain;
+}
+
+.ks-show .ks-show-lightbox-caption {
+  margin: 0;
+  color: var(--ks-pr-tool-dim);
+  font-size: 13px;
+}

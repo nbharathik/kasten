@@ -1,0 +1,75 @@
+/* Far out: titles only, so 500 nodes stay smooth. Loaded after the node
+   styles it overrides. */
+
+/* Crossing the zoom where cards turn to titles changes no layout and
+   restyles only the parts that flip: `content-visibility` is not inherited
+   (so a card's text is not restyled with it) and keeps what it hides laid
+   out for when it shows again. Both faces are grid items, so their size
+   comes from the card either way. */
+.kasten-card-far {
+  display: flex;
+  align-items: center;
+  min-height: 0;
+  overflow: hidden;
+  content-visibility: hidden;
+  font-size: var(--text-28);
+  font-weight: 650;
+  line-height: 36px;
+  letter-spacing: -0.01em;
+}
+
+.kasten-card-far span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow-wrap: anywhere;
+}
+
+.kasten-card.is-title .kasten-card-far {
+  font-size: var(--text-24);
+  line-height: 28px;
+}
+
+.kasten-card.is-title .kasten-card-far span {
+  -webkit-line-clamp: 1;
+}
+
+.kasten-board.is-far .kasten-card-far {
+  content-visibility: visible;
+}
+
+.kasten-board.is-far .kasten-card-face,
+.kasten-board.is-far .kasten-card-expanded,
+.kasten-board.is-far .kasten-weblink-url,
+.kasten-board.is-far .kasten-weblink-open,
+.kasten-board.is-far .kasten-nested-hint {
+  content-visibility: hidden;
+}
+
+.kasten-board.is-far .kasten-card,
+.kasten-board.is-far .kasten-weblink,
+.kasten-board.is-far .kasten-nested,
+.kasten-board.is-far .kasten-sticky,
+.kasten-board.is-far .kasten-image {
+  box-shadow: none;
+  transition: none;
+}
+
+.kasten-board.is-far .kasten-section-label {
+  transform: scale(2.2);
+  transform-origin: 0 50%;
+}
+
+/* Further out still, an overview: cards and stickies are blocks, the
+   sections' names the landmarks. */
+.kasten-board.is-overview .kasten-card-far,
+.kasten-board.is-overview .kasten-sticky-text,
+.kasten-board.is-overview .kasten-weblink > *,
+.kasten-board.is-overview .kasten-nested > * {
+  content-visibility: hidden;
+}
+
+.kasten-board.is-overview .kasten-section-label {
+  transform: scale(5);
+}

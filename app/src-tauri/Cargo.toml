@@ -1,0 +1,48 @@
+[package]
+name = "kasten-app"
+description = "Kasten desktop app: Tauri commands wrapping kasten-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+name = "kasten_app_lib"
+
+[build-dependencies]
+tauri-build.workspace = true
+
+[dependencies]
+kasten-core.workspace = true
+kasten-mcp.workspace = true
+# API keys in the OS keychain: Keychain on macOS, Credential Manager on
+# Windows, the Secret Service on Linux.
+keyring = "4.2.0"
+# The chat's providers. TLS comes from the system: OpenSSL on Linux (already
+# linked for git), Security.framework on macOS, SChannel on Windows.
+reqwest = { version = "0.13.5", default-features = false, features = ["native-tls", "system-proxy"] }
+# The system's proxies, as reqwest finds them, for looking up web pages'
+# names. Already in the tree through reqwest's system-proxy.
+hyper-util = { version = "0.1.20", default-features = false, features = ["client-proxy", "client-proxy-system"] }
+serde.workspace = true
+serde_json.workspace = true
+tauri.workspace = true
+tokio = { version = "1.53.1", features = ["rt", "rt-multi-thread", "time"] }
+# Desktop plugins, each pinned to the last release that works with the
+# Tauri this app ships, and used from Rust only, behind Kasten's own
+# commands. A second launch brings the open window forward.
+tauri-plugin-single-instance = "=2.4.5"
+# The window comes back at the size and place it was left.
+tauri-plugin-window-state = "=2.4.1"
+# New versions install in place, only when signed with Kasten's key. TLS
+# from the system, as for every other connection.
+tauri-plugin-updater = { version = "=2.12.0", default-features = false, features = ["native-tls", "system-proxy", "zip"] }
+# Quick capture from anywhere, on a shortcut the person can change.
+tauri-plugin-global-shortcut = "=2.3.2"
+# "Backup failing" and "update ready" while Kasten is in the background.
+tauri-plugin-notification = "=2.4.0"
+
+
+[lints]
+workspace = true

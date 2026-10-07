@@ -1,0 +1,226 @@
+/* The page view in Notion's layout: a 708px column (or full width), a cover,
+   a large icon and title, and the Markdown panel on the right. */
+
+.kasten-page {
+  --page-width: 708px;
+  --page-gutter: 96px;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  background: var(--notion-bg);
+  color: var(--notion-text);
+  font-family: var(--page-font, var(--notion-font));
+  font-size: var(--page-font-size, 16px);
+
+  &.is-full-width {
+    --page-width: 100%;
+  }
+}
+
+/* A reset only, in the base layer so that every class wins over it: the
+   page's own, the kit's (ui-btn) and utilities alike. */
+@layer base {
+  .kasten-page :where(button) {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 1100px) {
+  .kasten-page {
+    --page-gutter: 56px;
+  }
+}
+
+.kasten-page-main {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.kasten-page-column {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--page-width) + 2 * var(--page-gutter));
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+/* Header: cover, icon, controls and title. */
+.kasten-page-cover {
+  position: relative;
+  height: 30vh;
+  min-height: 140px;
+  max-height: 280px;
+
+  &:hover .kasten-page-cover-actions,
+  & .kasten-page-cover-actions:focus-within {
+    opacity: 1;
+  }
+}
+
+.kasten-page-cover-actions {
+  position: absolute;
+  z-index: 2;
+  right: max(var(--page-gutter), calc((100% - var(--page-width)) / 2));
+  bottom: 12px;
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--notion-menu-bg);
+  box-shadow: var(--notion-shadow);
+  opacity: 0;
+  transition: opacity var(--motion-fast) var(--ease-standard);
+
+  & button {
+    padding: 4px 8px;
+    font-size: var(--text-12);
+    color: var(--notion-text-2);
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+  }
+
+  & button + button {
+    border-left: 1px solid var(--notion-line-soft);
+  }
+}
+
+.kasten-page-heading {
+  position: relative;
+  padding-top: 72px;
+  /* The icon reaches up into the cover; the heading's empty box around it
+     must not catch the pointer, or the cover's buttons cannot be clicked. */
+  pointer-events: none;
+
+  & > * {
+    pointer-events: auto;
+  }
+}
+
+.kasten-page-header.has-cover .kasten-page-heading {
+  padding-top: 20px;
+}
+
+.kasten-page-header.has-cover.has-icon .kasten-page-heading {
+  padding-top: 0;
+}
+
+.kasten-page-icon-wrap {
+  position: relative;
+  width: max-content;
+}
+
+.kasten-page-icon {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-lg);
+  font-size: 72px;
+  line-height: 1;
+
+  &:hover {
+    background: var(--notion-hover);
+  }
+}
+
+.kasten-page-header.has-cover .kasten-page-icon {
+  margin-top: -42px;
+}
+
+.kasten-page-controls {
+  display: flex;
+  gap: 2px;
+  min-height: 28px;
+  margin: 6px 0 2px -6px;
+  opacity: 0;
+  transition: opacity var(--motion-fast) var(--ease-standard);
+
+  & button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: var(--radius);
+    font-size: var(--text-14);
+    color: var(--notion-text-3);
+
+    &:hover {
+      background: var(--notion-hover);
+      color: var(--notion-text-2);
+    }
+  }
+}
+
+.kasten-page-header:hover .kasten-page-controls,
+.kasten-page-header.is-fresh .kasten-page-controls,
+.kasten-page-controls:focus-within {
+  opacity: 1;
+}
+
+.kasten-page-title {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  /* Grows with its text; PageHeader.tsx fits it by script where this is unknown. */
+  field-sizing: content;
+  margin: 0 0 6px;
+  padding: 3px 2px;
+  overflow: hidden;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--notion-text);
+  font-family: inherit;
+  font-size: var(--text-40);
+  font-weight: 700;
+  line-height: 1.2;
+
+  &::placeholder {
+    color: var(--notion-line);
+  }
+}
+
+.kasten-page-body {
+  padding-top: 4px;
+}
+
+/* The Markdown panel. */
+.kasten-page-source {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 380px;
+  min-height: 0;
+  border-left: 1px solid var(--notion-line-soft);
+  background: var(--notion-code-bg);
+
+  & pre {
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    padding: 12px 14px;
+    overflow: auto;
+    color: var(--notion-text);
+    font-family: var(--notion-font-code);
+    font-size: var(--text-12);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+.kasten-page-source-bar {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--notion-line-soft);
+  color: var(--notion-text-2);
+  font-size: var(--text-12);
+  font-weight: 600;
+}

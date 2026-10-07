@@ -1,0 +1,193 @@
+/* Lint in the editor: the mark on a slide in the filmstrip, and the Lint dialog. */
+
+/* ---- the badge on a slide in the filmstrip */
+.ks-lint-badge {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+  padding: 0 7px 0 5px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ks-canvas) 94%, transparent);
+  box-shadow: 0 0 0 1px currentColor;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.ks-lint-badge.is-error {
+  color: var(--ks-danger);
+}
+.ks-lint-badge.is-warning {
+  color: var(--ks-warning);
+}
+
+/* ---- the dialog */
+.ks-lint-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.ks-lint-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ks-lint-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--ks-muted);
+  box-shadow: inset 0 0 0 1px var(--ks-line-strong);
+}
+.ks-lint-filter[aria-pressed="true"] {
+  color: var(--ks-ink);
+  background: var(--ks-selected);
+}
+.ks-lint-filter:not([aria-pressed="true"]) .ks-icon {
+  opacity: 0.5;
+}
+.ks-lint-filter-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--ks-muted);
+}
+.ks-lint-filter.is-error .ks-icon,
+.ks-lint-sev {
+  color: var(--ks-danger);
+}
+.ks-lint-filter.is-warning .ks-icon,
+.ks-lint-issue.is-warning .ks-lint-sev {
+  color: var(--ks-warning);
+}
+.ks-lint-filter.is-info .ks-icon,
+.ks-lint-issue.is-info .ks-lint-sev {
+  color: var(--ks-accent);
+}
+
+.ks-lint-list {
+  max-height: min(56vh, 460px);
+  overflow: auto;
+  margin: 0 -4px;
+  padding: 0 4px;
+  scrollbar-width: thin;
+}
+.ks-lint-slide + .ks-lint-slide {
+  margin-top: 10px;
+}
+.ks-lint-slide ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ks-lint-slide-head,
+.ks-lint-issue {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  border-radius: var(--ks-radius);
+}
+.ks-lint-slide-head:hover {
+  background: var(--ks-hover);
+}
+.ks-lint-slide-head {
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 8px;
+  font-weight: 600;
+}
+.ks-lint-slide-num {
+  flex: none;
+  color: var(--ks-accent);
+  font-variant-numeric: tabular-nums;
+}
+.ks-lint-slide-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-lint-slide-count {
+  flex: none;
+  color: var(--ks-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+/* A problem is words to read and copy: the row is text, and only its Show button acts. */
+.ks-lint-issue {
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.ks-lint-go {
+  flex: none;
+  align-self: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--ks-accent);
+  box-shadow: inset 0 0 0 1px var(--ks-line-strong);
+  font-size: 12px;
+  font-weight: 600;
+}
+.ks-lint-go:hover {
+  background: var(--ks-soft);
+}
+.ks-lint-sev {
+  flex: none;
+  display: inline-flex;
+  padding-top: 2px;
+}
+.ks-lint-what {
+  flex: 1;
+  min-width: 0;
+}
+.ks-lint-message,
+.ks-lint-hint {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.ks-lint-hint {
+  margin-top: 2px;
+  color: var(--ks-muted);
+  font-size: 12px;
+}
+.ks-lint-rule {
+  flex: none;
+  padding: 1px 7px;
+  border-radius: 999px;
+  color: var(--ks-faint);
+  box-shadow: inset 0 0 0 1px var(--ks-line);
+  font: 11px/16px var(--ks-mono);
+  white-space: nowrap;
+}
+.ks-lint-empty,
+.ks-lint-note {
+  margin: 0;
+  padding: 36px 0;
+  text-align: center;
+  color: var(--ks-muted);
+}
+.ks-lint-empty {
+  color: var(--ks-success);
+  font-weight: 600;
+}
+.ks-lint-skipped {
+  flex: 1;
+  margin: 0 auto 0 0;
+  color: var(--ks-faint);
+  font-size: 11.5px;
+  text-align: left;
+}

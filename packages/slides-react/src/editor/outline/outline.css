@@ -1,0 +1,283 @@
+/* The outline: the deck as a document, a numbered row for each slide. It
+   fills the centre in place of the slide, on the same grey table. */
+.ks-outline-view {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px 24px 72px;
+  background: var(--ks-well);
+  outline: none;
+}
+.ks-ol-page {
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: var(--ks-radius-lg);
+  background: var(--ks-canvas);
+  box-shadow: var(--ks-shadow-page);
+}
+
+/* ---- a slide */
+.ks-ol-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 4px;
+  padding: 16px 24px 16px 8px;
+}
+.ks-ol-row:first-child {
+  border-radius: var(--ks-radius-lg) var(--ks-radius-lg) 0 0;
+}
+.ks-ol-row.is-shown {
+  box-shadow: inset 3px 0 0 var(--ks-accent);
+  background: color-mix(in srgb, var(--ks-accent) 4%, transparent);
+}
+.ks-ol-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 2px;
+  /* The numbers and marks are not words of the outline: a selection across rows leaves them out. */
+  -webkit-user-select: none;
+  user-select: none;
+}
+.ks-btn.ks-ol-num {
+  min-width: 32px;
+  height: 26px;
+  padding: 0 8px;
+  color: var(--ks-muted);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  border-radius: var(--ks-radius);
+}
+.ks-btn.ks-ol-num:hover {
+  background: var(--ks-hover);
+  color: var(--ks-ink);
+}
+.ks-ol-row.is-shown .ks-btn.ks-ol-num {
+  background: var(--ks-soft);
+  color: var(--ks-accent);
+  font-weight: 600;
+}
+.ks-ol-flag {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ks-faint);
+}
+.ks-ol-flag.is-word {
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--ks-selected);
+  color: var(--ks-muted);
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.ks-ol-row.is-skipped .ks-ol-main {
+  opacity: 0.6;
+}
+.ks-ol-row.is-backup {
+  padding-left: 28px;
+}
+
+.ks-ol-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ---- the words: fields that look like text until they are used */
+.ks-ol-title,
+.ks-ol-body,
+.ks-ol-grow::after {
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--ks-radius);
+  font-family: var(--ks-font);
+}
+.ks-ol-title {
+  width: 100%;
+  background: transparent;
+  color: var(--ks-ink);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+.ks-ol-title::placeholder {
+  color: var(--ks-faint);
+  font-weight: 500;
+}
+.ks-ol-title.is-none {
+  cursor: default;
+}
+.ks-ol-field:hover .ks-ol-title:not(.is-none),
+.ks-ol-grow:hover .ks-ol-body {
+  border-color: var(--ks-line);
+}
+.ks-ol-title:focus-visible,
+.ks-ol-body:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -1px;
+  border-color: transparent;
+}
+
+/* The title and its ghost share one cell, the ghost over the field. */
+.ks-ol-field {
+  display: grid;
+}
+.ks-ol-field .ks-ol-title {
+  grid-area: 1 / 1;
+}
+
+/* The words of a field again, as plain text laid exactly over it: unseen, but selected by a press and a drag, across rows, as any text on a
+   page is (see select.ts). The field under it shows the words. Once a field has the focus it is used directly, its own caret and
+   selection, and its ghost lets the pointer through. */
+.ks-ol-ghost {
+  display: block;
+  grid-area: 1 / 1;
+  z-index: 1;
+  min-width: 0;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--ks-radius);
+  font-family: var(--ks-font);
+  color: transparent;
+  cursor: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.ks-ol-ghost.is-title {
+  overflow: hidden;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.ks-ol-ghost.is-body {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+.ks-ol-ghost::selection {
+  background: color-mix(in srgb, var(--ks-accent) 28%, transparent);
+  color: transparent;
+}
+.ks-ol-field:focus-within .ks-ol-ghost,
+.ks-ol-grow:focus-within .ks-ol-ghost {
+  pointer-events: none;
+}
+/* Words selected across rows are shown by the ghosts alone: a field that has not the focus does not add its own (dark) highlight
+   to the same words. The field with the focus keeps the selection the browser gives it. */
+.ks-ol-title:not(:focus)::selection,
+.ks-ol-body:not(:focus)::selection {
+  background: transparent;
+  color: var(--ks-ink);
+}
+
+/* The body grows with its words: the same text, unseen, sets the size of the box the field fills. */
+.ks-ol-grow {
+  display: grid;
+}
+.ks-ol-grow::after {
+  content: attr(data-value) " ";
+  grid-area: 1 / 1;
+  visibility: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.ks-ol-body {
+  grid-area: 1 / 1;
+  min-width: 0;
+  resize: none;
+  overflow: hidden;
+  background: transparent;
+  color: var(--ks-ink);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+.ks-ol-body::placeholder {
+  color: var(--ks-faint);
+}
+
+/* ---- adding: a line between rows with a plus that shows when the pointer is near */
+.ks-ol-gap {
+  position: relative;
+  height: 1px;
+  background: var(--ks-line);
+}
+.ks-ol-gap::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9px;
+  height: 18px;
+}
+.ks-btn.ks-ol-plus {
+  position: absolute;
+  z-index: 1;
+  left: 19px;
+  top: -11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--ks-canvas);
+  color: var(--ks-muted);
+  box-shadow: 0 0 0 1px var(--ks-line-strong);
+  opacity: 0;
+  transition: opacity var(--ks-fast);
+}
+/* The plus is drawn by the stylesheet: there is one for every slide, and a picture for each would cost more than they are worth. */
+.ks-btn.ks-ol-plus::before,
+.ks-btn.ks-ol-plus::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: currentColor;
+  border-radius: 1px;
+  transform: translate(-50%, -50%);
+}
+.ks-btn.ks-ol-plus::before {
+  width: 10px;
+  height: 1.75px;
+}
+.ks-btn.ks-ol-plus::after {
+  width: 1.75px;
+  height: 10px;
+}
+.ks-ol-gap:hover .ks-btn.ks-ol-plus,
+.ks-btn.ks-ol-plus:focus-visible {
+  opacity: 1;
+}
+.ks-btn.ks-ol-plus:hover {
+  background: var(--ks-accent);
+  color: var(--ks-on-accent);
+}
+.ks-btn.ks-ol-new {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  padding: 0 0 0 18px;
+  border-radius: 0 0 var(--ks-radius-lg) var(--ks-radius-lg);
+  color: var(--ks-muted);
+}
+.ks-btn.ks-ol-new:hover {
+  background: var(--ks-hover);
+  color: var(--ks-ink);
+}

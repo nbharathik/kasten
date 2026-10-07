@@ -1,0 +1,10 @@
+name: reading
+color: teal
+properties:
+  - {key: authors, type: text}
+  - {key: year, type: number}
+  - {key: status, type: select, options: [To read, Reading, Read]}
+  - {key: link, type: url}
+views:
+  - {name: Queue, type: kanban, group_by: status}
+  - {name: All, type: table, sort: [{key: year, dir: desc}]}

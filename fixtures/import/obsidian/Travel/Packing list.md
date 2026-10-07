@@ -1,0 +1,2 @@
+- [ ] Passport
+- [ ] Rail pass, see [[Summer trip#Flights]]

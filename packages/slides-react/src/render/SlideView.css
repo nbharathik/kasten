@@ -1,0 +1,182 @@
+/* The slide and the boxes its elements are drawn in. No colour and no font
+   family is set here: every one comes from the deck's theme, inline. */
+
+.ks-slide {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  contain: layout paint style;
+  text-align: left;
+  line-height: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* A thumbnail or an export is a picture: it takes no clicks and nothing on it can be selected. */
+.ks-slide[data-mode="thumbnail"],
+.ks-slide[data-mode="thumbnail"] *,
+.ks-slide[data-mode="export"],
+.ks-slide[data-mode="export"] * {
+  pointer-events: none !important;
+  user-select: none;
+}
+
+.ks-slide .ks-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.ks-slide .ks-el {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+/* A group is the whole slide, transparent, so that its children keep slide coordinates. */
+.ks-slide .ks-group {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.ks-slide .ks-group > .ks-el {
+  pointer-events: auto;
+}
+
+.ks-slide .ks-fill {
+  position: absolute;
+  inset: 0;
+}
+
+.ks-slide .ks-text-rect {
+  position: absolute;
+}
+
+.ks-slide .ks-shape,
+.ks-slide .ks-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  overflow: visible;
+  max-width: none;
+}
+
+/* A step hides this element: an editor outlines where it is. */
+.ks-slide .ks-ghost-box {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border: 1px dashed;
+}
+
+/* A step highlights this element. The outline's colour and width are the theme's, set inline. */
+.ks-slide .ks-highlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ks-slide .ks-label {
+  position: absolute;
+}
+
+.ks-slide .ks-unknown,
+.ks-slide .ks-raw {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px dashed;
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.ks-slide .ks-unknown {
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 2px 4px;
+  pointer-events: none;
+}
+
+.ks-slide .ks-raw {
+  border-style: solid;
+  font-size: 12px;
+}
+
+.ks-slide .ks-image {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.ks-slide .ks-image-pic {
+  position: absolute;
+  display: block;
+  max-width: none;
+  max-height: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ks-slide .ks-image-frame {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.ks-slide .ks-image-failed {
+  position: absolute;
+  inset: 0;
+}
+
+.ks-slide .ks-image-empty {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  overflow: hidden;
+  border: 1px dashed;
+  text-align: center;
+}
+
+.ks-slide .ks-table {
+  position: absolute;
+  left: 0;
+  top: 0;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  max-width: none;
+}
+
+.ks-slide .ks-table td {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  overflow: hidden;
+  vertical-align: top;
+  border: 1px solid;
+}
+
+/* What the theme draws on every slide is not what an editor selects. Last, so that it wins over the rules above. */
+.ks-slide[data-mode="edit"] [data-master],
+.ks-slide[data-mode="edit"] [data-master] * {
+  pointer-events: none;
+}

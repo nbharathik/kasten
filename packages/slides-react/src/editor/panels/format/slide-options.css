@@ -1,0 +1,82 @@
+/* Slide options: the background, the layouts, the themes. */
+.ks-sp-bg-preview {
+  align-self: flex-start;
+  height: 96px;
+  border-radius: var(--ks-radius-md);
+  box-shadow: inset 0 0 0 1px var(--ks-line-strong);
+}
+.ks-sp-layouts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 236px;
+  margin: 0 -6px;
+  padding: 0 6px;
+  overflow-y: auto;
+}
+.ks-sp-layout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 8px 5px 5px;
+  border-radius: var(--ks-radius-md);
+  text-align: left;
+}
+.ks-sp-layout:hover {
+  background: var(--ks-hover);
+}
+.ks-sp-layout.is-on {
+  background: var(--ks-soft);
+  color: var(--ks-accent);
+}
+.ks-sp-layout:focus-visible,
+.ks-sp-theme:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -1px;
+}
+.ks-sp-thumb {
+  flex: none;
+  width: 68px;
+}
+.ks-sp-layout-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-sp-themes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.ks-sp-theme {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--ks-line-strong);
+  border-radius: var(--ks-radius-md);
+  background: var(--ks-canvas);
+  text-align: left;
+}
+.ks-sp-theme:hover {
+  background: var(--ks-hover);
+}
+.ks-sp-theme.is-on {
+  border-color: var(--ks-accent);
+  box-shadow: 0 0 0 1px var(--ks-accent);
+}
+.ks-sp-theme-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ks-sp-theme .ks-icon {
+  color: var(--ks-accent);
+}
+.ks-sp-theme-name {
+  font-size: 12px;
+}
+

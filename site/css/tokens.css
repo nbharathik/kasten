@@ -1,0 +1,114 @@
+/* The Kasten website's colours and sizes. Light and dark follow the system
+   unless the visitor picks one (data-theme on <html>). */
+
+:root {
+  --bg: #fbfaf9;
+  --bg-alt: #f5f3f0;
+  --surface: #ffffff;
+  --panel: #f7f6f4;
+  --well: #f1f0ee;
+  --ink: #1c1b1a;
+  --ink-2: #3b3a37;
+  --muted: #6f6c67;
+  --faint: #a19e98;
+  --line: rgb(28 27 26 / 9%);
+  --line-strong: rgb(28 27 26 / 16%);
+  --dot: rgb(28 27 26 / 13%);
+  --accent: #0075de;
+  --accent-soft: rgb(0 117 222 / 10%);
+  --btn: #1c1b1a;
+  --on-btn: #ffffff;
+  --hl-yellow: rgb(248 230 165);
+  --hl-blue: rgb(199 230 253);
+  --hl-green: rgb(203 235 208);
+  --hl-purple: rgb(232 218 250);
+  --hl-orange: rgb(249 219 191);
+  --hl-pink: rgb(250 214 229);
+  --hl-gray: rgb(227 225 221);
+  --ok: #1a9a5f;
+  --danger: #d64545;
+  --shadow-sm: 0 1px 2px rgb(28 27 26 / 6%);
+  --shadow-md: 0 1px 2px rgb(28 27 26 / 5%), 0 6px 16px rgb(28 27 26 / 7%);
+  --shadow-lg: 0 2px 6px rgb(28 27 26 / 5%), 0 18px 40px rgb(28 27 26 / 10%), 0 50px 100px rgb(28 27 26 / 12%);
+  --glow-a: rgb(0 117 222 / 20%);
+  --glow-b: rgb(109 93 252 / 16%);
+  --glow-c: rgb(240 190 80 / 18%);
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --wrap: 1180px;
+  --radius: 16px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f0f0e;
+    --bg-alt: #141413;
+    --surface: #1a1a19;
+    --panel: #202020;
+    --well: #262626;
+    --ink: #f2f1ee;
+    --ink-2: #d8d6d1;
+    --muted: #a19e98;
+    --faint: #76736e;
+    --line: rgb(255 255 255 / 8%);
+    --line-strong: rgb(255 255 255 / 15%);
+    --dot: rgb(255 255 255 / 10%);
+    --accent: #4b9bf5;
+    --accent-soft: rgb(75 155 245 / 14%);
+    --btn: #f2f1ee;
+    --on-btn: #111110;
+    --hl-yellow: rgb(79 69 26);
+    --hl-blue: rgb(38 67 88);
+    --hl-green: rgb(44 71 50);
+    --hl-purple: rgb(70 57 85);
+    --hl-orange: rgb(87 60 33);
+    --hl-pink: rgb(84 53 67);
+    --hl-gray: rgb(64 64 61);
+    --ok: #3fbf85;
+    --danger: #f07070;
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+    --shadow-md: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 20px rgb(0 0 0 / 35%);
+    --shadow-lg: 0 2px 6px rgb(0 0 0 / 40%), 0 24px 60px rgb(0 0 0 / 45%), 0 60px 120px rgb(0 0 0 / 40%);
+    --glow-a: rgb(75 155 245 / 22%);
+    --glow-b: rgb(148 134 255 / 18%);
+    --glow-c: rgb(240 190 80 / 10%);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f0f0e;
+  --bg-alt: #141413;
+  --surface: #1a1a19;
+  --panel: #202020;
+  --well: #262626;
+  --ink: #f2f1ee;
+  --ink-2: #d8d6d1;
+  --muted: #a19e98;
+  --faint: #76736e;
+  --line: rgb(255 255 255 / 8%);
+  --line-strong: rgb(255 255 255 / 15%);
+  --dot: rgb(255 255 255 / 10%);
+  --accent: #4b9bf5;
+  --accent-soft: rgb(75 155 245 / 14%);
+  --btn: #f2f1ee;
+  --on-btn: #111110;
+  --hl-yellow: rgb(79 69 26);
+  --hl-blue: rgb(38 67 88);
+  --hl-green: rgb(44 71 50);
+  --hl-purple: rgb(70 57 85);
+  --hl-orange: rgb(87 60 33);
+  --hl-pink: rgb(84 53 67);
+  --hl-gray: rgb(64 64 61);
+  --ok: #3fbf85;
+  --danger: #f07070;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-md: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 20px rgb(0 0 0 / 35%);
+  --shadow-lg: 0 2px 6px rgb(0 0 0 / 40%), 0 24px 60px rgb(0 0 0 / 45%), 0 60px 120px rgb(0 0 0 / 40%);
+  --glow-a: rgb(75 155 245 / 22%);
+  --glow-b: rgb(148 134 255 / 18%);
+  --glow-c: rgb(240 190 80 / 10%);
+  color-scheme: dark;
+}

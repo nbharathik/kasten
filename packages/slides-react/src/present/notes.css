@@ -1,0 +1,67 @@
+/* A slide's speaker notes, as text on the page or in the presenter's window. The colour is the surrounding text's. */
+
+.ks-show-notes {
+  margin: 12px 0 8px;
+  color: inherit;
+  overflow-wrap: anywhere;
+}
+
+.ks-show-notes > :first-child {
+  margin-top: 0;
+}
+
+.ks-show-notes p,
+.ks-show-notes ul,
+.ks-show-notes ol,
+.ks-show-notes pre,
+.ks-show-notes blockquote {
+  margin: 0 0 0.7em;
+}
+
+.ks-show-notes h3,
+.ks-show-notes h4,
+.ks-show-notes h5,
+.ks-show-notes h6 {
+  margin: 0.9em 0 0.35em;
+  line-height: 1.3;
+}
+
+.ks-show-notes ul,
+.ks-show-notes ol {
+  padding-left: 1.4em;
+}
+
+.ks-show-notes blockquote {
+  padding-left: 0.9em;
+  border-left: 3px solid rgb(128 128 128 / 0.45);
+  opacity: 0.8;
+}
+
+.ks-show-notes code {
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  background: rgb(128 128 128 / 0.22);
+  font: 0.9em ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.ks-show-notes pre {
+  padding: 0.6em 0.8em;
+  border-radius: 6px;
+  background: rgb(128 128 128 / 0.22);
+  overflow-x: auto;
+}
+
+.ks-show-notes pre code {
+  padding: 0;
+  background: none;
+}
+
+.ks-show-notes a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.ks-show-notes hr {
+  border: 0;
+  border-top: 1px solid rgb(128 128 128 / 0.45);
+}

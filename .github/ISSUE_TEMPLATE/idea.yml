@@ -1,0 +1,16 @@
+name: Idea
+description: Something Kasten could do, or do better
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you are trying to do
+      description: The task or problem in your own words, and how you manage today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: How you picture it working, if you have a picture.

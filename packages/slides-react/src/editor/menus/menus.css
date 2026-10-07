@@ -1,0 +1,50 @@
+/* The menu bar, and what menus share with the toolbar and the title bar.
+   Rules that adjust shell.css and editor.css (read after this file) name .ks-editor first. */
+.ks-contents {
+  display: contents;
+}
+
+.ks-editor .ks-menubar {
+  gap: 0;
+  padding: 0 8px 2px;
+}
+.ks-menubar .ks-menubar-item {
+  height: 24px;
+  padding: 0 9px;
+  color: var(--ks-ink);
+  font-size: 13px;
+  line-height: 24px;
+  transition: background var(--ks-fast);
+}
+.ks-menubar .ks-menubar-item:hover {
+  background: var(--ks-hover);
+}
+.ks-menubar .ks-menubar-item.is-open,
+.ks-menubar .ks-menubar-item.is-open:hover {
+  background: var(--ks-selected);
+}
+
+/* Menus opened from the bar, the toolbar and a right click are a little wider than the shared minimum, so a label and its keys do not touch. */
+.ks-menubar .ks-menu,
+.ks-toolbar .ks-menu,
+.ks-titlebar .ks-menu,
+.ks-context .ks-menu {
+  min-width: 224px;
+}
+.ks-menubar .ks-kbd,
+.ks-toolbar .ks-kbd,
+.ks-titlebar .ks-kbd,
+.ks-context .ks-kbd {
+  margin-left: 24px;
+}
+
+/* The small drawings beside an entry. */
+.ks-preview {
+  flex: none;
+  color: var(--ks-muted);
+}
+.ks-menu-item:hover:not(:disabled) .ks-preview,
+.ks-menu-item:focus-visible .ks-preview,
+.ks-menu-item.is-open .ks-preview {
+  color: var(--ks-ink);
+}

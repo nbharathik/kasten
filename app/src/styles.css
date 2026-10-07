@@ -1,0 +1,323 @@
+/* Cascade layers, lowest first: Crepe's reset (editor/styles/crepe.css)
+   beats Tailwind's base but not components, utilities or unlayered CSS. */
+@layer theme, base, crepe, components, utilities;
+
+@import "tailwindcss";
+@import "./fonts.css";
+@import "./ui/ui.css";
+
+/* `dark:` follows the app's own theme (data-theme on <html>), which can
+   differ from the system's. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* `motion-reduce:` and `motion-safe:` follow the motion setting (Settings →
+   Appearance), which can overrule the computer's. */
+@custom-variant motion-reduce (&:where([data-motion="off"], [data-motion="off"] *));
+@custom-variant motion-safe (&:where([data-motion="on"], [data-motion="on"] *));
+
+/* Design tokens: Notion's warm neutrals and whisper
+   borders, Linear's tight corners, soft layered shadows. Light is the default;
+   `data-theme="dark"` on <html> switches to dark (features/workspace/theme.ts:
+   light, dark or follow the system), and `data-accent` picks the accent
+   colour (Settings, "Appearance"). */
+@theme static {
+  /* Surfaces: the page, the sidebar and panels, sunken wells (inputs, code,
+     hover rows) and raised popovers. */
+  --color-canvas: #ffffff;
+  --color-panel: #f7f6f4;
+  --color-well: #f1f0ee;
+  --color-raised: #ffffff;
+  /* The picked choice in a row of choices: lifted from its track. */
+  --color-chosen: #ffffff;
+  /* Borders: a whisper for dividers and cards, stronger for fields. */
+  --color-line: rgb(0 0 0 / 0.085);
+  --color-line-strong: rgb(0 0 0 / 0.16);
+  /* A card's edge under the pointer: firmer than a whisper, softer than a field. */
+  --color-line-hover: rgb(0 0 0 / 0.14);
+  /* Text: ink, secondary and faint (placeholders, hints). Each reads at
+     4.5:1 or more on the page, panels and fields, in both themes. */
+  --color-ink: #31302e;
+  --color-muted: #64615c;
+  --color-faint: #6f6c67;
+  --color-accent: #0075de;
+  /* Derived: hover wash, the accent's soft tint and strong text on it. */
+  --color-hover: color-mix(in srgb, var(--color-ink) 6%, transparent);
+  --color-soft: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  /* A chosen row: a touch deeper than hover, never the accent. */
+  --color-selected: color-mix(in srgb, var(--color-ink) 8.5%, transparent);
+  --color-on-accent: #ffffff;
+  /* Status: one red for destructive actions and errors, one green for
+     done and healthy, one amber for waiting and warnings. Each reads at
+     4.5:1 or more on the page and on panels. */
+  --color-danger: #c4403b;
+  --color-success: #1a7f52;
+  --color-warning: #a15c07;
+  /* A favourite's star. */
+  --color-favourite: #e0a100;
+  /* A switch's knob, white in both themes. */
+  --color-knob: #ffffff;
+  /* Behind a dialog. */
+  --color-scrim: rgb(15 15 15 / 0.32);
+  /* Highlights: one soft fill per colour, for text highlighted in
+     a page or a PDF. All share one lightness and strength, so no colour
+     shouts; yellow is a touch stronger, or it reads as beige. */
+  --color-highlight-gray: rgb(227 225 221);
+  --color-highlight-brown: rgb(238 219 211);
+  --color-highlight-orange: rgb(249 219 191);
+  --color-highlight-yellow: rgb(248 230 165);
+  --color-highlight-green: rgb(203 235 208);
+  --color-highlight-blue: rgb(199 230 253);
+  --color-highlight-purple: rgb(232 218 250);
+  --color-highlight-pink: rgb(250 214 229);
+  --color-highlight-red: rgb(254 214 210);
+
+  /* Type: one scale, named by size. Chrome is 12-14, page text 16, view
+     titles 28 and page titles 40. Tailwind's own sizes are cleared so
+     nothing falls between steps. */
+  --text-*: initial;
+  --text-11: 11px;
+  --text-12: 12px;
+  --text-13: 13px;
+  --text-14: 14px;
+  --text-16: 16px;
+  --text-20: 20px;
+  --text-24: 24px;
+  --text-28: 28px;
+  --text-40: 40px;
+
+  /* Corners stay small, on four steps: 4px controls and chips, 6px rows
+     and menus, 8px cards and popovers, 12px dialogs. 2px is only for
+     marks in text. Pills keep rounded-full. */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-2xl: 12px;
+  --radius-3xl: 12px;
+  --radius-4xl: 12px;
+
+  /* Shadows: many faint layers (each under 5%) instead of one dark one. */
+  --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.02), 0 1px 3px rgb(0 0 0 / 0.03), 0 4px 14px rgb(0 0 0 / 0.03);
+  --shadow-lift: 0 0 0 1px rgb(0 0 0 / 0.04), 0 3px 7px rgb(0 0 0 / 0.035), 0 12px 28px rgb(0 0 0 / 0.07);
+  /* A gallery card under the pointer: a soft shadow, and nothing moves. */
+  --shadow-hover: 0 0 0 1px rgb(0 0 0 / 0.015), 0 2px 5px rgb(0 0 0 / 0.035), 0 6px 16px rgb(0 0 0 / 0.045);
+  --shadow-pop: 0 0 0 1px rgb(15 15 15 / 0.06), 0 3px 6px rgb(15 15 15 / 0.06), 0 9px 24px rgb(15 15 15 / 0.12);
+  --shadow-modal: 0 0 0 1px rgb(15 15 15 / 0.05), 0 12px 32px rgb(15 15 15 / 0.12), 0 32px 80px rgb(15 15 15 / 0.14);
+
+  --font-sans:
+    "Inter Variable", Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Helvetica,
+    "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Motion: three lengths and one easing. Hovers and presses answer in
+     the fast step, things that open take the base step, and larger
+     surfaces the slow one. All drop to nothing when motion is off. */
+  --motion-fast: 90ms;
+  --motion-base: 140ms;
+  --motion-slow: 200ms;
+  --ease-*: initial;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --default-transition-duration: var(--motion-fast);
+  --default-transition-timing-function: var(--ease-standard);
+}
+
+:root[data-theme="dark"] {
+  --color-canvas: #191919;
+  --color-panel: #202020;
+  --color-well: #262626;
+  --color-raised: #252525;
+  --color-chosen: #3d3d3c;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-line-strong: rgb(255 255 255 / 0.15);
+  --color-line-hover: rgb(255 255 255 / 0.14);
+  --color-ink: #e8e7e4;
+  --color-muted: #a3a29f;
+  --color-faint: #8f8e8b;
+  --color-accent: #4b9bf5;
+  --color-danger: #ff7369;
+  --color-success: #4cc38a;
+  --color-warning: #f0b43c;
+  --color-favourite: #f5c04a;
+  --color-scrim: rgb(0 0 0 / 0.55);
+  --color-highlight-gray: rgb(64 64 61);
+  --color-highlight-brown: rgb(77 59 52);
+  --color-highlight-orange: rgb(87 60 33);
+  --color-highlight-yellow: rgb(79 69 26);
+  --color-highlight-green: rgb(44 71 50);
+  --color-highlight-blue: rgb(38 67 88);
+  --color-highlight-purple: rgb(70 57 85);
+  --color-highlight-pink: rgb(84 53 67);
+  --color-highlight-red: rgb(87 53 50);
+  --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.04), 0 1px 3px rgb(0 0 0 / 0.3);
+  --shadow-lift: 0 0 0 1px rgb(255 255 255 / 0.06), 0 12px 32px rgb(0 0 0 / 0.45), 0 2px 8px rgb(0 0 0 / 0.3);
+  --shadow-hover: 0 0 0 1px rgb(255 255 255 / 0.03), 0 2px 6px rgb(0 0 0 / 0.28), 0 8px 20px rgb(0 0 0 / 0.26);
+  --shadow-pop: 0 0 0 1px rgb(255 255 255 / 0.08), 0 3px 6px rgb(0 0 0 / 0.3), 0 9px 24px rgb(0 0 0 / 0.45);
+  --shadow-modal: 0 0 0 1px rgb(255 255 255 / 0.07), 0 16px 40px rgb(0 0 0 / 0.5), 0 40px 100px rgb(0 0 0 / 0.5);
+  color-scheme: dark;
+}
+
+/* Accent colours, each tuned for light and dark. */
+:root[data-accent="violet"] {
+  --color-accent: #6d5dfc;
+}
+:root[data-theme="dark"][data-accent="violet"] {
+  --color-accent: #9486ff;
+}
+:root[data-accent="green"] {
+  --color-accent: #1a9a5f;
+}
+:root[data-theme="dark"][data-accent="green"] {
+  --color-accent: #3fbf85;
+}
+:root[data-accent="orange"] {
+  --color-accent: #e8590c;
+}
+:root[data-theme="dark"][data-accent="orange"] {
+  --color-accent: #ff8a3d;
+}
+:root[data-accent="pink"] {
+  --color-accent: #d6336c;
+}
+:root[data-theme="dark"][data-accent="pink"] {
+  --color-accent: #f472a8;
+}
+:root[data-accent="graphite"] {
+  --color-accent: #3f3f46;
+}
+:root[data-theme="dark"][data-accent="graphite"] {
+  --color-accent: #d4d4d8;
+  --color-on-accent: #18181b;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 24%, transparent);
+}
+
+/* Keyboard focus is always visible, in the accent colour. */
+:where(button, a, select, input[type="checkbox"], input[type="radio"], [role="option"], [role="tab"], summary):focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+  outline-offset: 1px;
+}
+
+/* Thin, quiet scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-muted) 35%, transparent) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-muted) 32%, transparent);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--color-muted) 55%, transparent);
+}
+
+/* Entrances: what opens fades in and rises a little; toasts and side
+   peeks come in a little from the side. Menus take the fast step,
+   dialogs and panels the base one. */
+@keyframes kasten-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes kasten-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.99);
+  }
+}
+
+@keyframes kasten-enter-side {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
+
+/* Motion off (Settings, or System with the computer asking for less):
+   the tokens take no time, and neither does anything else that moves.
+   Until the setting is read, the computer's own choice holds. */
+:root[data-motion="off"] {
+  --motion-fast: 0ms;
+  --motion-base: 0ms;
+  --motion-slow: 0ms;
+}
+
+:root[data-motion="off"] *,
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after {
+  animation-duration: 0.01ms !important;
+  /* One pass, so a looping animation rests on its last frame instead of flickering. */
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion]) *,
+  :root:not([data-motion]) *::before,
+  :root:not([data-motion]) *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Printing (or saving as PDF) shows the page alone, at its full length. */
+@media print {
+  html,
+  body,
+  #root,
+  #root * {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  nav[aria-label="Sidebar"],
+  #root header:not(.kasten-page-header),
+  footer[role="contentinfo"],
+  .kasten-side-panel,
+  .kasten-page-source,
+  .kasten-page-footer,
+  .kasten-page-tail,
+  .kasten-page-controls,
+  .kasten-page-cover-actions,
+  .kasten-toasts,
+  .kasten-block-handle,
+  button[aria-label="Keyboard shortcuts"] {
+    display: none !important;
+  }
+
+  .kasten-page-cover {
+    max-height: 160px;
+  }
+}

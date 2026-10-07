@@ -1,0 +1,189 @@
+/* A tag database's view tabs and its view bar: group, date, filters,
+   sorts. */
+
+/* View tabs */
+
+.kasten-tagdb-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  margin-top: 18px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.kasten-tagdb-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  & > button[role="tab"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 12px;
+    color: var(--color-muted);
+    font-size: var(--text-13);
+    font-weight: 500;
+    transition: color var(--motion-fast);
+
+    &:hover {
+      color: var(--color-ink);
+    }
+  }
+
+  &.is-active > button[role="tab"] {
+    color: var(--color-ink);
+  }
+
+  &.is-active::after {
+    content: "";
+    position: absolute;
+    right: 8px;
+    bottom: -1px;
+    left: 8px;
+    height: 2px;
+    border-radius: var(--radius-xs);
+    background: var(--color-ink);
+  }
+}
+
+.kasten-tagdb-tab-icon {
+  font-size: var(--text-13);
+  opacity: 0.7;
+}
+
+.kasten-tagdb-tab-more,
+.kasten-tagdb-add-view {
+  height: 26px;
+  padding: 0 8px;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+  font-size: var(--text-13);
+
+  &:hover {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+}
+
+.kasten-tagdb-rename {
+  height: 28px;
+  margin: 3px 4px;
+  padding: 0 8px;
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 0 0 1.5px var(--color-accent);
+  font-size: var(--text-13);
+  outline: none;
+
+  &[aria-invalid="true"] {
+    box-shadow: inset 0 0 0 1.5px var(--notion-red, #e03e3e);
+  }
+}
+
+/* The view bar: group, date, filters, sorts. */
+
+.kasten-tagdb-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 0;
+}
+
+.kasten-tagdb-pick,
+.kasten-tagdb-rule,
+.kasten-tagdb-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: var(--text-13);
+}
+
+.kasten-tagdb-pick {
+  background: var(--color-panel);
+  box-shadow: inset 0 0 0 1px var(--color-line);
+  color: var(--color-muted);
+
+  & select {
+    background: transparent;
+    color: var(--color-ink);
+    font-weight: 500;
+    outline: none;
+  }
+}
+
+.kasten-tagdb-rule {
+  padding-right: 4px;
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent);
+  font-weight: 500;
+
+  & button {
+    padding: 0 3px;
+    border-radius: 999px;
+
+    &:hover {
+      background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+    }
+  }
+}
+
+.kasten-tagdb-add {
+  color: var(--color-muted);
+
+  &:hover {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+
+  & select {
+    background: transparent;
+    outline: none;
+  }
+}
+
+.kasten-tagdb-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 240px;
+  padding: 12px;
+
+  & select,
+  & input {
+    height: 30px;
+    padding: 0 8px;
+    border-radius: var(--radius-lg);
+    background: var(--color-panel);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    font-size: var(--text-13);
+    outline: none;
+  }
+}
+
+.kasten-tagdb-body {
+  flex: 1;
+  min-height: 0;
+}
+
+/* The view's quick find, beside its filters. */
+.kasten-tagdb-find {
+  width: 180px;
+  height: 26px;
+  padding: 0 8px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  outline: none;
+  background: var(--color-canvas);
+  font-size: var(--text-13);
+
+  &:focus {
+    border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+}

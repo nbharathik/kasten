@@ -1,0 +1,8 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 9f55ae1a16dcffae7ba46cef9c7cff4b2a2ba3ce4ad56b6d994698165a1a6fab # shrinks to actions = [DuplicateSlide { slide: 0 }, AddSlide { layout: 0 }, DuplicateSlide { slide: 0 }, Flags { slide: 5, hidden: false, backup: true }, DeleteSlide { slide: 0 }, AddSlide { layout: 0 }]
+cc 4b070f5aab7b75fc9a51b9805bf686c8aa2e35f8c5278fba75ec6af789257a5f # shrinks to actions = [Delete { slide: 0, el: 0 }, DuplicateSlide { slide: 0 }, DeleteSlide { slide: 0 }, Delete { slide: 0, el: 0 }, DeleteSlide { slide: 0 }, DeleteSlide { slide: 0 }, AddComposite { slide: 0, kind: 2 }, Expand { slide: 0, el: 0 }]

@@ -1,0 +1,92 @@
+/* How the editor is laid out: bars on top, the filmstrip, the slide and the panel below. */
+.ks-editor {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: var(--ks-panel);
+  overflow: hidden;
+}
+.ks-loading {
+  margin: auto;
+  color: var(--ks-muted);
+}
+.ks-top {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  background: var(--ks-panel);
+  border-bottom: 1px solid var(--ks-line);
+}
+.ks-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 12px;
+}
+.ks-menubar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 26px;
+  padding: 0 8px;
+}
+.ks-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 40px;
+  padding: 4px 8px;
+  border-top: 1px solid var(--ks-line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ks-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+.ks-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--ks-well);
+}
+.ks-filmstrip {
+  flex: none;
+  width: 208px;
+  overflow-y: auto;
+  border-right: 1px solid var(--ks-line);
+  background: var(--ks-panel);
+}
+.ks-side-panel {
+  flex: none;
+  outline: none;
+  width: 296px;
+  overflow-y: auto;
+  border-left: 1px solid var(--ks-line);
+  background: var(--ks-panel);
+}
+.ks-notes {
+  flex: none;
+  border-top: 1px solid var(--ks-line);
+  background: var(--ks-canvas);
+}
+
+/* Full screen: the editor covers the whole window of the app it runs in (not the monitor: the browser's Fullscreen API is not used), above
+   whatever the host draws around it, so none of that shows (`--ks-fullscreen-z` is the level; a host that keeps its own overlays above
+   sets it lower). The editor's dialogs, menus and popovers are inside it, so they stay above the slide. The body carries
+   data-ks-fullscreen meanwhile, for a host that hides its own chrome, and cannot scroll, so no scroll bar shows beside the editor. */
+.ks-editor.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ks-fullscreen-z, 1000);
+  width: auto;
+  height: auto;
+}
+body[data-ks-fullscreen] {
+  overflow: hidden;
+}

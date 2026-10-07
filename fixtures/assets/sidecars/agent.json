@@ -1,0 +1,13 @@
+{
+  "id": "01K5ZK0000000000000000AS03",
+  "name": "chart.svg",
+  "sha256": "96f52dd02821a9a9e08a228d88ee97ee1d4883dcbbc84357e73b49629550dea0",
+  "bytes": 179,
+  "width": 120,
+  "height": 60,
+  "source": "agent",
+  "createdBy": "agent:01K5ZK00000000000000000009",
+  "created": "2026-09-24T08:10:00Z",
+  "tags": ["chart"],
+  "deck": "Lecture 4"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "01K5ZK0000000000000000AS02",
+  "name": "Figure 1.png",
+  "sha256": "9437dd634d8335825143704d4a0b3ec7827cb2a488075127aec89915544ed1f3",
+  "bytes": 1405,
+  "width": 640,
+  "height": 160,
+  "source": "pdf-clip",
+  "createdBy": "person",
+  "created": "2026-09-24T08:05:00Z",
+  "tags": ["figure", "attention"],
+  "caption": "Scaled dot-product attention.",
+  "citationKey": "vaswani2017attention",
+  "clip": {"pdf": "sources/attention-is-all-you-need.pdf", "page": 3, "rect": [72, 300.13, 400, 520.5]}
+}

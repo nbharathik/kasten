@@ -1,0 +1,23 @@
+[package]
+name = "slides-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "Apache-2.0"
+publish.workspace = true
+description = "Kasten Slides' core: the deck format, its operations, lint and PPTX"
+
+[dependencies]
+schemars = "1.2"
+serde.workspace = true
+serde_json.workspace = true
+# Code colours: the same in the editor, the command line and exports. The pure-Rust regex
+# engine is used so it builds for WebAssembly.
+syntect = { version = "5.3", default-features = false, features = ["default-syntaxes", "default-themes", "regex-fancy"] }
+ts-rs = { version = "12", features = ["serde-json-impl", "no-serde-warnings"] }
+
+[dev-dependencies]
+proptest = "1.11"
+
+[lints]
+workspace = true

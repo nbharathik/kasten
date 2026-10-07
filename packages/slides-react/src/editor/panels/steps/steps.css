@@ -1,0 +1,257 @@
+/* The Steps tab: builds above, and a grid of the slide's elements against its steps. */
+.ks-steps {
+  display: flex;
+  flex-direction: column;
+}
+.ks-steps-builds {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--ks-line);
+}
+.ks-steps-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.ks-steps-buttons .ks-text-btn {
+  padding: 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.ks-steps-scope {
+  margin: 8px 0 0;
+  color: var(--ks-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.ks-steps-count {
+  color: var(--ks-faint);
+}
+.ks-steps-empty,
+.ks-steps-hint {
+  margin: 0;
+  padding: 10px 14px 14px;
+  color: var(--ks-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.ks-steps-hint {
+  color: var(--ks-faint);
+}
+
+/* The grid: the first column stays put while the steps scroll. */
+.ks-steps-scroll {
+  overflow-x: auto;
+  padding: 4px 0 0;
+}
+.ks-steps-grid {
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 100%;
+  font-size: 12px;
+}
+.ks-steps-grid th,
+.ks-steps-grid td {
+  height: 30px;
+  padding: 0;
+  border-bottom: 1px solid var(--ks-line);
+  font-weight: normal;
+}
+.ks-steps-grid th[scope="col"],
+.ks-steps-grid td {
+  position: relative;
+  width: 28px;
+  min-width: 28px;
+  text-align: center;
+}
+.ks-steps-grid th.ks-steps-name {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  width: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  padding-inline-start: 6px;
+  text-align: left;
+  background: var(--ks-panel);
+}
+.ks-steps-grid tr.is-selected > th.ks-steps-name {
+  background: color-mix(in srgb, var(--ks-accent) 14%, var(--ks-panel));
+}
+.ks-steps-grid tr.is-selected > td {
+  background: color-mix(in srgb, var(--ks-accent) 8%, transparent);
+}
+.ks-steps-grid .is-previewed {
+  background: color-mix(in srgb, var(--ks-accent) 12%, transparent);
+}
+.ks-steps-corner {
+  color: var(--ks-faint);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.ks-steps-layer {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+.ks-steps-label {
+  appearance: none;
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: var(--ks-radius);
+  background: transparent;
+  color: var(--ks-ink);
+  font: inherit;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ks-steps-label:hover {
+  background: var(--ks-hover);
+}
+.ks-steps-name[data-kind="item"] .ks-steps-label {
+  color: var(--ks-muted);
+}
+.ks-steps-fold {
+  appearance: none;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ks-radius);
+  background: transparent;
+  color: var(--ks-faint);
+  cursor: pointer;
+}
+.ks-steps-fold:hover {
+  background: var(--ks-hover);
+  color: var(--ks-ink);
+}
+
+/* Headings of the steps, the button that adds one and the small one that takes the last away. */
+.ks-step-head {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ks-muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ks-step-head:hover:not(:disabled) {
+  background: var(--ks-hover);
+  color: var(--ks-ink);
+}
+.ks-step-head[aria-pressed="true"] {
+  color: var(--ks-accent);
+}
+.ks-step-head:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.ks-step-remove {
+  appearance: none;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ks-faint);
+  cursor: pointer;
+}
+.ks-step-remove:hover:not(:disabled) {
+  background: var(--ks-selected);
+  color: var(--ks-danger);
+}
+.ks-step-remove:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* A cell: what the element looks like at that step, in a small picture of it. What the element says at
+   that very step is drawn strong; what it only carries on from before is faint. */
+.ks-step-cell {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.ks-step-cell:hover {
+  background: var(--ks-hover);
+}
+.ks-step-swatch {
+  display: block;
+  width: 15px;
+  height: 15px;
+  box-sizing: border-box;
+  border: 1.5px solid var(--ks-ink);
+  border-radius: 4px;
+}
+.ks-step-cell.is-hidden .ks-step-swatch {
+  border-style: dashed;
+  border-color: var(--ks-muted);
+  background: transparent;
+}
+.ks-step-cell.is-dimmed .ks-step-swatch {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--ks-ink) 26%, transparent);
+}
+.ks-step-cell.is-normal .ks-step-swatch {
+  background: var(--ks-ink);
+}
+.ks-step-cell.is-highlighted .ks-step-swatch {
+  background: var(--ks-ink);
+  box-shadow:
+    0 0 0 2px var(--ks-panel),
+    0 0 0 3.5px var(--ks-accent);
+}
+.ks-step-cell:not(.is-set) .ks-step-swatch {
+  opacity: 0.34;
+}
+.ks-steps-grid button:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -2px;
+}
+
+/* On the canvas while a step is previewed. */
+.ks-step-chip {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 5;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--ks-ink);
+  color: var(--ks-canvas);
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+  box-shadow: var(--ks-shadow-pop);
+}

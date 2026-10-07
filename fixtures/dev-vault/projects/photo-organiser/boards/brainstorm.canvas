@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    {"id": "n1", "type": "file", "file": "projects/photo-organiser/cards/duplicate-score-for-photos.md", "x": 0, "y": 0, "width": 320, "height": 180},
+    {"id": "n2", "type": "file", "file": "projects/photo-organiser/cards/duplicate-score-sketch.md", "x": 400, "y": 0, "width": 320, "height": 180},
+    {"id": "n3", "type": "text", "text": "What about burst shots?", "x": 0, "y": 240, "width": 260, "height": 80, "color": "3"},
+    {"id": "g1", "type": "group", "label": "Metric", "x": -40, "y": -60, "width": 800, "height": 420}
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "n1", "fromSide": "right", "toNode": "n2", "toSide": "left", "label": "formalised in"}
+  ],
+  "x-kasten": {"collapsed": [], "cardSize": {"n1": "expanded"}}
+}

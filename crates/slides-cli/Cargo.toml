@@ -1,0 +1,27 @@
+[package]
+name = "slides-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "Apache-2.0"
+publish.workspace = true
+description = "The `slides` command: decks from the command line, an MCP server for agents, and a folder host"
+
+[[bin]]
+name = "slides"
+path = "src/main.rs"
+
+[dependencies]
+schemars = "1.2"
+serde.workspace = true
+serde_json.workspace = true
+slides-assets.workspace = true
+slides-core.workspace = true
+slides-pptx.workspace = true
+slides-render.workspace = true
+# `slides mcp`: the agent tools over stdio (the same crates kasten-mcp uses).
+rmcp = { version = "3.4.1", features = ["server", "macros", "transport-io"] }
+tokio = { version = "1.53.1", features = ["rt-multi-thread", "io-std", "sync", "macros", "signal"] }
+
+[lints]
+workspace = true

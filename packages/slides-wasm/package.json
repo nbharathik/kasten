@@ -1,0 +1,24 @@
+{
+  "name": "@kasten-slides/wasm",
+  "version": "0.1.0",
+  "private": true,
+  "description": "slides-core in the browser: the WebAssembly build the Kasten Slides editor applies every operation through",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./ts/index.ts"
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-wasm.mjs",
+    "pretypecheck": "node ../../scripts/build-wasm.mjs --if-stale",
+    "typecheck": "tsc --noEmit",
+    "pretest": "node ../../scripts/build-wasm.mjs --if-stale",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.6",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
+}

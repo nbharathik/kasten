@@ -1,0 +1,125 @@
+/* The page header's popups: icon picker, cover gallery and page options. */
+.kasten-popup {
+  position: absolute;
+  z-index: 40;
+  animation: kasten-enter var(--motion-fast) var(--ease-standard);
+  border-radius: var(--radius-lg);
+  background: var(--notion-menu-bg);
+  box-shadow: var(--notion-shadow);
+  color: var(--notion-text);
+  font-family: var(--notion-font);
+  font-size: var(--text-14);
+  text-align: left;
+}
+
+.kasten-popup-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid var(--notion-line-soft);
+}
+
+.kasten-popup-search {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--notion-line);
+  border-radius: var(--radius-lg);
+  outline: none;
+  background: var(--notion-bg);
+  color: inherit;
+  font: inherit;
+
+  &:focus {
+    border-color: var(--notion-accent);
+  }
+}
+
+.kasten-popup-button {
+  height: 28px;
+  padding: 0 8px;
+  border-radius: var(--radius);
+  color: var(--notion-text-2) !important;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: var(--notion-hover) !important;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.kasten-popup-heading {
+  margin: 8px 4px 4px;
+  color: var(--notion-text-2);
+  font-size: var(--text-12);
+  font-weight: 500;
+}
+
+.kasten-popup-empty {
+  padding: 16px;
+  color: var(--notion-text-2);
+  text-align: center;
+}
+
+.kasten-emoji-picker {
+  top: calc(100% + 4px);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 408px;
+  max-width: calc(100vw - 32px);
+  max-height: 360px;
+}
+
+.kasten-emoji-scroll {
+  overflow-y: auto;
+  padding: 0 8px 8px;
+}
+
+.kasten-emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 32px);
+  justify-content: space-between;
+}
+
+.kasten-emoji {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius);
+  font-size: var(--text-24);
+  line-height: 32px;
+
+  &:hover {
+    background: var(--notion-hover) !important;
+  }
+}
+
+.kasten-cover-picker {
+  right: max(var(--page-gutter), calc((100% - var(--page-width)) / 2));
+  top: calc(100% - 8px);
+  width: 420px;
+  max-width: calc(100vw - 32px);
+}
+
+.kasten-cover-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  padding: 8px 12px 12px;
+}
+
+.kasten-cover-swatch {
+  height: 56px;
+  border-radius: var(--radius);
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+

@@ -1,0 +1,162 @@
+/* The title bar: the deck's name, where saving stands, and the buttons at the right.
+   Rules that adjust shell.css and editor.css (read after this file) name .ks-editor first. */
+.ks-editor .ks-titlebar {
+  gap: 10px;
+  min-height: 46px;
+  padding: 6px 14px 6px 12px;
+}
+.ks-title-spacer {
+  flex: 1;
+}
+
+/* A quiet tint and a line under the whole bar while saving is paused: the choice cannot be missed. */
+.ks-editor .ks-titlebar.is-conflict {
+  background: color-mix(in srgb, var(--ks-warning) 14%, var(--ks-panel));
+  box-shadow: inset 0 -3px 0 var(--ks-warning);
+}
+
+/* In a narrow window the banner takes a row under the rest. */
+.ks-editor .ks-titlebar.is-stacked {
+  flex-wrap: wrap;
+  row-gap: 6px;
+}
+.ks-titlebar.is-stacked .ks-conflict {
+  order: 9;
+  flex: 1 1 100%;
+}
+
+/* The name: text until the pointer is on it. */
+.ks-title-field {
+  display: inline-grid;
+  min-width: 96px;
+  max-width: min(44vw, 560px);
+}
+.ks-title-field::after {
+  content: attr(data-value);
+  grid-area: 1 / 1;
+  visibility: hidden;
+  height: 0;
+  padding: 0 9px;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: pre;
+}
+.ks-title-input {
+  grid-area: 1 / 1;
+  width: 100%;
+  min-width: 0;
+  height: 30px;
+  margin: 0;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: var(--ks-radius);
+  background: transparent;
+  color: var(--ks-ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  transition: border-color var(--ks-fast);
+}
+.ks-title-input:hover {
+  border-color: var(--ks-line-strong);
+}
+.ks-title-input:focus {
+  border-color: var(--ks-accent);
+  outline: 1px solid var(--ks-accent);
+  outline-offset: 0;
+  background: var(--ks-canvas);
+}
+
+/* Where saving stands. */
+.ks-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ks-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.ks-save.is-saved .ks-icon {
+  color: var(--ks-success);
+}
+.ks-save.is-error {
+  gap: 6px;
+  color: var(--ks-danger);
+}
+.ks-save-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 44ch;
+}
+.ks-editor .ks-save-retry {
+  height: 24px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* Saving is paused: a banner with the two ways out. */
+.ks-conflict {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 4px 4px 10px;
+  border: 1px solid var(--ks-warning);
+  border-radius: var(--ks-radius-md);
+  background: var(--ks-canvas);
+  font-size: 12.5px;
+  line-height: 1.3;
+}
+.ks-conflict > .ks-icon {
+  color: var(--ks-warning);
+}
+.ks-conflict-text strong {
+  font-weight: 600;
+}
+.ks-conflict-copy {
+  color: var(--ks-muted);
+}
+.ks-editor .ks-conflict .ks-text-btn {
+  height: 26px;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+/* Present, and the caret beside it. */
+.ks-present {
+  display: inline-flex;
+}
+.ks-editor .ks-present .ks-present-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px 0 10px;
+  border-radius: var(--ks-radius) 0 0 var(--ks-radius);
+  font-weight: 500;
+}
+.ks-editor .ks-present .ks-present-caret {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 5px;
+  border-left-color: color-mix(in srgb, var(--ks-on-accent) 35%, transparent);
+  border-radius: 0 var(--ks-radius) var(--ks-radius) 0;
+}
+.ks-editor .ks-present .ks-text-btn:disabled {
+  opacity: 0.45;
+}
+
+/* The kit's tooltip in the colours of the toolbar's, so the two match. */
+.ks-titlebar [data-tip]:hover::after,
+.ks-titlebar [data-tip]:focus-visible::after {
+  background: var(--ks-ink);
+  color: var(--ks-canvas);
+}
+
+/* The buttons at the right edge: their tooltips grow leftwards, so they stay in the window. */
+.ks-titlebar .ks-present [data-tip]:hover::after,
+.ks-titlebar .ks-present [data-tip]:focus-visible::after {
+  left: auto;
+  right: 0;
+  transform: none;
+}

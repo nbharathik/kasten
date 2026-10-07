@@ -1,0 +1,5 @@
+/* A live embed's own element (embed-host.ts) adds no box: what the root
+   draws lays out as the embed body's child. */
+.kasten-embed-host {
+  display: contents;
+}

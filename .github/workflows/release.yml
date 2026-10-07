@@ -1,0 +1,206 @@
+name: Release
+
+# A tag such as v0.2.0 builds the installers and the command-line tools on
+# all three systems, signs the files installed apps update from, and
+# attaches everything to a draft GitHub release with latest.json, from
+# which installed apps update themselves. Nothing is public until someone
+# tries the draft and publishes it.
+#
+# The updater's signing key never meets a build. Building runs code from
+# hundreds of dependencies (build scripts, the bundler, the frontend's
+# tools), so the builds hold no secret and start with no cache. A job of
+# its own then signs their update files: it runs only for a v* tag, in the
+# `release` environment, which alone holds the key and waits for the
+# owner's approval, and it runs no build, no cache and no action from
+# outside GitHub. Actions are pinned by commit.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  NODE_VERSION: "24"
+  PNPM_VERSION: "12.6.0"
+
+jobs:
+  checks:
+    name: Full checks
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    name: Build (${{ matrix.name }})
+    needs: checks
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: linux-x64, os: ubuntu-24.04, target: x86_64-unknown-linux-gnu }
+          - { name: windows-x64, os: windows-latest, target: x86_64-pc-windows-msvc }
+          - { name: macos-arm64, os: macos-latest, target: aarch64-apple-darwin }
+          - { name: macos-x64, os: macos-latest, target: x86_64-apple-darwin }
+    # The tag reaches scripts through the environment, never spliced into them.
+    env:
+      TAG: ${{ github.ref_name }}
+      TARGET: ${{ matrix.target }}
+      NAME: ${{ matrix.name }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Check the tag names the version
+        shell: bash
+        run: node scripts/check-version.mjs "$TAG"
+      - name: Check what the release builds need
+        shell: bash
+        env:
+          KASTEN_GITHUB_CLIENT_ID: ${{ vars.KASTEN_GITHUB_CLIENT_ID }}
+        run: node scripts/check-release-inputs.mjs --tag
+      - name: Install Linux system libraries for Tauri
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev libxdo-dev libssl-dev patchelf
+      - run: npm install --global pnpm@${{ env.PNPM_VERSION }}
+      - name: Install the pinned Rust toolchain
+        shell: bash
+        run: |
+          channel=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
+          rustup toolchain install "$channel" --profile minimal --target "$TARGET"
+      - run: pnpm install --frozen-lockfile
+      # The licences of what the app ships go inside it.
+      - name: Write the third-party notices
+        run: node scripts/notices.mjs
+      # Not code-signed for now: Windows and macOS warn before the first
+      # launch. The update files are signed later, by the signing job.
+      - name: Build the installers
+        shell: bash
+        env:
+          KASTEN_GITHUB_CLIENT_ID: ${{ vars.KASTEN_GITHUB_CLIENT_ID }}
+        run: node scripts/build-installers.mjs "$TARGET"
+      - name: Check the installer size budget
+        shell: bash
+        run: node scripts/check-installer-size.mjs "target/$TARGET/release/bundle" 30
+      - name: Build the command-line tools
+        shell: bash
+        run: cargo build --release --locked --target "$TARGET" -p kasten-cli -p kasten-mcp
+      - name: Gather the files
+        shell: bash
+        run: |
+          mkdir -p out
+          find "target/$TARGET/release/bundle" -maxdepth 2 -type f \
+            \( -name '*.deb' -o -name '*.rpm' -o -name '*.msi' -o -name '*-setup.exe' -o -name '*.dmg' \) \
+            -exec cp {} out/ \;
+          # Both Macs name their update archive Kasten.app.tar.gz: here it
+          # gets the version and processor, as the other files have.
+          for file in "target/$TARGET/release/bundle/macos/"*.app.tar.gz; do
+            [ -e "$file" ] || continue
+            arch=x64
+            [ "$NAME" = macos-arm64 ] && arch=aarch64
+            cp "$file" "out/Kasten_$(node scripts/check-version.mjs --print)_$arch.app.tar.gz"
+          done
+          bin="target/$TARGET/release"
+          cp LICENSE "$bin/"
+          cp app/public/third-party-notices.txt "$bin/THIRD-PARTY-NOTICES.txt"
+          if [ "$RUNNER_OS" = Windows ]; then
+            (cd "$bin" && 7z a "$GITHUB_WORKSPACE/out/kasten-cli-$TAG-$NAME.zip" kasten.exe kasten-mcp.exe LICENSE THIRD-PARTY-NOTICES.txt)
+          else
+            tar -czf "out/kasten-cli-$TAG-$NAME.tar.gz" -C "$bin" kasten kasten-mcp LICENSE THIRD-PARTY-NOTICES.txt
+          fi
+          ls -l out
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: release-${{ matrix.name }}
+          path: out/*
+          if-no-files-found: error
+
+  sign:
+    name: Sign the update files
+    needs: build
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    # The updater's key lives in this environment alone, which takes only
+    # v* tags and waits for the owner's approval.
+    environment: release
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: npm install --global pnpm@${{ env.PNPM_VERSION }}
+      # Checked against the lockfile; no install script runs, and only the
+      # app's packages are installed: the Tauri CLI is all this job uses.
+      - run: pnpm install --frozen-lockfile --ignore-scripts --filter kasten-app
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          pattern: release-*
+          path: out
+          merge-multiple: true
+      - name: Sign the files installed apps update from
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: node scripts/sign-updates.mjs out "${TAG#v}"
+      # A key that doesn't match the app's public key would leave every
+      # installed copy unable to update: caught here, before publishing.
+      - name: Check each signature against the app's public key
+        run: node scripts/check-signatures.mjs out "${TAG#v}"
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: signatures
+          path: out/*.sig
+          if-no-files-found: error
+
+  publish:
+    name: Draft the release
+    needs: [build, sign]
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ github.ref_name }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          pattern: release-*
+          path: out
+          merge-multiple: true
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: signatures
+          path: out
+      - name: Write the updater's manifest
+        run: node scripts/updater-manifest.mjs out "$TAG" "$GH_REPO"
+      - name: Write checksums
+        run: |
+          cd out
+          sha256sum -- * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+      # The install notes come first, then GitHub's list of changes.
+      - name: Create the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$TAG" out/* --draft --verify-tag --title "Kasten $TAG" --notes-file .github/release-notes.md --generate-notes

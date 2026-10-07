@@ -1,0 +1,40 @@
+/*
+ * The room lint measures text in: off the page, drawn with the same box and
+ * styles as a slide, once at the width the text is given (to read how tall
+ * it comes out) and once as narrow as it can go (to read its widest word).
+ * The page never shows it.
+ */
+.ks-measure {
+  position: fixed;
+  left: -100000px;
+  top: 0;
+  width: 100000px;
+  visibility: hidden;
+  pointer-events: none;
+  contain: layout style;
+}
+.ks-measure .ks-mh,
+.ks-measure .ks-mw {
+  display: block;
+}
+
+/* The box at its natural height, in the width its wrapper gives it. */
+.ks-measure .ks-mh > .ks-text {
+  position: static !important;
+  inset: auto !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* The box as narrow as its words allow: a word that will not break is what sets the width. */
+.ks-measure .ks-mw > .ks-text {
+  position: static !important;
+  inset: auto !important;
+  width: min-content !important;
+  height: auto !important;
+}
+.ks-measure .ks-mw,
+.ks-measure .ks-mw * {
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}

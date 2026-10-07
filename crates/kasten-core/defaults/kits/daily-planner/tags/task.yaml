@@ -1,0 +1,9 @@
+name: task
+color: green
+properties:
+  - {key: status, type: select, options: [Todo, Doing, Done]}
+  - {key: due, type: date}
+  - {key: priority, type: select, options: [Low, Medium, High]}
+views:
+  - {name: Board, type: kanban, group_by: status}
+  - {name: Due, type: calendar, date: due}

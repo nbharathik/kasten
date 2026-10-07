@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "capture",
+  "description": "The quick capture window: it hears when it opens and nothing more. Saving goes through kasten-core commands, as the main window's does.",
+  "windows": ["capture"],
+  "permissions": ["core:event:allow-listen", "core:event:allow-unlisten"]
+}

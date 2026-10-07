@@ -1,0 +1,7 @@
+name: permanent
+color: green
+properties:
+  - {key: topic, type: text}
+views:
+  - {name: All, type: table}
+  - {name: Cards, type: gallery}

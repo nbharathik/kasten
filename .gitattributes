@@ -1,0 +1,13 @@
+# Normalise text files to LF in the repository.
+* text=auto eol=lf
+
+# Fixtures are byte-exact test inputs (CRLF, BOM, trailing whitespace, no final
+# newline). Git must never convert them, or round-trip tests stop meaning
+# anything on Windows.
+fixtures/** -text
+
+# Binary assets
+*.png binary
+*.ico binary
+*.icns binary
+*.pdf binary

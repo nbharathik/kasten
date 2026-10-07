@@ -1,0 +1,196 @@
+/* The whiteboard demo: a small world of cards, scaled to fit its canvas. */
+
+.db-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.db-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 160ms, background-color 160ms;
+}
+
+.db-btn:hover {
+  border-color: var(--line-strong);
+}
+
+.db-hint {
+  margin-left: auto;
+  padding-right: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.db-canvas {
+  position: relative;
+  height: min(620px, 68vh, 56vw);
+  overflow: hidden;
+  background-color: var(--bg);
+  background-image: radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.db-canvas.is-tall {
+  height: auto;
+  aspect-ratio: 400 / 620;
+}
+
+.db-world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ww, 960px);
+  height: var(--wh, 540px);
+  transform: translate(var(--ox, 0px), var(--oy, 0px)) scale(var(--scale, 1));
+  transform-origin: 0 0;
+}
+
+.db-edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.db-edges path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.6;
+}
+
+.db-edges .db-arrow {
+  fill: var(--muted);
+  stroke: none;
+}
+
+.db-edges text {
+  fill: var(--ink-2);
+  font: 600 12px var(--font);
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 6px;
+  stroke-linejoin: round;
+  text-anchor: middle;
+}
+
+.db-node {
+  position: absolute;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  cursor: grab;
+}
+
+.db-node:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.db-node.is-dragging {
+  z-index: 10;
+  cursor: grabbing;
+}
+
+.db-card {
+  padding: 12px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 200ms, transform 200ms var(--ease);
+}
+
+.db-card.is-dragging {
+  box-shadow: var(--shadow-lg);
+  transform: rotate(-1deg) scale(1.02);
+}
+
+.db-card .db-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.db-card .db-title .i {
+  color: var(--muted);
+}
+
+.db-card p:not(.db-title) {
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.db-sticky {
+  display: grid;
+  align-content: start;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--hl-yellow);
+  box-shadow: var(--shadow-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: box-shadow 200ms, transform 200ms var(--ease);
+}
+
+.db-sticky.is-dragging {
+  box-shadow: var(--shadow-lg);
+  transform: rotate(1.5deg) scale(1.03);
+}
+
+.db-sticky.is-new {
+  animation: pop 420ms var(--ease);
+}
+
+.db-section {
+  border: 1.5px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--hl-blue) 32%, transparent);
+}
+
+.db-section.is-dragging {
+  z-index: 0;
+  border-color: var(--accent);
+}
+
+.db-section > span {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 640px) {
+  .db-hint {
+    display: none;
+  }
+}

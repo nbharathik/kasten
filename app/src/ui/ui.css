@@ -1,0 +1,414 @@
+/* The app's small component kit: buttons, icon
+   buttons, keycaps, chips, fields, segmented switches, disclosures and the
+   modal. Plain classes in the components layer, so utilities can still adjust
+   them; ui/*.tsx wraps them for React. */
+
+@layer components {
+  /* The Kasten mark (ui/BrandMark.tsx): a card box in the text colour, or
+     reversed on a tile. Working, its cards rise out of the box and settle. */
+  .kasten-mark {
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .kasten-mark-symbol {
+    fill: currentColor;
+  }
+  .kasten-mark.is-tile .kasten-mark-symbol {
+    fill: var(--color-canvas);
+  }
+  .kasten-mark-tile {
+    fill: var(--color-ink);
+  }
+  .kasten-mark.is-working .kasten-mark-cards {
+    animation: kasten-mark-rise 1.5s var(--ease-in-out, ease-in-out) infinite;
+  }
+
+  /* An icon string drawn as a line icon (Glyph.tsx): muted, like Notion's
+     default page icon, so a person's own emoji stays the eye-catcher. */
+  .kasten-glyph-line {
+    display: inline-block;
+    flex-shrink: 0;
+    /* Centred on the text's x-height when it sits in a line of text. */
+    vertical-align: -0.2em;
+    color: var(--color-muted);
+  }
+  .kasten-glyph {
+    display: inline-block;
+    line-height: 1;
+  }
+
+  /* The keys under a capture box. */
+  .kasten-capture-hint kbd {
+    margin-right: 3px;
+    padding: 0 4px;
+    border-radius: 4px;
+    background: var(--color-panel);
+    font-family: inherit;
+    font-size: var(--text-11);
+  }
+
+  .kasten-working {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-muted);
+  }
+  .kasten-working .kasten-mark {
+    color: var(--color-ink);
+  }
+
+  .ui-btn {
+    display: inline-flex;
+    height: 28px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 10px;
+    border-radius: var(--radius);
+    background: var(--color-canvas);
+    box-shadow: inset 0 0 0 1px var(--color-line-strong);
+    color: var(--color-ink);
+    font-size: var(--text-13);
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    user-select: none;
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      box-shadow var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+  }
+  .ui-btn:hover {
+    background: color-mix(in srgb, var(--color-canvas), var(--color-ink) 5%);
+  }
+  .ui-btn:active {
+    translate: 0 0.5px;
+  }
+  .ui-btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .ui-btn.is-primary {
+    background: var(--color-accent);
+    box-shadow:
+      inset 0 0 0 1px rgb(0 0 0 / 0.06),
+      0 1px 2px rgb(0 0 0 / 0.08);
+    color: var(--color-on-accent);
+  }
+  .ui-btn.is-primary:hover {
+    background: color-mix(in srgb, var(--color-accent), #000 10%);
+  }
+  .ui-btn.is-quiet {
+    background: transparent;
+    box-shadow: none;
+    color: var(--color-muted);
+  }
+  .ui-btn.is-quiet:hover {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+  .ui-btn.is-danger {
+    color: var(--color-danger);
+  }
+  .ui-btn.is-sm {
+    height: 24px;
+    padding: 0 8px;
+    font-size: var(--text-13);
+  }
+  .ui-btn.is-lg {
+    height: 32px;
+    padding: 0 14px;
+    font-size: var(--text-13);
+  }
+
+  .ui-icon-btn {
+    display: inline-grid;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: var(--radius-md);
+    color: var(--color-muted);
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+  }
+  .ui-icon-btn:hover,
+  .ui-icon-btn[aria-pressed="true"],
+  .ui-icon-btn[aria-expanded="true"] {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+  .ui-icon-btn:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .ui-icon-btn.is-sm {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Keycaps, Raycast style: a hairline edge and a slightly deeper bottom. */
+  .ui-kbd {
+    display: inline-flex;
+    min-width: 18px;
+    height: 18px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border-radius: var(--radius-sm);
+    background: var(--color-canvas);
+    box-shadow:
+      inset 0 0 0 1px var(--color-line-strong),
+      inset 0 -1px 0 var(--color-line-strong);
+    color: var(--color-muted);
+    font: 500 var(--text-11)/1 var(--font-sans);
+    white-space: nowrap;
+  }
+
+
+  /* A text field, as tall as the large button beside it. */
+  .ui-field {
+    height: 32px;
+    width: 100%;
+    padding: 0 10px;
+    border-radius: var(--radius);
+    background: var(--color-canvas);
+    box-shadow: inset 0 0 0 1px var(--color-line-strong);
+    color: var(--color-ink);
+    font-size: var(--text-13);
+    outline: none;
+  }
+  .ui-field::placeholder {
+    color: var(--color-faint);
+  }
+  .ui-field:focus {
+    box-shadow:
+      inset 0 0 0 1px var(--color-accent),
+      0 0 0 3px var(--color-soft);
+  }
+
+  /* A row of choices, one pressed: views, modes. */
+  .ui-seg {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 2px;
+    padding: 2px;
+    border-radius: var(--radius-lg);
+    background: var(--color-well);
+  }
+  .ui-seg > button {
+    display: inline-flex;
+    height: 24px;
+    align-items: center;
+    gap: 6px;
+    padding: 0 9px;
+    border-radius: var(--radius);
+    color: var(--color-muted);
+    font-size: var(--text-13);
+    font-weight: 500;
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+  }
+  .ui-seg > button:hover {
+    color: var(--color-ink);
+  }
+  /* As tall as the fields and selects beside it. */
+  .ui-seg.is-lg > button {
+    height: 28px;
+    padding: 0 10px;
+  }
+  .ui-seg > button:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 50%, transparent);
+    outline-offset: 1px;
+  }
+  .ui-seg > button[aria-pressed="true"],
+  .ui-seg > button[aria-checked="true"] {
+    background: var(--color-chosen);
+    box-shadow:
+      0 0 0 1px var(--color-line),
+      0 1px 2px rgb(0 0 0 / 0.06);
+    color: var(--color-ink);
+  }
+
+  /* A titled toggle that hides details until asked (ui/Disclosure.tsx). */
+  .ui-disclosure-head {
+    display: flex;
+    width: 100%;
+    min-height: 28px;
+    align-items: center;
+    gap: 6px;
+    padding: 0 6px;
+    margin-left: -6px;
+    border-radius: var(--radius);
+    color: var(--color-muted);
+    font-size: var(--text-13);
+    text-align: left;
+    transition:
+      background-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard);
+  }
+  .ui-disclosure-head:hover {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+  .ui-disclosure-head > .ui-disclosure-chevron {
+    transition: rotate var(--motion-fast) var(--ease-standard);
+  }
+  .ui-disclosure-head[aria-expanded="true"] > .ui-disclosure-chevron {
+    rotate: 90deg;
+  }
+  .ui-disclosure-body {
+    padding: 4px 0 8px 20px;
+  }
+
+  /* A tooltip (Tooltips.tsx): the control's title, and its shortcut as a
+     keycap, dark on a light window and light on a dark one. */
+  .kasten-tip {
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    max-width: 280px;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: var(--radius-md);
+    background: var(--color-ink);
+    box-shadow: var(--shadow-pop);
+    color: var(--color-canvas);
+    font-size: var(--text-12);
+    line-height: 1.4;
+    pointer-events: none;
+    animation: kasten-fade var(--motion-fast) var(--ease-standard);
+  }
+  .kasten-tip kbd {
+    padding: 0 4px;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--color-canvas) 18%, transparent);
+    color: inherit;
+    font: inherit;
+    font-size: var(--text-11);
+    white-space: nowrap;
+  }
+
+  /* The modal: a dimmed window and a panel, for center peek and dialogs. */
+  .ui-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 6vh 24px 24px;
+    background: var(--color-scrim);
+    animation: kasten-fade var(--motion-fast) var(--ease-standard);
+  }
+  /* The palette and pickers sit higher, where a search box belongs. */
+  .ui-overlay.is-high {
+    padding-top: 12vh;
+  }
+  /* A small dialog: a question or a short form. */
+  .ui-dialog {
+    width: min(100%, 440px);
+    margin-top: 10vh;
+    padding: 20px 22px 16px;
+    gap: 10px;
+  }
+  .ui-dialog-title {
+    font-size: var(--text-16);
+    font-weight: 600;
+  }
+  .ui-dialog-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: var(--text-13);
+    color: var(--color-muted);
+  }
+  .ui-dialog-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .ui-modal {
+    display: flex;
+    max-height: 100%;
+    width: min(100%, 960px);
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius-2xl);
+    background: var(--color-canvas);
+    box-shadow: var(--shadow-modal);
+    outline: none;
+    animation: kasten-enter var(--motion-base) var(--ease-standard);
+  }
+}
+
+@keyframes kasten-mark-rise {
+  0%,
+  100% {
+    transform: none;
+  }
+  45%,
+  60% {
+    transform: translateY(-2.2px);
+  }
+}
+
+/* A panel's resize handle (ResizeHandle.tsx): a wide, invisible grip over
+   the panel's edge, whose line shows in the accent colour on hover, on
+   keyboard focus and while dragging. */
+.kasten-resize {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 20;
+  width: 9px;
+  cursor: col-resize;
+  outline: none;
+  touch-action: none;
+
+  &.is-right {
+    right: -5px;
+  }
+
+  &.is-left {
+    left: -5px;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 3.5px;
+    width: 2px;
+    border-radius: 1px;
+    background: transparent;
+    transition: background-color var(--motion-base) var(--ease-standard);
+  }
+
+  &:hover::after {
+    background: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    transition-delay: 120ms;
+  }
+
+  &:focus-visible::after,
+  &.is-dragging::after {
+    background: var(--color-accent);
+    transition-delay: 0ms;
+  }
+}
+
+/* While a panel is being resized, the whole window shows the resize
+   cursor and no text is selected by the drag. */
+body.kasten-resizing {
+  cursor: col-resize;
+  user-select: none;
+  -webkit-user-select: none;
+}
+

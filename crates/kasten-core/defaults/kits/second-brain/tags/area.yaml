@@ -1,0 +1,8 @@
+name: area
+color: green
+properties:
+  - {key: review, type: select, options: [Weekly, Monthly, Quarterly]}
+  - {key: status, type: select, options: [Steady, Needs attention]}
+views:
+  - {name: Areas, type: table}
+  - {name: By status, type: kanban, group_by: status}

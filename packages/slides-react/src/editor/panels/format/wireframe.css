@@ -1,0 +1,39 @@
+/* A layout drawn as boxes, in the editor's own colours: it is a diagram, not a slide. */
+.ks-wf {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ks-wf-page {
+  fill: var(--ks-canvas);
+  stroke: var(--ks-line-strong);
+  stroke-width: 1px;
+}
+.ks-wf-text {
+  fill: var(--ks-hover);
+  stroke: var(--ks-line);
+  stroke-width: 1px;
+}
+.ks-wf-image {
+  fill: var(--ks-soft);
+  stroke: var(--ks-accent);
+  stroke-width: 1px;
+  stroke-opacity: 0.6;
+}
+.ks-wf-cross {
+  fill: none;
+  stroke: var(--ks-accent);
+  stroke-width: 1px;
+  stroke-opacity: 0.5;
+}
+.ks-wf-bar {
+  stroke: var(--ks-faint);
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-opacity: 0.7;
+}
+.ks-wf-bar.is-heavy {
+  stroke: var(--ks-muted);
+  stroke-width: 3px;
+  stroke-opacity: 0.9;
+}

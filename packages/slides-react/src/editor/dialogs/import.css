@@ -1,0 +1,82 @@
+/* The dialog that imports slides from a PowerPoint file. */
+.ks-im-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 28px 16px;
+  border: 1.5px dashed var(--ks-line);
+  border-radius: 10px;
+  color: var(--ks-muted);
+  text-align: center;
+  cursor: pointer;
+}
+.ks-im-drop:hover,
+.ks-im-drop.is-over,
+.ks-im-drop:focus-within {
+  border-color: var(--ks-accent);
+  color: var(--ks-text);
+}
+.ks-im-drop input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.ks-im-summary p {
+  margin: 0 0 4px;
+}
+.ks-im-file {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-im-notes {
+  margin-top: 6px;
+  color: var(--ks-muted);
+  font-size: 12px;
+}
+.ks-im-notes ul {
+  max-height: 120px;
+  margin: 6px 0 0;
+  padding-left: 18px;
+  overflow: auto;
+}
+.ks-im-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ks-im-choice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  align-items: start;
+  cursor: pointer;
+}
+.ks-im-choice > span {
+  display: flex;
+  flex-direction: column;
+}
+.ks-im-choice small {
+  color: var(--ks-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.ks-im-run {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+.ks-im-run small {
+  display: block;
+  color: var(--ks-muted);
+  font-size: 12px;
+}
+.ks-im-error {
+  margin: 0;
+  color: var(--ks-danger, #c5221f);
+}

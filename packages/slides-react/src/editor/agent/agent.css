@@ -1,0 +1,49 @@
+/* The badges on an assistant's work: on the element in the canvas and on the slide in the filmstrip.
+   Their colour is theirs (--ks-agent), not the deck's, so they read on any slide. */
+
+.ks-editor {
+  --ks-agent: #7c4dff;
+  --ks-on-agent: #ffffff;
+}
+.ks-editor[data-theme="dark"] {
+  --ks-agent: #a58bff;
+  --ks-on-agent: #1a1230;
+}
+@media (prefers-color-scheme: dark) {
+  .ks-editor:not([data-theme="light"]):not([data-theme="dark"]) {
+    --ks-agent: #a58bff;
+    --ks-on-agent: #1a1230;
+  }
+}
+
+/* ---- on the slide */
+.ks-agent-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ks-agent-badge,
+.ks-agent-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--ks-agent);
+  color: var(--ks-on-agent);
+  box-shadow: 0 0 0 2px var(--ks-canvas), 0 1px 4px rgb(0 0 0 / 0.25);
+}
+.ks-agent-badge {
+  position: absolute;
+  transform: translateX(-100%);
+  pointer-events: auto;
+  cursor: default;
+}
+
+/* ---- on a slide in the filmstrip */
+.ks-agent-mark {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+}

@@ -1,0 +1,21 @@
+[package]
+name = "slides-wasm"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "Apache-2.0"
+publish.workspace = true
+description = "slides-core for the browser: the wasm-bindgen build the editor applies every operation through"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+slides-core.workspace = true
+slides-pptx.workspace = true
+wasm-bindgen = "0.2"
+
+[lints]
+workspace = true

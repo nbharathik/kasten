@@ -1,0 +1,185 @@
+// The vault through Tauri commands, each a one-to-one wrapper over a
+// kasten-core op (app/src-tauri/src/commands/notes.rs).
+
+import { invoke } from "@tauri-apps/api/core";
+import { listen, type UnlistenFn } from "@tauri-apps/api/event";
+
+import type { AddedAsset, AssetInfo, AssetUsage } from "./asset-types";
+import type {
+  AddedKit,
+  KitInfo,
+  AgentMark,
+  Backlink,
+  DayMention,
+  BackupStatus,
+  Emptied,
+  ImportSummary,
+  Imported,
+  BoardAdded,
+  BoardApplied,
+  BoardChange,
+  BoardInfo,
+  BoardView,
+  ChangedFile,
+  CommitInfo,
+  DeckFile,
+  DeckInfo,
+  DeckSaved,
+  Highlight,
+  Hit,
+  NewNote,
+  NoteFile,
+  NoteMeta,
+  Placed,
+  NoteStats,
+  Proposal,
+  RelatedNote,
+  Renamed,
+  Saved,
+  SessionInfo,
+  SourceHighlights,
+  SourceInfo,
+  TagSchema,
+  TaskRow,
+  Trashed,
+  Undone,
+  VaultClient,
+  VaultConfig,
+  VaultEvents,
+  VaultRestore,
+  VaultStatus,
+  VerifyReport,
+} from "./types";
+
+/** The runtime's events (app/src-tauri/src/runtime.rs). */
+function watchVault(events: VaultEvents): () => void {
+  const stops: Promise<UnlistenFn>[] = [
+    listen<string[]>("vault-changed", (e) => events.changed(e.payload)),
+    listen("vault-committed", () => events.committed()),
+    listen<string>("vault-error", (e) => events.error(e.payload)),
+  ];
+  return () => stops.forEach((stop) => void stop.then((fn) => fn(), () => {}));
+}
+
+export function tauriVault(label: string): VaultClient {
+  return {
+    kind: "vault",
+    label,
+    list: () => invoke<NoteMeta[]>("list_notes"),
+    notesAt: (paths) => invoke<NoteMeta[]>("notes_at", { paths }),
+    missingTemplates: () => invoke<string[]>("missing_templates"),
+    kits: () => invoke<KitInfo[]>("list_kits"),
+    addKit: (id) => invoke<AddedKit>("add_kit", { id }),
+    saveAsTemplate: (path, name) => invoke<NoteFile>("save_as_template", { path, name }),
+    addStarterTemplates: () => invoke<string[]>("add_starter_templates"),
+    addTour: () => invoke<string>("add_tour"),
+    read: (path) => invoke<NoteFile>("read_note", { path }),
+    create: ({ tags, props, body, ...note }: NewNote) => invoke<NoteFile>("create_note", { new: note, body: body ?? null, tags: tags ?? [], props: props ?? {} }),
+    saveBody: (path, body, baseHash) => invoke<Saved>("save_note_body", { path, body, baseHash }),
+    setMeta: (path, key, value) => invoke<NoteFile>("set_note_meta", { path, key, value }),
+    rename: (path, title) => invoke<Renamed>("rename_note", { path, title }),
+    move: (path, project) => invoke<Placed>("move_note", { path, project }),
+    moveToInbox: (path) => invoke<Placed>("move_to_inbox", { path }),
+    nest: (path, parent) => invoke<Placed>("nest_note", { path, parent }),
+    convert: (path, kind) => invoke<Placed>("convert_note", { path, kind }),
+    duplicate: (path) => invoke<NoteFile>("duplicate_note", { path }),
+    trash: (path) => invoke<string>("trash_note", { path }),
+    journal: (date) => invoke<NoteFile>("journal_day", { date }),
+    applyTemplate: (path, template, date) => invoke<NoteFile>("apply_template", { path, template, date }),
+    search: (query, limit) => invoke<Hit[]>("search_notes", { query, limit }),
+    backlinks: (path) => invoke<Backlink[]>("note_backlinks", { path }),
+    listTrash: () => invoke<Trashed[]>("list_trash"),
+    readTrashed: (trashed) => invoke<string>("read_trashed", { trashed }),
+    emptyTrash: () => invoke<Emptied>("empty_trash"),
+    restore: (trashed) => invoke<NoteFile>("restore_note", { trashed }),
+    restoreBoard: (trashed) => invoke<string>("restore_board", { trashed }),
+    restoreDeck: (trashed) => invoke<string>("restore_deck", { trashed }),
+    capture: (markdown, tags, project) => invoke<NoteFile>("capture_note", { markdown, tags, project: project ?? null }),
+    mentions: (title, path) => invoke<Backlink[]>("note_mentions", { title, path }),
+    dayMentions: (from, to) => invoke<DayMention[]>("day_mentions", { from, to }),
+    related: (path, limit) => invoke<RelatedNote[]>("related_notes", { path, limit }),
+    tasks: () => invoke<TaskRow[]>("list_tasks"),
+    history: (path, limit) => invoke<CommitInfo[]>("note_history", { path, limit }),
+    version: (rev, path) => invoke<string | null>("note_version", { rev, path }),
+    restoreVersion: (path, rev) => invoke<NoteFile>("restore_version", { path, rev }),
+    restoreVault: (rev) => invoke<VaultRestore>("restore_vault", { rev }),
+    commitEdits: () => invoke<string | null>("commit_edits"),
+    status: () => invoke<VaultStatus>("vault_status"),
+    startHistory: () => invoke<void>("start_history"),
+    pushNow: () => invoke<BackupStatus>("push_now"),
+    getConfig: () => invoke<VaultConfig>("get_config"),
+    setConfig: (config) => invoke<void>("set_config", { config }),
+    verify: () => invoke<VerifyReport>("verify_vault"),
+    noteStats: () => invoke<NoteStats[]>("note_stats"),
+    tagSchemas: () => invoke<TagSchema[]>("tag_schemas"),
+    setTagViews: (tag, views) => invoke<TagSchema>("set_tag_views", { tag, views }),
+    setTagProperties: (tag, properties) => invoke<TagSchema>("set_tag_properties", { tag, properties }),
+    // The bytes go as the request's body; header values are ASCII, hence the escaping.
+    saveAsset: (name, bytes) => invoke<string>("save_asset", bytes, { headers: { "x-name": encodeURIComponent(name) } }),
+    saveDownload: (name, bytes) => invoke<string>("save_download", bytes, { headers: { "x-name": encodeURIComponent(name) } }),
+    readAsset: async (path) => new Uint8Array(await invoke<ArrayBuffer>("read_asset", { path })),
+    addAsset: (name, bytes, meta) => invoke<AddedAsset>("add_asset", bytes, { headers: { "x-name": encodeURIComponent(name), ...(meta ? { "x-meta": encodeURIComponent(JSON.stringify(meta)) } : {}) } }),
+    assets: () => invoke<AssetInfo[]>("list_assets"),
+    asset: (path) => invoke<AssetInfo>("asset_info", { path }),
+    setAssetMeta: (path, edit) => invoke<AssetInfo>("set_asset_meta", { path, edit }),
+    // An empty answer means the picture has no thumbnail (a vector picture): the caller shows the original.
+    assetThumb: async (path, size) => {
+      const bytes = new Uint8Array(await invoke<ArrayBuffer>("asset_thumb", { path, size }));
+      return bytes.length > 0 ? bytes : undefined;
+    },
+    assetUsage: (path) => invoke<AssetUsage>("asset_usage", { path }),
+    assetsUsage: () => invoke<Record<string, AssetUsage>>("assets_usage"),
+    importSource: (name, bytes) => invoke<string>("import_source", bytes, { headers: { "x-name": encodeURIComponent(name) } }),
+    readSource: async (path) => new Uint8Array(await invoke<ArrayBuffer>("read_source", { path })),
+    sources: () => invoke<SourceInfo[]>("list_sources"),
+    highlights: (source) => invoke<Highlight[]>("source_highlights", { source }),
+    allHighlights: () => invoke<SourceHighlights[]>("all_highlights"),
+    addHighlight: (source, highlight) => invoke<Highlight>("add_highlight", { source, highlight }),
+    editHighlight: (source, id, edit) => invoke<Highlight>("edit_highlight", { source, id, edit }),
+    removeHighlight: (source, id) => invoke<void>("remove_highlight", { source, id }),
+    highlightCard: (source, id, date) => invoke<NoteFile>("highlight_card", { source, id, date }),
+    updateProps: (path, props) => invoke<NoteFile>("update_props", { path, props }),
+    setTags: (path, add, remove) => invoke<NoteFile>("set_tags", { path, add, remove }),
+    replaceSection: (path, heading, markdown) => invoke<NoteFile>("replace_section", { path, heading, markdown }),
+    append: (path, markdown, heading) => invoke<NoteFile>("append_note", { path, markdown, heading: heading ?? null }),
+    boards: () => invoke<BoardInfo[]>("list_boards"),
+    board: (path) => invoke<BoardView>("read_board", { path }),
+    createBoard: (title, project) => invoke<string>("create_board", { title, project }),
+    addToBoard: (board, notes, layout, positions) => invoke<BoardAdded>("add_to_board", { board, notes, layout, positions }),
+    addSticky: (board, text, at) => invoke<string>("add_sticky", { board, text, at }),
+    connect: (board, from, to, label) => invoke<string>("connect_nodes", { board, from, to, label }),
+    group: (board, nodes, label) => invoke<string>("group_nodes", { board, nodes, label }),
+    boardApply: (board, changes) => invoke<BoardApplied>("board_apply", { board, changes: changes.map(wholePixels) }),
+    boardsWith: (path) => invoke<BoardInfo[]>("boards_with", { path }),
+    decks: () => invoke<DeckInfo[]>("list_decks"),
+    deck: (path) => invoke<DeckFile>("read_deck", { path }),
+    references: () => invoke<string>("references"),
+    createDeck: (title, project, text) => invoke<string>("create_deck", { title, project, text }),
+    saveDeck: (path, text, baseHash) => invoke<DeckSaved>("save_deck", { path, text, baseHash }),
+    proposals: () => invoke<Proposal[]>("list_proposals"),
+    acceptProposal: (id) => invoke<unknown>("accept_proposal", { id }),
+    rejectProposal: (id) => invoke<void>("reject_proposal", { id }),
+    sessions: (limit) => invoke<SessionInfo[]>("list_sessions", { limit }),
+    undoSession: (session) => invoke<Undone>("undo_session", { session }),
+    planImport: (source, options) => invoke<ImportSummary>("plan_import", { source, options }),
+    importNotes: (source, options) => invoke<Imported>("import_notes", { source, options }),
+    undoCommit: (commit) => invoke<Undone>("undo_commit", { commit }),
+    clipUrl: (url) => invoke<NoteFile>("clip_url", { url }),
+    trustSession: (session, minutes) => invoke<void>("trust_session", { session, minutes }),
+    commitChanges: (rev) => invoke<ChangedFile[]>("commit_changes", { rev }),
+    agentMarks: (path) => invoke<AgentMark[]>("agent_marks", { path }),
+    acceptAgentMarks: (path) => invoke<void>("accept_agent_marks", { path }),
+    agentMarked: (paths) => invoke<string[]>("agent_marked", { paths }),
+    watch: watchVault,
+  };
+}
+
+/** The core places nodes on whole pixels. */
+function wholePixels(change: BoardChange): BoardChange {
+  const out: Record<string, unknown> = { ...change };
+  for (const key of ["x", "y", "width", "height"]) {
+    const value = out[key];
+    if (typeof value === "number") out[key] = Math.round(value);
+  }
+  return out as BoardChange;
+}

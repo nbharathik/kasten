@@ -1,0 +1,60 @@
+/* The assistant tab in the editor's side panel: Kasten's chat, made to fill it. */
+.ks-sp-body:has(> .ks-ai),
+.ks-sp-body:has(> .ks-ai-note) {
+  overflow: hidden;
+}
+.ks-ai {
+  height: 100%;
+}
+.ks-ai .kasten-chat-head {
+  min-height: 40px;
+  padding: 4px 8px 4px 14px;
+}
+.ks-ai .kasten-chat-foot {
+  padding: 0 8px 8px;
+}
+
+/* What the assistant made that nobody has accepted: a line above the message box. */
+.ks-ai-review {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  margin: 0 8px 8px;
+  padding: 7px 8px 7px 10px;
+  border-radius: var(--radius-xl);
+  background: var(--kasten-agent-bg);
+  color: var(--kasten-agent);
+  font-size: var(--text-13);
+  line-height: 1.3;
+}
+.ks-ai-review > svg {
+  flex: none;
+}
+.ks-ai-review > span {
+  flex: 1;
+  min-width: 0;
+}
+.ks-ai-review button {
+  flex: none;
+  height: 26px;
+  padding: 0 10px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--kasten-agent);
+  color: var(--notion-bg);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ks-ai-review button:focus-visible {
+  outline: 2px solid var(--kasten-agent);
+  outline-offset: 2px;
+}
+
+.ks-ai-note {
+  padding: 24px 20px;
+  color: var(--notion-text-2);
+  font-size: var(--text-13);
+  line-height: 1.5;
+}

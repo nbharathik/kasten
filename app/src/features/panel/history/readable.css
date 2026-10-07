@@ -1,0 +1,122 @@
+/* A version's text for reading (ReadableText.tsx): the page's blocks,
+   small, with nothing to click. */
+.kasten-readable {
+  & > :first-child {
+    margin-top: 0;
+  }
+
+  & p {
+    margin: 0 0 8px;
+  }
+
+  & h3,
+  & h4,
+  & h5 {
+    margin: 14px 0 6px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  & h3 {
+    font-size: var(--text-16);
+  }
+
+  & h4 {
+    font-size: var(--text-14);
+  }
+
+  & h5 {
+    font-size: var(--text-13);
+  }
+
+  & .kasten-readable-item {
+    position: relative;
+    margin: 0 0 3px;
+
+    &.is-done {
+      color: var(--notion-text-2);
+      text-decoration: line-through;
+      text-decoration-color: var(--notion-line);
+    }
+  }
+
+  & .kasten-readable-mark {
+    position: absolute;
+    margin-left: -20px;
+    width: 16px;
+    color: var(--notion-text-2);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  & blockquote {
+    margin: 0 0 8px;
+    padding: 2px 0 2px 10px;
+    border-left: 3px solid var(--notion-line);
+    color: var(--notion-text-2);
+
+    &.is-callout {
+      padding: 8px 10px;
+      border-left: 0;
+      border-radius: var(--radius-lg);
+      background: var(--notion-hover);
+      color: var(--notion-text);
+    }
+
+    & .kasten-readable-title {
+      display: block;
+    }
+
+    & p {
+      margin: 2px 0 0;
+    }
+  }
+
+  & code,
+  & pre {
+    border-radius: var(--radius-sm);
+    background: var(--notion-code-bg);
+    font-family: var(--notion-font-code);
+    font-size: 0.88em;
+  }
+
+  & code {
+    padding: 1px 4px;
+  }
+
+  & pre {
+    margin: 0 0 8px;
+    padding: 8px 10px;
+    white-space: pre-wrap;
+  }
+
+  & hr {
+    margin: 12px 0;
+    border: 0;
+    border-top: 1px solid var(--notion-line);
+  }
+
+  & table {
+    margin: 0 0 8px;
+    border-collapse: collapse;
+    font-size: var(--text-13);
+  }
+
+  & th,
+  & td {
+    padding: 3px 8px;
+    border: 1px solid var(--notion-line);
+    text-align: left;
+  }
+
+  & th {
+    font-weight: 600;
+  }
+
+  & .kasten-readable-link {
+    color: var(--notion-text);
+    text-decoration: underline;
+    text-decoration-color: var(--notion-line);
+    text-underline-offset: 2px;
+  }
+}

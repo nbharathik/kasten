@@ -1,0 +1,382 @@
+/* The PDF reader: its bar, the pages in one scroll (paper stays white in
+   dark mode, as a printed page does), highlights as marker ink, the bars a
+   selection and a highlight open, and the side list. The text layer rules
+   follow pdf.js's own (web/pdf_viewer.css), which its TextLayer expects. */
+
+@import "./reader-marks.css";
+
+.kasten-reader {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--color-panel);
+}
+
+/* The bar */
+
+.kasten-reader-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  height: 46px;
+  padding: 0 14px 0 18px;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-canvas);
+}
+
+.kasten-reader-icon {
+  font-size: var(--text-16);
+}
+
+.kasten-reader-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--text-14);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-reader-where {
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+button.kasten-reader-where {
+  padding: 2px 6px;
+  border-radius: var(--radius-md);
+
+  &:hover {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+}
+
+.kasten-reader-page-input {
+  width: 3.5em;
+  height: 24px;
+  padding: 0 4px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  text-align: center;
+}
+
+/* The PDF's outline: its chapters, each with its page. */
+.kasten-reader-outline {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 4px;
+
+  & button {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 5px 10px;
+    border-radius: var(--radius-md);
+    font-size: var(--text-13);
+    text-align: left;
+
+    &:hover,
+    &:focus-visible {
+      background: var(--color-hover);
+    }
+
+    & > span:first-child {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+.kasten-reader-outline-page {
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Find in the PDF, over the pages' top right. */
+.kasten-reader-find {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-canvas);
+  box-shadow: var(--shadow-card);
+
+  & input {
+    width: 200px;
+    height: 26px;
+    padding: 0 8px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font-size: var(--text-13);
+  }
+}
+
+.kasten-reader-find-count {
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  white-space: nowrap;
+}
+
+.kasten-reader-zoom {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: var(--radius-lg);
+  background: var(--color-hover);
+
+  & button {
+    min-width: 28px;
+    height: 26px;
+    padding: 0 6px;
+    border-radius: var(--radius-lg);
+    color: var(--color-muted);
+    font-size: var(--text-13);
+    font-variant-numeric: tabular-nums;
+
+    &:hover:not(:disabled) {
+      background: var(--color-canvas);
+      color: var(--color-ink);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+    }
+  }
+
+  & .kasten-reader-scale {
+    min-width: 50px;
+    font-size: var(--text-12);
+    font-weight: 550;
+
+    &[aria-pressed="true"] {
+      color: var(--color-accent);
+    }
+  }
+}
+
+.kasten-reader-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  font-weight: 550;
+
+  & span {
+    min-width: 18px;
+    padding: 0 5px;
+    border-radius: 99px;
+    background: var(--color-hover);
+    font-size: var(--text-12);
+  }
+
+  &:hover,
+  &[aria-pressed="true"] {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+}
+
+/* The pages */
+
+.kasten-reader-body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.kasten-reader-pages {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 22px 28px 60px;
+  overscroll-behavior: contain;
+}
+
+.kasten-reader-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.kasten-reader-note {
+  margin: 80px auto;
+  max-width: 420px;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  text-align: center;
+}
+
+.kasten-pdf-page {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(15 15 15 / 0.06),
+    0 2px 6px rgb(15 15 15 / 0.08),
+    0 12px 32px -12px rgb(15 15 15 / 0.18);
+}
+
+.kasten-pdf-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.kasten-pdf-page-number {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgb(15 15 15 / 0.2);
+  font-size: var(--text-28);
+  font-weight: 600;
+}
+
+/* Highlights: ink under the text, clicks go to the text layer. */
+
+.kasten-pdf-marks {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.kasten-pdf-mark {
+  position: absolute;
+  border-radius: var(--radius-xs);
+  background: var(--hl-yellow);
+
+  &.is-green {
+    background: var(--hl-green);
+  }
+
+  &.is-blue {
+    background: var(--hl-blue);
+  }
+
+  &.is-pink {
+    background: var(--hl-pink);
+  }
+
+  &.is-purple {
+    background: var(--hl-purple);
+  }
+
+  &.is-flashing {
+    animation: kasten-pdf-flash 1.6s ease-out;
+  }
+}
+
+@keyframes kasten-pdf-flash {
+  0%,
+  45% {
+    box-shadow: 0 0 0 3px rgb(10 132 255 / 0.55);
+    filter: saturate(2);
+  }
+}
+
+:root[data-motion="off"] {
+  .kasten-pdf-mark.is-flashing {
+    animation-duration: 3s;
+  }
+}
+
+/* pdf.js's text layer: transparent text laid over the picture. */
+
+.kasten-pdf-text.textLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: clip;
+  line-height: 1;
+  text-align: initial;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+
+  & :is(span, br) {
+    position: absolute;
+    color: transparent;
+    white-space: pre;
+    cursor: text;
+    transform-origin: 0% 0%;
+    user-select: text;
+  }
+
+  & > :not(.markedContent),
+  & .markedContent span:not(.markedContent) {
+    z-index: 1;
+    --font-height: 0;
+    font-size: calc(var(--text-scale-factor) * var(--font-height));
+    --scale-x: 1;
+    --rotate: 0deg;
+    transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+  }
+
+  & .markedContent {
+    display: contents;
+  }
+
+  & ::selection {
+    background: rgb(10 132 255 / 0.28);
+    color: transparent;
+  }
+
+  & br::selection {
+    background: transparent;
+  }
+
+  & .endOfContent {
+    position: absolute;
+    inset: 100% 0 0;
+    z-index: 0;
+    display: block;
+    cursor: default;
+    user-select: none;
+  }
+
+  &.selecting .endOfContent {
+    top: 0;
+  }
+}

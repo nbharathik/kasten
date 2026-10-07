@@ -1,0 +1,269 @@
+/* Callouts and toggles, drawn by their node views (blocks/*-view.ts). */
+
+.kasten-page-editor .kasten-callout {
+  --tone: var(--notion-gray-bg);
+  display: flex;
+  gap: 8px;
+  margin: 4px 0;
+  padding: 16px 16px 16px 12px;
+  border-radius: var(--radius);
+  background: var(--tone);
+
+  &[data-tone="brown"] { --tone: var(--notion-brown-bg); }
+  &[data-tone="orange"] { --tone: var(--notion-orange-bg); }
+  &[data-tone="yellow"] { --tone: var(--notion-yellow-bg); }
+  &[data-tone="green"] { --tone: var(--notion-green-bg); }
+  &[data-tone="blue"] { --tone: var(--notion-blue-bg); }
+  &[data-tone="purple"] { --tone: var(--notion-purple-bg); }
+  &[data-tone="pink"] { --tone: var(--notion-pink-bg); }
+  &[data-tone="red"] { --tone: var(--notion-red-bg); }
+
+  & .kasten-callout-icon {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    margin-top: 1px;
+    border-radius: var(--radius);
+    font-size: var(--text-20);
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+  }
+
+  & .kasten-callout-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Notion's callouts have no title; an empty one stays out of the way. */
+  & .kasten-callout-header {
+    display: none;
+  }
+
+  &.has-title .kasten-callout-header {
+    display: block;
+  }
+
+  & .kasten-callout-title {
+    width: 100%;
+    padding: 1px 2px 3px;
+    font: inherit;
+    font-weight: 600;
+    color: inherit;
+
+    &::placeholder {
+      color: var(--notion-text-3);
+    }
+  }
+
+  & .kasten-callout-body > :first-child {
+    margin-top: 0;
+  }
+
+  & .kasten-callout-body p {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+}
+
+.kasten-page-editor .kasten-toggle {
+  margin: 1px 0;
+
+  & .kasten-toggle-header {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  & .kasten-toggle-arrow {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: calc(1.5em + 6px);
+    border-radius: var(--radius);
+    color: var(--notion-text);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+
+    &::before {
+      content: "";
+      border-style: solid;
+      border-width: 5px 0 5px 8px;
+      border-color: transparent transparent transparent currentColor;
+      transition: transform var(--motion-fast) var(--ease-standard);
+    }
+  }
+
+  &.is-open > .kasten-toggle-header .kasten-toggle-arrow::before {
+    transform: rotate(90deg);
+  }
+
+  & .kasten-toggle-summary {
+    flex: 1;
+    min-width: 0;
+    padding: 3px 2px;
+    font: inherit;
+    line-height: 1.5;
+    color: inherit;
+
+    &::placeholder {
+      color: var(--notion-text-3);
+    }
+  }
+
+  & .kasten-toggle-body {
+    display: none;
+    padding-left: 26px;
+  }
+
+  &.is-open > .kasten-toggle-body {
+    display: block;
+  }
+}
+
+/* Notion's placeholder on the empty block with the caret. */
+.kasten-page-editor .ProseMirror-focused .kasten-placeholder::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  height: 0;
+  color: var(--notion-text-3);
+  pointer-events: none;
+}
+
+/* Coloured text inside the editor gets Notion's rounded highlight. */
+.kasten-page-editor .ProseMirror [data-bg_color] {
+  border-radius: var(--radius-sm);
+  padding: 0 1px;
+}
+
+/* A page shown inside another: `![[Title]]` on its own line (embed-view.ts). */
+.kasten-page-editor .kasten-embed {
+  display: block;
+  margin: 4px 0;
+  overflow: hidden;
+  border: 1px solid var(--notion-line-soft);
+  border-left: 3px solid var(--notion-line);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition:
+    border-color var(--motion-fast) var(--ease-standard),
+    box-shadow var(--motion-fast) var(--ease-standard);
+
+  &:hover {
+    border-color: var(--notion-line);
+    box-shadow: 0 1px 4px rgb(15 15 15 / 0.06);
+
+    & .kasten-embed-open {
+      opacity: 1;
+    }
+  }
+
+  &.ProseMirror-selectednode {
+    box-shadow: 0 0 0 2px var(--notion-selection);
+  }
+
+  & .kasten-embed-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--notion-line-soft);
+    color: var(--notion-text-2);
+    font-size: var(--text-14);
+    font-weight: 600;
+  }
+
+  & .kasten-embed-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--notion-text);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & .kasten-embed-open {
+    font-size: var(--text-12);
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity var(--motion-fast) var(--ease-standard);
+  }
+
+  & .kasten-embed-body {
+    max-height: 480px;
+    overflow: auto;
+    padding: 2px 14px 8px;
+    font-size: 0.95em;
+
+    & > :first-child {
+      margin-top: 4px;
+    }
+
+    & img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+    }
+
+    /* The page draws bullets and boxes with node views; here the lists
+       are plain HTML. */
+    & ul,
+    & ol {
+      margin: 2px 0;
+      padding-left: 1.5em;
+    }
+
+    & li[data-list-type="bullet"] {
+      list-style: disc;
+    }
+
+    & li[data-list-type="ordered"] {
+      list-style: decimal;
+    }
+
+    & li[data-item-type="task"] {
+      list-style: none;
+
+      &::before {
+        content: "☐";
+        display: inline-block;
+        width: 1.3em;
+        margin-left: -1.3em;
+        color: var(--notion-text-2);
+      }
+
+      &[data-checked="true"]::before {
+        content: "☑";
+      }
+
+      &[data-checked="true"] > p {
+        color: var(--notion-text-3);
+        text-decoration: line-through;
+      }
+    }
+
+    & li > p {
+      display: inline;
+      margin: 0;
+    }
+  }
+
+  & .kasten-embed-note {
+    color: var(--notion-text-3);
+    font-style: italic;
+  }
+
+  & .kasten-embed-link {
+    text-decoration: underline;
+    text-decoration-color: var(--notion-line);
+    text-underline-offset: 2px;
+  }
+}

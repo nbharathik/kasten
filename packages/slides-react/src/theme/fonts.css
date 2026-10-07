@@ -1,0 +1,101 @@
+/*
+   The open fonts the built-in themes name, bundled so a deck looks the same on every machine.
+   Inter, Lato, Roboto and Roboto Mono are the ones Google Slides also offers. Carlito, Caladea,
+   Arimo, Tinos and Cousine measure exactly like Calibri, Cambria, Arial, Times New Roman and
+   Courier New, so lines break in the same places when a deck is drawn without the originals.
+   A face is fetched only when text uses it. Latin and Latin Extended only; other scripts fall
+   back to the system.
+*/
+
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-ext-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-ext-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/latin-ext-600.css";
+@import "@fontsource/inter/latin-700.css";
+@import "@fontsource/inter/latin-ext-700.css";
+@import "@fontsource/inter/latin-400-italic.css";
+@import "@fontsource/inter/latin-ext-400-italic.css";
+@import "@fontsource/inter/latin-700-italic.css";
+@import "@fontsource/inter/latin-ext-700-italic.css";
+@import "@fontsource/lato/latin-400.css";
+@import "@fontsource/lato/latin-ext-400.css";
+@import "@fontsource/lato/latin-700.css";
+@import "@fontsource/lato/latin-ext-700.css";
+@import "@fontsource/lato/latin-400-italic.css";
+@import "@fontsource/lato/latin-ext-400-italic.css";
+@import "@fontsource/lato/latin-700-italic.css";
+@import "@fontsource/lato/latin-ext-700-italic.css";
+@import "@fontsource/roboto/latin-400.css";
+@import "@fontsource/roboto/latin-ext-400.css";
+@import "@fontsource/roboto/latin-500.css";
+@import "@fontsource/roboto/latin-ext-500.css";
+@import "@fontsource/roboto/latin-700.css";
+@import "@fontsource/roboto/latin-ext-700.css";
+@import "@fontsource/roboto/latin-400-italic.css";
+@import "@fontsource/roboto/latin-ext-400-italic.css";
+@import "@fontsource/roboto/latin-700-italic.css";
+@import "@fontsource/roboto/latin-ext-700-italic.css";
+@import "@fontsource/roboto-mono/latin-400.css";
+@import "@fontsource/roboto-mono/latin-ext-400.css";
+@import "@fontsource/roboto-mono/latin-700.css";
+@import "@fontsource/roboto-mono/latin-ext-700.css";
+@import "@fontsource/roboto-mono/latin-400-italic.css";
+@import "@fontsource/roboto-mono/latin-ext-400-italic.css";
+@import "@fontsource/roboto-mono/latin-700-italic.css";
+@import "@fontsource/roboto-mono/latin-ext-700-italic.css";
+@import "@fontsource/carlito/latin-400.css";
+@import "@fontsource/carlito/latin-ext-400.css";
+@import "@fontsource/carlito/latin-700.css";
+@import "@fontsource/carlito/latin-ext-700.css";
+@import "@fontsource/carlito/latin-400-italic.css";
+@import "@fontsource/carlito/latin-ext-400-italic.css";
+@import "@fontsource/carlito/latin-700-italic.css";
+@import "@fontsource/carlito/latin-ext-700-italic.css";
+@import "@fontsource/caladea/latin-400.css";
+@import "@fontsource/caladea/latin-ext-400.css";
+@import "@fontsource/caladea/latin-700.css";
+@import "@fontsource/caladea/latin-ext-700.css";
+@import "@fontsource/caladea/latin-400-italic.css";
+@import "@fontsource/caladea/latin-ext-400-italic.css";
+@import "@fontsource/caladea/latin-700-italic.css";
+@import "@fontsource/caladea/latin-ext-700-italic.css";
+@import "@fontsource/arimo/latin-400.css";
+@import "@fontsource/arimo/latin-ext-400.css";
+@import "@fontsource/arimo/latin-700.css";
+@import "@fontsource/arimo/latin-ext-700.css";
+@import "@fontsource/arimo/latin-400-italic.css";
+@import "@fontsource/arimo/latin-ext-400-italic.css";
+@import "@fontsource/arimo/latin-700-italic.css";
+@import "@fontsource/arimo/latin-ext-700-italic.css";
+@import "@fontsource/tinos/latin-400.css";
+@import "@fontsource/tinos/latin-ext-400.css";
+@import "@fontsource/tinos/latin-700.css";
+@import "@fontsource/tinos/latin-ext-700.css";
+@import "@fontsource/tinos/latin-400-italic.css";
+@import "@fontsource/tinos/latin-ext-400-italic.css";
+@import "@fontsource/tinos/latin-700-italic.css";
+@import "@fontsource/tinos/latin-ext-700-italic.css";
+@import "@fontsource/cousine/latin-400.css";
+@import "@fontsource/cousine/latin-ext-400.css";
+@import "@fontsource/cousine/latin-700.css";
+@import "@fontsource/cousine/latin-ext-700.css";
+@import "@fontsource/cousine/latin-400-italic.css";
+@import "@fontsource/cousine/latin-ext-400-italic.css";
+@import "@fontsource/cousine/latin-700-italic.css";
+@import "@fontsource/cousine/latin-ext-700-italic.css";
+
+/* Names the themes fall back on, drawn with the open font that measures the same, unless the system has the original. */
+@font-face { font-family: "Liberation Mono"; font-weight: 400; font-style: normal; font-display: swap; src: local("Liberation Mono"), url("../../node_modules/@fontsource/cousine/files/cousine-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Mono"; font-weight: 700; font-style: normal; font-display: swap; src: local("Liberation Mono"), url("../../node_modules/@fontsource/cousine/files/cousine-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Mono"; font-weight: 400; font-style: italic; font-display: swap; src: local("Liberation Mono"), url("../../node_modules/@fontsource/cousine/files/cousine-latin-400-italic.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Mono"; font-weight: 700; font-style: italic; font-display: swap; src: local("Liberation Mono"), url("../../node_modules/@fontsource/cousine/files/cousine-latin-700-italic.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Sans"; font-weight: 400; font-style: normal; font-display: swap; src: local("Liberation Sans"), url("../../node_modules/@fontsource/arimo/files/arimo-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Sans"; font-weight: 700; font-style: normal; font-display: swap; src: local("Liberation Sans"), url("../../node_modules/@fontsource/arimo/files/arimo-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Sans"; font-weight: 400; font-style: italic; font-display: swap; src: local("Liberation Sans"), url("../../node_modules/@fontsource/arimo/files/arimo-latin-400-italic.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Sans"; font-weight: 700; font-style: italic; font-display: swap; src: local("Liberation Sans"), url("../../node_modules/@fontsource/arimo/files/arimo-latin-700-italic.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Serif"; font-weight: 400; font-style: normal; font-display: swap; src: local("Liberation Serif"), url("../../node_modules/@fontsource/tinos/files/tinos-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Serif"; font-weight: 700; font-style: normal; font-display: swap; src: local("Liberation Serif"), url("../../node_modules/@fontsource/tinos/files/tinos-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Serif"; font-weight: 400; font-style: italic; font-display: swap; src: local("Liberation Serif"), url("../../node_modules/@fontsource/tinos/files/tinos-latin-400-italic.woff2") format("woff2"); }
+@font-face { font-family: "Liberation Serif"; font-weight: 700; font-style: italic; font-display: swap; src: local("Liberation Serif"), url("../../node_modules/@fontsource/tinos/files/tinos-latin-700-italic.woff2") format("woff2"); }

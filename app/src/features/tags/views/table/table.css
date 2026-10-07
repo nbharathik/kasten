@@ -1,0 +1,307 @@
+/* The table view: a grid with a sticky header and a sticky title column,
+   rows of one height (so they can be windowed), cells edited in place, and
+   the menus beside them. Every column reads its width from one variable on
+   the grid, so resizing redraws no row. Light and dark follow the theme. */
+
+/* With a table, the database fills the pane: the table scrolls inside it,
+   its header in view, instead of the whole page scrolling. */
+.kasten-tagdb:has(> .kasten-tagdb-body > .kasten-table) {
+  height: 100%;
+}
+
+/* Option colours come from the page palette (tokens.css). */
+:root[data-theme="dark"] :is(.kasten-table, .kasten-table-pop) {
+  --edge-shade: rgb(0 0 0 / 0.45);
+}
+
+.kasten-table {
+  --row-h: 36px;
+  --head-h: 36px;
+  --cell-line: color-mix(in srgb, var(--color-line) 88%, transparent);
+  --row-bg: var(--color-canvas);
+  --row-hover: color-mix(in srgb, var(--color-ink) 3.5%, var(--color-canvas));
+  --edge-shade: rgb(15 15 15 / 0.08);
+
+  display: flex;
+  flex-direction: column;
+  /* Content-high, up to the room there is; never squeezed below a few rows. */
+  max-height: max(100%, 300px);
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--color-canvas);
+  box-shadow: var(--shadow-card);
+}
+
+.kasten-table-scroll {
+  position: relative;
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: auto;
+  outline: none;
+  overscroll-behavior: contain;
+  font-size: var(--text-13);
+}
+
+.kasten-table-head,
+.kasten-table-row {
+  display: grid;
+  grid-template-columns: var(--kasten-table-cols);
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Header */
+
+.kasten-table-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  height: var(--head-h);
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-panel);
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  transition: box-shadow var(--motion-base);
+
+  .kasten-table-scroll[data-scrolled-y] & {
+    box-shadow: 0 6px 14px -12px rgb(15 15 15 / 0.35);
+  }
+}
+
+.kasten-table-th {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  border-right: 1px solid var(--cell-line);
+  background: var(--color-panel);
+
+  &.is-title {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+  }
+}
+
+.kasten-table-th-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  padding: 0 10px;
+  font-weight: 500;
+  text-align: left;
+  transition:
+    background-color var(--motion-fast),
+    color var(--motion-fast);
+
+  &:hover,
+  .kasten-table-th.is-open & {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+
+  &:focus-visible {
+    outline-offset: -2px;
+  }
+
+  & .is-sort {
+    color: var(--color-accent);
+  }
+}
+
+.kasten-table-th-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-table-glyph {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.kasten-table-aa {
+  flex: none;
+  width: 14px;
+  font-size: var(--text-11);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+/* The edge to drag for a column's width. */
+.kasten-table-resize {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  bottom: 0;
+  z-index: 1;
+  width: 8px;
+  outline: none;
+  cursor: col-resize;
+  touch-action: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 3px;
+    width: 2px;
+    border-radius: var(--radius-xs);
+    background: var(--color-accent);
+    opacity: 0;
+    transition: opacity var(--motion-fast);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+  }
+
+  /* While dragging, the line runs down the whole column (the table clips it). */
+  &.is-dragging::after {
+    top: 0;
+    bottom: auto;
+    height: 100vh;
+    border-radius: 0;
+    opacity: 1;
+    transition: none;
+  }
+}
+
+body.kasten-table-resizing,
+body.kasten-table-resizing * {
+  cursor: col-resize !important;
+  user-select: none;
+}
+
+.kasten-table-fill {
+  min-width: 0;
+
+  .kasten-table-head > & {
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+  }
+}
+
+.kasten-table-add-col {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+  transition:
+    background-color var(--motion-fast),
+    color var(--motion-fast);
+
+  &:hover,
+  &[aria-expanded="true"] {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+}
+
+/* Rows and cells */
+
+.kasten-table-row {
+  --cell-bg: var(--row-bg);
+  height: var(--row-h);
+  border-bottom: 1px solid var(--cell-line);
+  background: var(--cell-bg);
+
+  &:hover {
+    --cell-bg: var(--row-hover);
+  }
+
+  /* A row just added glows for a moment. */
+  &.is-fresh,
+  &.is-fresh > .kasten-table-cell.is-title {
+    animation: kasten-table-fresh 1.6s ease-out;
+  }
+}
+
+@keyframes kasten-table-fresh {
+  from,
+  35% {
+    background-color: color-mix(in srgb, var(--color-accent) 14%, var(--color-canvas));
+  }
+}
+
+.kasten-table-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 0 10px;
+  overflow: hidden;
+  border-right: 1px solid var(--cell-line);
+  white-space: nowrap;
+  cursor: default;
+
+  /* Only the active or edited cell draws its ring. */
+  &.is-active,
+  &.is-editing {
+    box-shadow: var(--cell-ring);
+  }
+
+  &.is-active {
+    --cell-ring: inset 0 0 0 2px color-mix(in srgb, var(--color-accent) 38%, transparent);
+  }
+
+  .kasten-table-scroll:focus &.is-active {
+    --cell-ring: inset 0 0 0 2px var(--color-accent);
+  }
+
+  &.is-editing {
+    --cell-ring: inset 0 0 0 2px var(--color-accent);
+    z-index: 2;
+  }
+
+  &.is-number {
+    justify-content: flex-end;
+  }
+
+  &.is-field {
+    color: var(--color-muted);
+    font-size: var(--text-13);
+  }
+}
+
+/* The title sticks to the left, over the cells scrolling under it. */
+.kasten-table-cell.is-title {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  gap: 8px;
+  /* Its title cuts itself short; the edge below reaches past the cell. */
+  overflow: visible;
+  background: var(--cell-bg);
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover .kasten-table-title {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-ink) 35%, transparent);
+    text-underline-offset: 3px;
+  }
+}
+
+/* Once scrolled across, a soft edge beside the title column: one strip per
+   row, so the rows make one unbroken edge. */
+.kasten-table-scroll[data-scrolled-x] :is(.kasten-table-cell.is-title, .kasten-table-th.is-title)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -11px;
+  bottom: -1px;
+  width: 10px;
+  background: linear-gradient(to right, var(--edge-shade), transparent);
+  pointer-events: none;
+}

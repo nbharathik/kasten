@@ -1,0 +1,45 @@
+// The window's title names what the focused pane shows, as "Trip plan ·
+// Kasten", so the taskbar, window switchers and screen readers tell
+// windows and pages apart.
+
+import { useEffect } from "react";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+
+import { useBoards } from "../features/boards/store";
+import { isDraft } from "../features/workspace/drafts";
+import { titleOf } from "../features/workspace/names";
+import { useWorkspace, type Place } from "../features/workspace/store";
+import { noteAt } from "../features/workspace/tree";
+import { inTauri } from "../lib/api";
+import type { BoardInfo, NoteMeta } from "../lib/vault/types";
+import { findNav } from "./nav";
+
+const APP = "Kasten";
+
+/** What the title says for `place`. */
+export function titleFor(place: Place, notes: readonly NoteMeta[], boards: readonly BoardInfo[]): string {
+  let what: string;
+  if (place.view === "page" && place.path) {
+    const note = noteAt(notes, place.path);
+    what = note ? titleOf(note) : isDraft(place.path) ? "New page" : "";
+  } else if (place.view === "boards" && place.path) {
+    what = boards.find((b) => b.path === place.path)?.title ?? "";
+  } else if (place.view === "home") {
+    what = "Home";
+  } else {
+    what = findNav(place.view as never)?.label ?? "";
+  }
+  return what ? `${what} · ${APP}` : APP;
+}
+
+/** Keeps the window's title on the focused pane's page or view. */
+export function useWindowTitle(): void {
+  const place = useWorkspace((s) => s.place);
+  const notes = useWorkspace((s) => s.notes);
+  const boards = useBoards((s) => s.list);
+  const title = titleFor(place, notes, boards);
+  useEffect(() => {
+    document.title = title;
+    if (inTauri()) void getCurrentWindow().setTitle(title).catch(() => {});
+  }, [title]);
+}

@@ -1,0 +1,9 @@
+name: course
+color: blue
+properties:
+  - {key: term, type: text}
+  - {key: teacher, type: text}
+  - {key: status, type: select, options: [Planned, Taking, Done]}
+views:
+  - {name: Courses, type: table}
+  - {name: By status, type: kanban, group_by: status}

@@ -1,0 +1,110 @@
+/* The page's names for the window's tokens, and the text colours a page can
+   use, shared by the page, its header and the editor's menus (which live
+   under <body>). `data-theme="dark"` on <html> switches to dark
+   (features/workspace/theme.ts). */
+:root {
+  /* The page's fonts: the window's own, plus the serif and mono a page
+     can choose. */
+  --notion-font: var(--font-sans);
+  --notion-font-serif: Lyon-Text, Georgia, ui-serif, serif;
+  --notion-font-mono: iawriter-mono, Nitti, Menlo, Consolas, Courier, monospace;
+  --notion-font-code: var(--font-mono);
+
+  /* Chrome inside the page and its menus: names for the window's tokens
+     (styles.css), which already follow the theme and the accent. */
+  --notion-bg: var(--color-canvas);
+  --notion-text: var(--color-ink);
+  --notion-text-2: var(--color-muted);
+  --notion-text-3: var(--color-faint);
+  --notion-hover: var(--color-hover);
+  --notion-press: color-mix(in srgb, var(--color-ink) 14%, transparent);
+  --notion-line: var(--color-line-strong);
+  --notion-line-soft: var(--color-line);
+  --notion-accent: var(--color-accent);
+  --notion-selection: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  --notion-block-selection: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --notion-code-bg: var(--color-panel);
+  --notion-inline-code: var(--color-danger);
+  --notion-inline-code-bg: color-mix(in srgb, var(--color-muted) 15%, transparent);
+  --notion-menu-bg: var(--color-raised);
+  --notion-shadow: var(--shadow-pop);
+
+  /* Text colours a page can use: content, not chrome, so they stay
+     Notion's. */
+  --notion-gray: rgb(120 119 116);
+  --notion-brown: rgb(159 107 83);
+  --notion-orange: rgb(217 115 13);
+  --notion-yellow: rgb(203 145 47);
+  --notion-green: rgb(68 131 97);
+  --notion-blue: rgb(51 126 169);
+  --notion-purple: rgb(144 101 176);
+  --notion-pink: rgb(193 76 138);
+  --notion-red: rgb(212 76 71);
+  --notion-gray-bg: rgb(241 241 239);
+  --notion-brown-bg: rgb(244 238 238);
+  --notion-orange-bg: rgb(251 236 221);
+  --notion-yellow-bg: rgb(251 243 219);
+  --notion-green-bg: rgb(237 243 236);
+  --notion-blue-bg: rgb(231 243 248);
+  --notion-purple-bg: rgb(244 240 247 / 0.8);
+  --notion-pink-bg: rgb(249 238 243 / 0.8);
+  --notion-red-bg: rgb(253 235 236);
+  /* Not one of Notion's text colours; tag options and chips may take it. */
+  --notion-teal: rgb(38 132 128);
+  --notion-teal-bg: rgb(226 242 240);
+
+  /* An agent's writing not yet edited or accepted: the margin on its
+     blocks and its badge, on pages, board cards and library rows. Dark
+     follows from the palette. */
+  --kasten-agent: var(--notion-purple);
+  --kasten-agent-bg: var(--notion-purple-bg);
+}
+
+:root[data-theme="dark"] {
+  --notion-selection: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  --notion-block-selection: color-mix(in srgb, var(--color-accent) 20%, transparent);
+
+  --notion-gray: rgb(155 155 155);
+  --notion-brown: rgb(186 133 111);
+  --notion-orange: rgb(199 125 72);
+  --notion-yellow: rgb(202 152 73);
+  --notion-green: rgb(82 158 114);
+  --notion-blue: rgb(94 135 201);
+  --notion-purple: rgb(157 104 211);
+  --notion-pink: rgb(209 87 150);
+  --notion-red: rgb(223 84 82);
+  --notion-gray-bg: rgb(47 47 47);
+  --notion-brown-bg: rgb(74 50 40);
+  --notion-orange-bg: rgb(92 59 35);
+  --notion-yellow-bg: rgb(86 67 40);
+  --notion-green-bg: rgb(36 61 48);
+  --notion-blue-bg: rgb(20 58 78);
+  --notion-purple-bg: rgb(60 45 73);
+  --notion-pink-bg: rgb(78 44 60);
+  --notion-red-bg: rgb(82 46 42);
+  --notion-teal: rgb(78 171 163);
+  --notion-teal-bg: rgb(27 57 55);
+}
+
+/* Text and background colours: the editor's marks and the menus' swatches.
+   Backgrounds are highlights, from the app's one highlight palette. */
+.kasten-text_color-default { color: var(--notion-text); }
+.kasten-text_color-gray { color: var(--notion-gray); }
+.kasten-text_color-brown { color: var(--notion-brown); }
+.kasten-text_color-orange { color: var(--notion-orange); }
+.kasten-text_color-yellow { color: var(--notion-yellow); }
+.kasten-text_color-green { color: var(--notion-green); }
+.kasten-text_color-blue { color: var(--notion-blue); }
+.kasten-text_color-purple { color: var(--notion-purple); }
+.kasten-text_color-pink { color: var(--notion-pink); }
+.kasten-text_color-red { color: var(--notion-red); }
+.kasten-bg_color-default { background: transparent; }
+.kasten-bg_color-gray { background: var(--color-highlight-gray); }
+.kasten-bg_color-brown { background: var(--color-highlight-brown); }
+.kasten-bg_color-orange { background: var(--color-highlight-orange); }
+.kasten-bg_color-yellow { background: var(--color-highlight-yellow); }
+.kasten-bg_color-green { background: var(--color-highlight-green); }
+.kasten-bg_color-blue { background: var(--color-highlight-blue); }
+.kasten-bg_color-purple { background: var(--color-highlight-purple); }
+.kasten-bg_color-pink { background: var(--color-highlight-pink); }
+.kasten-bg_color-red { background: var(--color-highlight-red); }

@@ -1,0 +1,11 @@
+name: action
+color: red
+properties:
+  - {key: list, type: select, options: [Next, Waiting for, Someday, Done]}
+  - {key: context, type: select, options: ["@home", "@work", "@computer", "@phone", "@errands"]}
+  - {key: due, type: date}
+views:
+  - {name: Next, type: table, filter: [{key: list, op: is, value: Next}], sort: [{key: due, dir: asc}]}
+  - {name: Waiting, type: list, filter: [{key: list, op: is, value: Waiting for}]}
+  - {name: Board, type: kanban, group_by: list}
+  - {name: Due, type: calendar, date: due}

@@ -1,0 +1,187 @@
+/* The stage: the slide on a grey table, and what is drawn over it. */
+.ks-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  background: var(--ks-well);
+  outline: none;
+  display: grid;
+}
+.ks-page-wrap {
+  margin: auto;
+  padding: 24px;
+  box-sizing: content-box;
+}
+.ks-page {
+  position: relative;
+  box-shadow: var(--ks-shadow-page);
+  background: #fff;
+  touch-action: none;
+  /* A drag on the slide moves things; it must not select the words under it. */
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* The text box that is open for typing is the exception, all the way down: a press in it places the caret (a press on text that cannot
+   be selected would end the edit), a drag, a double click and a triple click select, and Shift with the arrows extends. WebKit needs the
+   prefixed name, and needs it on the editor itself: an editable inside text that cannot be selected takes no typing there. */
+.ks-page .ks-text-layer,
+.ks-page .ks-text-layer * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.ks-page-scale {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.ks-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ks-outline {
+  position: absolute;
+  border: 1.5px solid var(--ks-accent);
+  transform-origin: center;
+  pointer-events: none;
+}
+.ks-outline.is-hover {
+  border-width: 1px;
+  opacity: 0.6;
+}
+.ks-outline.is-locked {
+  border-style: dashed;
+}
+.ks-outline.is-group {
+  border-width: 1px;
+}
+.ks-handle {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  background: #fff;
+  border: 1.5px solid var(--ks-accent);
+  border-radius: 2px;
+  pointer-events: auto;
+}
+.ks-handle.ks-end {
+  border-radius: 50%;
+  cursor: crosshair;
+}
+.ks-handle.ks-rotate {
+  left: 50%;
+  top: -24px;
+  border-radius: 50%;
+  cursor: grab;
+}
+.ks-rotate-stem {
+  position: absolute;
+  left: 50%;
+  top: -24px;
+  height: 24px;
+  width: 0;
+  border-left: 1px solid var(--ks-accent);
+}
+.ks-guide {
+  position: absolute;
+  background: #e5389b;
+  pointer-events: none;
+}
+.ks-guide.is-centre {
+  background: #f0a30a;
+}
+.ks-marquee {
+  position: absolute;
+  border: 1px solid var(--ks-accent);
+  background: var(--ks-soft);
+}
+.ks-drawing {
+  position: absolute;
+  border: 1.5px dashed var(--ks-accent);
+  background: color-mix(in srgb, var(--ks-accent) 8%, transparent);
+}
+.ks-drawing-line {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+.ks-drawing-line line {
+  stroke: var(--ks-accent);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+.ks-angle {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 2px 8px;
+  border-radius: var(--ks-radius);
+  background: #262524;
+  color: #f4f3f1;
+  font-size: 12px;
+}
+.ks-editing-host {
+  position: absolute;
+  transform-origin: center;
+}
+
+/* ---- the move handle: a chip out beyond a block's top left corner, grabbed to move the block. It is drawn here over the slide, never
+   in it, so it is in no thumbnail, no presentation and no export. Its size does not follow the zoom, like the resize handles. */
+.ks-move-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ks-move {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ks-radius-md);
+  background: var(--ks-accent);
+  color: var(--ks-on-accent);
+  /* A halo in the surface's colour keeps the chip apart from whatever the slide has under it, on a light or a dark slide. */
+  box-shadow:
+    0 0 0 1.5px var(--ks-canvas),
+    0 2px 6px rgb(0 0 0 / 0.28);
+  cursor: move;
+  pointer-events: auto;
+  touch-action: none;
+  transition:
+    background var(--ks-fast),
+    box-shadow var(--ks-fast);
+}
+.ks-move > * {
+  /* The icon is not a target of its own: a press on it is a press on the handle. */
+  pointer-events: none;
+}
+.ks-move.is-dragging {
+  cursor: grabbing;
+}
+/* On a block that is not selected yet: lighter, a hint that the block can be taken by it. */
+.ks-move.is-hover {
+  background: var(--ks-canvas);
+  color: var(--ks-accent);
+  box-shadow:
+    0 0 0 1.5px var(--ks-accent),
+    0 2px 6px rgb(0 0 0 / 0.2);
+}
+.ks-move.is-hover:hover {
+  background: var(--ks-accent);
+  color: var(--ks-on-accent);
+  box-shadow:
+    0 0 0 1.5px var(--ks-canvas),
+    0 2px 6px rgb(0 0 0 / 0.28);
+}
+/* The way from the block to its handle is part of the handle, so that the pointer keeps the block hovered on the way and the
+   handle does not go out from under it. It is only for the hover: a selected block's own resize handle is under that corner. */
+.ks-move.is-hover::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}

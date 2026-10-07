@@ -1,0 +1,106 @@
+:root {
+  --home-bg: #f4f3f0;
+  --home-card: #ffffff;
+  --home-text: #1f2328;
+  --home-muted: #656d76;
+  --home-line: #d8d6d0;
+  --home-accent: #1a73e8;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --home-bg: #1c1d1f;
+    --home-card: #26282b;
+    --home-text: #e6e6e6;
+    --home-muted: #9aa0a6;
+    --home-line: #3a3d41;
+    --home-accent: #8ab4f8;
+  }
+}
+body {
+  background: var(--home-bg);
+}
+.home {
+  font: 14px/1.5 system-ui, sans-serif;
+  color: var(--home-text);
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+.home h1 {
+  font-size: 28px;
+  margin: 0;
+}
+.home header p {
+  margin: 4px 0 24px;
+  color: var(--home-muted);
+}
+.home-new {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.home-new input {
+  flex: 1;
+}
+.home input,
+.home select,
+.home button {
+  font: inherit;
+  padding: 8px 12px;
+  border: 1px solid var(--home-line);
+  border-radius: 6px;
+  background: var(--home-card);
+  color: inherit;
+}
+.home button {
+  cursor: pointer;
+}
+.home-new button {
+  background: var(--home-accent);
+  color: #fff;
+  border-color: transparent;
+}
+.home-decks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.home-decks li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--home-card);
+  border: 1px solid var(--home-line);
+  border-radius: 8px;
+  padding: 4px 8px 4px 0;
+}
+.home-decks a,
+.home-broken {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+  color: inherit;
+  text-decoration: none;
+}
+.home-decks a span,
+.home-broken em {
+  color: var(--home-muted);
+  font-size: 12px;
+}
+.home-decks a:hover strong {
+  color: var(--home-accent);
+}
+.home-decks li > button {
+  font-size: 12px;
+  padding: 4px 10px;
+}
+.home-empty,
+.home-problem {
+  color: var(--home-muted);
+}
+.home-problem {
+  color: #c5221f;
+}

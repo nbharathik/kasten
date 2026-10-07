@@ -1,0 +1,44 @@
+{
+  "logo.svg": {
+    "bytes": 179,
+    "height": 60,
+    "sha256": "96f52dd02821a9a9e08a228d88ee97ee1d4883dcbbc84357e73b49629550dea0",
+    "width": 120
+  },
+  "loop.gif": {
+    "bytes": 102,
+    "height": 16,
+    "sha256": "a00d6b48801f6326b99f7d648c29b35d8b21f6c8a7b289b5bba4eee702a89621",
+    "width": 24
+  },
+  "photo.jpg": {
+    "bytes": 3151,
+    "height": 200,
+    "sha256": "c3e94bdf238e42eaa9d165083dfdc51b9111eb48d146488e27225be85f8189a4",
+    "width": 320
+  },
+  "pixel.png": {
+    "bytes": 87,
+    "height": 3,
+    "sha256": "0c534e157fd52021e0e721f7ffa4c88c83b48f5931dc317919878f209f4c1494",
+    "width": 4
+  },
+  "still.webp": {
+    "bytes": 104,
+    "height": 32,
+    "sha256": "220b3245619863c05363da5260289c6e042570c78f910e581e5de9fbddc36bf7",
+    "width": 48
+  },
+  "viewbox.svg": {
+    "bytes": 120,
+    "height": 100,
+    "sha256": "d42b4a9e2263f4103dca04ae39ff166869d28d63b3d314259338d1e3542f4efc",
+    "width": 201
+  },
+  "wide.png": {
+    "bytes": 1405,
+    "height": 160,
+    "sha256": "9437dd634d8335825143704d4a0b3ec7827cb2a488075127aec89915544ed1f3",
+    "width": 640
+  }
+}

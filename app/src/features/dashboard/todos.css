@@ -1,0 +1,95 @@
+/* A dashboard's to-dos and its quick-note field. */
+
+.kasten-todos {
+  display: flex;
+  flex-direction: column;
+}
+.kasten-todo-list {
+  margin: 0 -4px;
+}
+.kasten-todo,
+.kasten-todo-add {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-13);
+}
+.kasten-todo:hover,
+.kasten-todo-add:focus-within {
+  background: var(--color-hover);
+}
+.kasten-todo input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-top: 2.5px;
+  accent-color: var(--color-accent);
+}
+.kasten-todo-text {
+  min-width: 0;
+  flex: 1;
+  line-height: 1.45;
+}
+.kasten-todo.is-done .kasten-todo-text {
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+.kasten-todo-due {
+  flex-shrink: 0;
+  padding: 0 6px;
+  border-radius: var(--radius-sm);
+  background: var(--color-well);
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  line-height: 19px;
+}
+.kasten-todo-due.is-late {
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+  color: var(--color-danger);
+}
+.kasten-todo-due.is-today {
+  background: var(--color-soft);
+  color: var(--color-accent);
+}
+.kasten-todo-page {
+  max-width: 40%;
+  flex-shrink: 0;
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  line-height: 19px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kasten-todo-page:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+}
+.kasten-todo-add {
+  align-items: center;
+  margin: 0 -4px 2px;
+}
+.kasten-todo-box {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  border: 1.5px dashed var(--color-line-strong);
+  border-radius: 3px;
+}
+.kasten-todo-add input {
+  min-width: 0;
+  flex: 1;
+  background: transparent;
+  font-size: var(--text-13);
+  outline: none;
+}
+.kasten-todo-add input::placeholder {
+  color: var(--color-faint);
+}
+.kasten-todo-foot {
+  display: flex;
+  gap: 14px;
+}
+

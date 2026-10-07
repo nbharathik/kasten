@@ -1,0 +1,68 @@
+/*
+ * Text on a slide. Every colour and font is written inline from the deck's
+ * theme, so nothing here picks one; these rules are only structure that
+ * inline styles cannot say, such as a pseudo-element.
+ */
+
+/* A paragraph keeps its own height: a box lets long text run past its edge and never squeezes it. */
+.ks-text .ks-p {
+  flex: none;
+  min-width: 0;
+}
+
+/*
+ * The marker of a list item, hanging in the space to the left of its text.
+ * The read-only drawing has it as a `span`, the editor as the `::before` of
+ * the paragraph (so it cannot be selected or typed into); both take the size,
+ * colour and font of the paragraph's first run from custom properties.
+ */
+.ks-text .ks-marker,
+.ks-text .ks-p[data-marker]::before {
+  display: inline-block;
+  box-sizing: border-box;
+  min-width: var(--ks-indent);
+  /* A number as wide as the hanging space still leaves room before its text. */
+  padding-right: 0.2em;
+  text-indent: 0;
+  white-space: nowrap;
+  font-family: var(--ks-marker-family);
+  font-size: var(--ks-marker-size);
+  font-weight: var(--ks-marker-weight);
+  font-style: var(--ks-marker-style);
+  color: var(--ks-marker-color);
+  text-decoration: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.ks-text .ks-p[data-marker]::before {
+  content: attr(data-marker);
+}
+
+/* A link is followed by whoever presents the slide; while editing it is text. */
+.ks-text a[data-href] {
+  cursor: pointer;
+}
+
+/* The editor: the same box as the drawing, with a caret. */
+.ks-text-editor {
+  position: absolute;
+  inset: 0;
+}
+
+.ks-text.ProseMirror {
+  outline: none;
+  cursor: text;
+}
+
+.ks-text.ProseMirror a[data-href] {
+  cursor: text;
+}
+
+/* ProseMirror's hack elements must take no room of their own. */
+.ks-text.ProseMirror img.ProseMirror-separator {
+  display: inline !important;
+  border: none !important;
+  margin: 0 !important;
+}

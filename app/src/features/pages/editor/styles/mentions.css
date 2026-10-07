@@ -1,0 +1,189 @@
+/* Page links in the page editor: mentions inline and as page blocks, the
+   spot for a file being saved, and the hover card for a link. Loaded right
+   after notion.css (PageEditor.tsx), whose rules these follow. */
+
+/* Page links, as Notion's page mentions (blocks/wikilink-view.ts). */
+.kasten-page-editor .kasten-mention {
+  padding: 0 2px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--notion-hover);
+  }
+
+  & .kasten-mention-icon {
+    margin-right: 3px;
+    font-size: 0.95em;
+  }
+
+  & .kasten-mention-title {
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--notion-line);
+    text-underline-offset: 3px;
+  }
+
+  &.is-missing {
+    color: var(--notion-text-2);
+
+    & .kasten-mention-title {
+      text-decoration-style: dashed;
+    }
+  }
+
+  /* Several pages share the title: a dotted line, and a click asks which. */
+  &.is-ambiguous .kasten-mention-title {
+    text-decoration-style: dotted;
+    text-decoration-color: var(--notion-text-2);
+  }
+
+  &.is-embed .kasten-mention-title {
+    font-style: italic;
+  }
+
+  &.ProseMirror-selectednode {
+    background: var(--notion-block-selection);
+  }
+}
+
+/* A page link alone on its line, as /page makes for a sub-page: a full-width
+   row with the page's icon, title and a hint of its text (wikilink-view.ts). */
+.kasten-page-editor .kasten-mention.is-block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: calc(100% + 12px);
+  margin: 0 -6px;
+  padding: 5px 6px;
+  border-radius: var(--radius-lg);
+  transition: background-color var(--motion-fast) var(--ease-standard);
+
+  & .kasten-mention-icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    font-size: var(--text-20);
+    line-height: 1;
+
+    & svg {
+      vertical-align: 0;
+    }
+  }
+
+  & .kasten-mention-title {
+    flex: none;
+    max-width: 65%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & .kasten-page-block-hint {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--notion-text-3);
+    font-size: var(--text-13);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & .kasten-page-block-open {
+    display: grid;
+    flex: none;
+    place-items: center;
+    color: var(--notion-text-3);
+    opacity: 0;
+    transition: opacity var(--motion-fast) var(--ease-standard);
+  }
+
+  &:hover {
+    background: var(--notion-hover);
+
+    & .kasten-page-block-open {
+      opacity: 1;
+    }
+  }
+}
+
+/* Page blocks stack tightly, as Notion's do. ProseMirror's caret helpers
+   after an atom (a separator image, kept inline by its own !important rule,
+   and a break) would add an empty line under a full-width block: the line
+   they sit on gets no height, and the block keeps its own. */
+.kasten-page-editor p:has(> .kasten-mention.is-block) {
+  margin-block: 1px;
+  line-height: 0;
+
+  & > br.ProseMirror-trailingBreak {
+    display: none;
+  }
+
+  & > .kasten-mention.is-block {
+    line-height: 1.5;
+  }
+}
+
+/* A pasted file while the vault keeps it (paste-files.ts), or the spot for a
+   whiteboard or database while it is made (menus/embed-spot.ts). */
+.kasten-page-editor .kasten-saving {
+  display: inline-block;
+  margin: 4px 0;
+  padding: 2px 8px;
+  border-radius: var(--radius-lg);
+  background: var(--notion-hover);
+  color: var(--notion-text-2);
+  font-size: var(--text-14);
+  animation: kasten-saving 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes kasten-saving {
+  to {
+    opacity: 0.55;
+  }
+}
+
+:root[data-motion="off"] {
+  .kasten-page-editor .kasten-saving {
+    animation: none;
+  }
+}
+
+/* The hover card for a page mention. Lives under <body>. */
+.kasten-peek {
+  position: fixed;
+  z-index: 80;
+  width: 320px;
+  padding: 12px 14px;
+  border-radius: var(--radius-lg);
+  background: var(--notion-menu-bg);
+  box-shadow: var(--notion-shadow);
+  color: var(--notion-text);
+  font-family: var(--notion-font);
+  pointer-events: none;
+}
+
+.kasten-peek-title {
+  font-size: var(--text-14);
+  font-weight: 600;
+}
+
+.kasten-peek-text {
+  display: -webkit-box;
+  margin-top: 6px;
+  overflow: hidden;
+  color: var(--notion-text-2);
+  font-size: var(--text-13);
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+}
+
+.kasten-peek-hint {
+  margin-top: 8px;
+  color: var(--notion-text-3);
+  font-size: var(--text-12);
+}

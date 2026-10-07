@@ -1,0 +1,222 @@
+/* The brainstorm form above the board's bar, and the bar's tool while one
+   is under way. Light and dark follow the theme tokens. */
+
+.kasten-pop:has(> .kasten-brainstorm) {
+  width: 368px;
+  padding: 0;
+  border-radius: var(--radius-2xl);
+}
+
+.kasten-brainstorm {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 13px 14px 14px;
+
+  &.is-empty {
+    gap: 9px;
+
+    & > p {
+      margin: 0;
+      color: var(--color-muted);
+      font-size: var(--text-13);
+      line-height: 1.5;
+    }
+
+    & .kasten-brainstorm-go {
+      align-self: flex-start;
+    }
+  }
+}
+
+.kasten-brainstorm-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-size: var(--text-13);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+
+  & svg {
+    color: var(--color-accent);
+  }
+}
+
+.kasten-brainstorm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  & input {
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    outline: none;
+    background: var(--color-canvas);
+    font-size: var(--text-13);
+    user-select: text;
+    transition:
+      border-color var(--motion-fast),
+      box-shadow var(--motion-fast);
+
+    &:focus {
+      border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 16%, transparent);
+    }
+
+    &::placeholder {
+      color: var(--color-muted);
+    }
+  }
+}
+
+.kasten-brainstorm-field > span,
+.kasten-brainstorm-row > span {
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  font-weight: 500;
+}
+
+.kasten-brainstorm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  & select {
+    min-width: 0;
+    max-width: 236px;
+    height: 30px;
+    padding: 0 8px;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-canvas);
+    font-size: var(--text-13);
+    text-overflow: ellipsis;
+  }
+}
+
+/* How many: a segmented control. */
+.kasten-brainstorm-counts {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: var(--radius-lg);
+  background: var(--color-hover);
+
+  & button {
+    min-width: 36px;
+    height: 26px;
+    padding: 0 8px;
+    border-radius: var(--radius-lg);
+    color: var(--color-muted);
+    font-size: var(--text-13);
+    font-variant-numeric: tabular-nums;
+    font-weight: 550;
+    transition:
+      background-color var(--motion-fast),
+      color var(--motion-fast),
+      box-shadow var(--motion-fast);
+
+    &:hover:not(:disabled) {
+      color: var(--color-ink);
+    }
+
+    &[aria-checked="true"] {
+      background: var(--board-card, var(--color-canvas));
+      box-shadow:
+        0 1px 2px rgb(15 15 15 / 0.12),
+        0 0 0 1px var(--color-line);
+      color: var(--color-ink);
+    }
+  }
+}
+
+.kasten-brainstorm-note {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  line-height: 1.45;
+}
+
+.kasten-brainstorm-error {
+  margin: 0;
+  padding: 7px 10px;
+  border-radius: var(--radius-lg);
+  background: var(--notion-red-bg);
+  color: var(--notion-red);
+  font-size: var(--text-13);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.kasten-brainstorm-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 1px;
+
+  & .kasten-brainstorm-note {
+    flex: 1;
+  }
+}
+
+.kasten-brainstorm-go {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-lg);
+  background: var(--color-accent);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  color: var(--color-on-accent);
+  font-size: var(--text-13);
+  font-weight: 600;
+  transition:
+    filter var(--motion-fast),
+    opacity var(--motion-fast);
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.07);
+  }
+
+  &:disabled {
+    cursor: progress;
+    opacity: 0.8;
+  }
+}
+
+/* The bar's tool while a brainstorm is under way: a pulsing dot. */
+.kasten-tool[data-busy] {
+  position: relative;
+  color: var(--color-accent);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    animation: kasten-brainstorm-pulse 1.1s ease-in-out infinite;
+  }
+}
+
+@keyframes kasten-brainstorm-pulse {
+  50% {
+    opacity: 0.25;
+    transform: scale(0.7);
+  }
+}
+
+:root[data-motion="off"] {
+  .kasten-tool[data-busy]::after {
+    animation-duration: 3s;
+  }
+}

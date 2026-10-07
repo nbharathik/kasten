@@ -1,0 +1,74 @@
+/* Find and replace in a page: soft marks on each match, a stronger one on
+   the current, and a small bar that stays at the top as the page scrolls. */
+
+.kasten-find-match {
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-warning) 22%, transparent);
+
+  &.is-current {
+    background: color-mix(in srgb, var(--color-warning) 48%, transparent);
+  }
+}
+
+/* Takes no room in the page; the bar hangs from it. */
+.kasten-find-dock {
+  position: sticky;
+  top: 8px;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+  height: 0;
+}
+
+.kasten-find-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: min(380px, 100%);
+  height: max-content;
+  padding: 4px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-canvas);
+  box-shadow: var(--shadow-pop);
+  font-family: var(--notion-font);
+  animation: kasten-enter var(--motion-fast) var(--ease-standard);
+}
+
+.kasten-find-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  &.is-replace {
+    gap: 4px;
+    padding-left: 28px;
+  }
+}
+
+.kasten-find-input {
+  min-width: 0;
+  flex: 1;
+  height: 26px;
+  padding: 0 6px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-ink);
+  font-size: var(--text-13);
+  outline: none;
+
+  &:focus {
+    border-color: var(--color-accent);
+  }
+}
+
+.kasten-find-count {
+  min-width: 64px;
+  padding: 0 4px;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

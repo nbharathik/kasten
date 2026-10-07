@@ -1,0 +1,4 @@
+---
+title: "{{date}}"
+type: journal
+---

@@ -1,0 +1,294 @@
+/* Dashboards: Home's sections and each project's home, in the
+   design system's terms: whisper borders, 8px
+   cards, muted labels, rows that light up on hover. */
+
+@import "./tiles.css";
+@import "./todos.css";
+
+.kasten-project-home {
+  container-type: inline-size;
+  margin: 4px 0 26px;
+  font-family: var(--font-sans);
+}
+
+.kasten-dash-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  margin-bottom: 8px;
+}
+
+.kasten-dash-fold {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 8px 0 4px;
+  border-radius: var(--radius);
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  font-weight: 500;
+}
+.kasten-dash-fold:hover {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}
+
+.kasten-dash-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.kasten-dash-cell {
+  min-width: 0;
+}
+/* A section with nothing to show takes no room. */
+.kasten-dash-cell:empty {
+  display: none;
+}
+.kasten-dash-cell:is(.is-wide, [data-alone]) {
+  grid-column: 1 / -1;
+}
+@container (max-width: 560px) {
+  .kasten-dash-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.kasten-home {
+  container-type: inline-size;
+}
+.kasten-home .kasten-dash-grid {
+  gap: 16px;
+}
+
+.kasten-dash-card {
+  display: flex;
+  height: 100%;
+  min-width: 0;
+  flex-direction: column;
+  padding: 9px 12px 11px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--color-canvas);
+}
+.kasten-dash-card.is-plain {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.kasten-dash-card.is-plain > .kasten-dash-head {
+  display: none;
+}
+
+.kasten-dash-head {
+  display: flex;
+  min-height: 26px;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 4px;
+}
+.kasten-dash-head h3 {
+  color: var(--color-ink);
+  font-size: var(--text-13);
+  font-weight: 600;
+}
+.kasten-dash-count {
+  padding: 0 5px;
+  border-radius: var(--radius-sm);
+  background: var(--color-well);
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kasten-dash-empty {
+  padding: 6px 0;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  line-height: 1.5;
+}
+.kasten-dash-more {
+  align-self: flex-start;
+  padding: 4px 0 0;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+}
+.kasten-dash-more:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+}
+.kasten-dash-action {
+  display: inline-flex;
+  height: 24px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border-radius: var(--radius);
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  font-weight: 500;
+}
+.kasten-dash-action:hover {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}
+.kasten-dash-link {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+.kasten-dash-link:hover {
+  text-decoration: underline;
+}
+
+/* Rows */
+.kasten-dash-rows {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -6px;
+}
+.kasten-dash-row {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px;
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  font-size: var(--text-13);
+  text-align: left;
+}
+.kasten-dash-row:hover {
+  background: var(--color-hover);
+}
+.kasten-dash-row-icon {
+  width: 20px;
+  flex-shrink: 0;
+  font-size: var(--text-16);
+  text-align: center;
+}
+.kasten-dash-row-title,
+.kasten-dash-row-detail {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kasten-dash-row-title {
+  min-width: 0;
+  flex: 1;
+}
+.kasten-dash-row-detail {
+  max-width: 45%;
+  flex-shrink: 0;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+}
+
+/* Summary */
+.kasten-dash-summary,
+.kasten-dash-summary-field {
+  display: block;
+  width: calc(100% + 12px);
+  margin: 0 -6px;
+  padding: 4px 6px;
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  font-size: var(--text-14);
+  line-height: 1.5;
+  text-align: left;
+}
+.kasten-dash-summary:hover {
+  background: var(--color-hover);
+}
+.kasten-dash-summary.is-empty {
+  color: var(--color-faint);
+}
+.kasten-dash-summary-field {
+  background: var(--color-canvas);
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+  outline: none;
+}
+.kasten-dash-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.kasten-dash-track {
+  height: 6px;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-well);
+}
+.kasten-dash-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-accent);
+  transition: width var(--motion-slow) var(--ease-standard);
+}
+.kasten-dash-progress em {
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  font-style: normal;
+  white-space: nowrap;
+}
+
+/* The task board inside a card */
+.kasten-dash-kanban {
+  margin: 0 -4px;
+  overflow-x: auto;
+}
+
+/* Customize */
+.kasten-dash-customize {
+  top: calc(100% + 4px);
+  right: 0;
+  width: 330px;
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  padding: 6px;
+  font-family: var(--font-sans);
+}
+.kasten-dash-customize-title {
+  padding: 4px 8px 6px;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  font-weight: 600;
+}
+.kasten-dash-customize li {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 2px;
+  border-radius: var(--radius-md);
+}
+.kasten-dash-customize li:hover {
+  background: var(--color-hover);
+}
+.kasten-dash-customize label {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 4px;
+  cursor: pointer;
+}
+.kasten-dash-customize li:not(.is-on) label {
+  opacity: 0.72;
+}
+.kasten-dash-customize input[type="checkbox"] {
+  accent-color: var(--color-accent);
+}
+.kasten-dash-customize-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 6px 2px 2px;
+  border-top: 1px solid var(--color-line);
+}

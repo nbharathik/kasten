@@ -1,0 +1,27 @@
+/* A slide drawn small. The slide brings its own colours; this is only the box. */
+.ks-thumb {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  background: var(--ks-canvas);
+}
+
+/* The slide count in the hand while several are dragged. */
+.ks-drag-badge {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ks-accent);
+  color: var(--ks-on-accent);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--ks-shadow-pop);
+}

@@ -1,0 +1,261 @@
+/* A thread's messages: questions on the right, answers with their text,
+   tool rows and actions, and the bar for what the chat changed. Colours
+   from the page palette (tokens.css). */
+
+/* A question, on the right. */
+.kasten-chat-question {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  align-self: flex-end;
+  max-width: min(85%, 620px);
+}
+
+.kasten-chat-bubble {
+  margin: 0;
+  padding: 9px 14px;
+  border-radius: var(--radius-3xl) var(--radius-3xl) var(--radius-lg) var(--radius-3xl);
+  background: color-mix(in srgb, var(--notion-accent) 11%, var(--notion-bg));
+  font-size: var(--text-14);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.kasten-chat-question-context {
+  max-width: 100%;
+  margin: 5px 6px 0;
+  overflow: hidden;
+  color: var(--notion-text-3);
+  font-size: var(--text-12);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* An answer: text and tool rows, then its actions. */
+.kasten-chat-answer {
+  min-width: 0;
+  font-size: var(--text-14);
+  line-height: 1.65;
+}
+
+.kasten-chat-thinking {
+  margin: 0;
+  color: var(--notion-text-3);
+  font-size: var(--text-13);
+}
+
+.kasten-chat-caret {
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: 6px 0 0 2px;
+  border-radius: 50%;
+  background: var(--notion-accent);
+  animation: kasten-chat-pulse 1s ease-in-out infinite;
+}
+
+.kasten-chat-status {
+  margin: 4px 0 0;
+  color: var(--notion-text-3);
+  font-size: var(--text-13);
+  font-style: italic;
+}
+
+.kasten-chat-error {
+  margin: 8px 0 0;
+  padding: 8px 11px;
+  border-radius: var(--radius-lg);
+  background: var(--notion-red-bg);
+  color: var(--notion-red);
+  font-size: var(--text-13);
+  line-height: 1.45;
+}
+
+.kasten-chat-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  margin-top: 6px;
+  opacity: 0;
+  transition: opacity var(--motion-fast) var(--ease-standard);
+
+  & button {
+    height: 24px;
+    padding: 0 8px;
+    border-radius: var(--radius-lg);
+    color: var(--notion-text-2);
+    font-size: var(--text-12);
+    font-weight: 500;
+
+    &:hover:not(:disabled) {
+      background: var(--notion-hover);
+      color: var(--notion-text);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}
+
+.kasten-chat-answer:hover .kasten-chat-actions,
+.kasten-chat-answer:focus-within .kasten-chat-actions,
+.kasten-chat-log > .kasten-chat-answer:last-child .kasten-chat-actions {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .kasten-chat-actions {
+    opacity: 1;
+  }
+}
+
+.kasten-chat-model-used {
+  margin-right: 4px;
+  overflow: hidden;
+  color: var(--notion-text-3);
+  font-size: var(--text-12);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A tool call: one line. */
+.kasten-chat-tool {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin: 8px 0;
+  padding: 6px 10px;
+  border-radius: var(--radius-lg);
+  background: var(--notion-hover);
+  font-size: var(--text-13);
+  line-height: 1.45;
+
+  &[data-state="failed"] {
+    background: var(--notion-red-bg);
+    color: var(--notion-red);
+  }
+}
+
+.kasten-chat-tool-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 16px;
+  color: var(--notion-green);
+  font-size: var(--text-12);
+  font-weight: 700;
+
+  [data-state="failed"] > & {
+    color: var(--notion-red);
+  }
+
+  [data-state="unfinished"] > & {
+    color: var(--notion-text-3);
+  }
+}
+
+.kasten-chat-tool-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.kasten-chat-tool-note {
+  color: var(--notion-text-3);
+}
+
+.kasten-chat .kasten-chat-tool-link {
+  color: var(--notion-accent);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--notion-accent) 40%, transparent);
+  text-underline-offset: 2px;
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+.kasten-chat .kasten-chat-tool-open {
+  max-width: 220px;
+  height: 22px;
+  padding: 0 8px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--notion-bg);
+  box-shadow: inset 0 0 0 1px var(--notion-line);
+  color: var(--notion-text);
+  font-size: var(--text-12);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    box-shadow: inset 0 0 0 1px var(--notion-accent);
+    color: var(--notion-accent);
+  }
+}
+
+.kasten-chat-spinner {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid color-mix(in srgb, var(--notion-accent) 25%, transparent);
+  border-top-color: var(--notion-accent);
+  border-radius: 50%;
+  animation: kasten-chat-spin 0.8s linear infinite;
+}
+
+/* What the chat changed: undo it, or see it in History. */
+.kasten-chat-session {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.kasten-chat-session-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  padding: 8px 10px 8px 12px;
+  border-radius: var(--radius-xl);
+  box-shadow: inset 0 0 0 1px var(--notion-line);
+  color: var(--notion-text-2);
+  font-size: var(--text-13);
+
+  & > svg {
+    color: var(--notion-purple);
+  }
+
+  & button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: var(--radius-lg);
+    background: var(--notion-hover);
+    color: var(--notion-text);
+    font-size: var(--text-13);
+    font-weight: 500;
+
+    &:hover:not(:disabled) {
+      background: var(--notion-press);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+}
+
+.kasten-chat-session-text {
+  flex: 1 1 160px;
+  min-width: 0;
+}

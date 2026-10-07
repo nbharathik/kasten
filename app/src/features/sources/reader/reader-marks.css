@@ -1,0 +1,255 @@
+/* The reader's selection bar, a highlight's card and the side list of
+   highlights. */
+
+/* The selection's bar and a highlight's card */
+
+.kasten-sel-bar,
+.kasten-hl-pop {
+  position: absolute;
+  z-index: 20;
+  translate: -50% 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--color-canvas);
+  box-shadow: var(--shadow-lift, 0 12px 32px -8px rgb(15 15 15 / 0.28));
+  color: var(--color-ink);
+  user-select: none;
+}
+
+.kasten-sel-bar {
+  padding: 5px;
+}
+
+.kasten-sel-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.kasten-sel-sep {
+  width: 1px;
+  height: 18px;
+  margin: 0 3px;
+  background: var(--color-line);
+}
+
+.kasten-sel-comment {
+  height: 26px;
+  padding: 0 9px;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  font-weight: 550;
+
+  &:hover,
+  &[aria-expanded="true"] {
+    background: var(--color-hover);
+    color: var(--color-ink);
+  }
+}
+
+.kasten-sel-note {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 280px;
+  padding: 6px 3px 2px;
+}
+
+.kasten-sel-note textarea,
+.kasten-hl-comment {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  outline: none;
+  background: var(--color-canvas);
+  font-size: var(--text-13);
+  line-height: 1.45;
+  resize: vertical;
+  user-select: text;
+
+  &:focus {
+    border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+  }
+}
+
+.kasten-sel-save,
+.kasten-hl-primary {
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-lg);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: var(--text-13);
+  font-weight: 600;
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.kasten-sel-save {
+  align-self: flex-end;
+}
+
+.kasten-hl-pop {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 300px;
+  padding: 10px;
+}
+
+.kasten-hl-colors {
+  display: flex;
+  gap: 2px;
+}
+
+.kasten-hl-actions {
+  display: flex;
+  gap: 4px;
+
+  & button:not(.kasten-hl-primary) {
+    height: 30px;
+    padding: 0 10px;
+    border-radius: var(--radius-lg);
+    color: var(--color-muted);
+    font-size: var(--text-13);
+    font-weight: 550;
+
+    &:hover {
+      background: var(--color-hover);
+      color: var(--color-ink);
+    }
+
+    &.is-danger:hover {
+      color: var(--notion-red);
+    }
+  }
+
+  & .kasten-hl-primary {
+    margin-right: auto;
+  }
+}
+
+.kasten-hl-note {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+}
+
+/* The side list */
+
+.kasten-reader-list {
+  flex: none;
+  width: 288px;
+  overflow: auto;
+  padding: 14px 12px 40px;
+  border-left: 1px solid var(--color-line);
+  background: var(--color-canvas);
+
+  & ol {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.kasten-reader-list-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 4px 10px;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  font-weight: 500;
+}
+
+.kasten-reader-list-empty {
+  margin: 4px;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  line-height: 1.5;
+}
+
+.kasten-reader-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  padding: 9px 10px 9px 13px;
+  border-radius: var(--radius-lg);
+  background: var(--color-panel);
+  box-shadow: inset 3px 0 0 var(--swatch-yellow);
+  text-align: left;
+  transition: background-color var(--motion-fast);
+
+  &.is-green {
+    box-shadow: inset 3px 0 0 var(--swatch-green);
+  }
+
+  &.is-blue {
+    box-shadow: inset 3px 0 0 var(--swatch-blue);
+  }
+
+  &.is-pink {
+    box-shadow: inset 3px 0 0 var(--swatch-pink);
+  }
+
+  &.is-purple {
+    box-shadow: inset 3px 0 0 var(--swatch-purple);
+  }
+
+  &:hover {
+    background: var(--color-hover);
+  }
+
+  &[draggable="true"] {
+    cursor: grab;
+  }
+}
+
+.kasten-reader-item-text {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--text-13);
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.kasten-reader-item-comment {
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.kasten-reader-item-meta {
+  color: var(--color-muted);
+  font-size: var(--text-12);
+}
+
+.kasten-reader-item-card {
+  margin-left: 4px;
+  color: var(--color-accent);
+}
+
+@media (max-width: 900px) {
+  .kasten-reader-list {
+    display: none;
+  }
+}
+
+/* Where the reader's find found its text. */
+.kasten-pdf-found {
+  position: absolute;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-warning) 45%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--color-warning) 80%, transparent);
+  mix-blend-mode: multiply;
+}

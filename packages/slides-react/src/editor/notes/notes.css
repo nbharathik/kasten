@@ -1,0 +1,56 @@
+/* The speaker notes under the slide. The pane's border and background are the shell's. */
+.ks-notes {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.ks-notes:focus-within {
+  border-top-color: var(--ks-accent);
+  box-shadow: 0 -1px 0 var(--ks-accent);
+}
+
+/* The top edge is a handle to drag, taller than it looks so it is easy to catch. */
+.ks-notes-grip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -4px;
+  z-index: 5;
+  height: 9px;
+  cursor: ns-resize;
+  touch-action: none;
+  outline: none;
+}
+.ks-notes-grip::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 3px;
+  height: 3px;
+  background: transparent;
+  transition: background var(--ks-fast);
+}
+.ks-notes-grip:hover::after,
+.ks-notes-grip:focus-visible::after,
+.ks-notes-grip.is-active::after {
+  background: var(--ks-accent);
+}
+
+.ks-notes-text {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  padding: 10px 16px;
+  border: 0;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: var(--ks-ink);
+  font: inherit;
+  line-height: 1.5;
+}
+.ks-notes-text::placeholder {
+  color: var(--ks-faint);
+}

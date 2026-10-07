@@ -1,0 +1,309 @@
+/* The Kasten website: the basics, type, buttons and sections. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.6 var(--font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img,
+svg,
+picture {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1,
+h2 {
+  text-wrap: balance;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.i {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--btn);
+  color: var(--on-btn);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.skip:focus {
+  transform: none;
+}
+
+.wrap {
+  width: min(var(--wrap), 100% - 40px);
+  margin-inline: auto;
+}
+
+kbd,
+code {
+  font: 0.84em/1 var(--mono);
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.7em;
+  padding: 3px 6px;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink-2);
+  text-align: center;
+  vertical-align: 0.08em;
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 160ms var(--ease), box-shadow 160ms var(--ease), background-color 160ms var(--ease);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+  transform: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-lg {
+  height: 50px;
+  padding: 0 22px;
+  border-radius: 13px;
+  font-size: 16px;
+}
+
+.btn-sm {
+  height: 34px;
+  padding: 0 13px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: var(--btn);
+  color: var(--on-btn);
+}
+
+.btn-ghost {
+  border-color: var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background-color 160ms, color 160ms;
+}
+
+.icon-btn:hover {
+  background: var(--well);
+  color: var(--ink);
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Sections */
+
+.section {
+  position: relative;
+  padding: clamp(80px, 11vw, 140px) 0;
+}
+
+.section-alt {
+  background: var(--bg-alt);
+  border-block: 1px solid var(--line);
+}
+
+.section-head {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  max-width: 760px;
+  margin: 0 auto clamp(40px, 6vw, 64px);
+  text-align: center;
+}
+
+.section-head h2 {
+  font-size: clamp(32px, 4.6vw, 52px);
+}
+
+.lead {
+  max-width: 40em;
+  color: var(--muted);
+  font-size: clamp(17px, 1.6vw, 19px);
+  line-height: 1.6;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.eyebrow .i {
+  color: var(--accent);
+}
+
+/* Things arrive as they scroll into view. main.js marks what is already in
+   view before it hides the rest, so nothing flashes. */
+
+.js [data-reveal] {
+  transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+  transition-delay: calc(var(--d, 0) * 80ms);
+}
+
+.js [data-reveal]:not(.is-in) {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

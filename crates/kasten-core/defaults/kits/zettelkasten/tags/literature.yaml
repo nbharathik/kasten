@@ -1,0 +1,7 @@
+name: literature
+color: blue
+properties:
+  - {key: source, type: text}
+  - {key: author, type: text}
+views:
+  - {name: All, type: table}

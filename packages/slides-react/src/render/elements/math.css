@@ -1,0 +1,49 @@
+/* A formula: KaTeX's markup centred in the element's box. KaTeX's own stylesheet
+   (imported beside this one) sets the fonts and the sizes inside; only the box
+   round it is set here, and the type size and colour inline. */
+.ks-slide .ks-math {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  overflow: visible;
+}
+
+/* KaTeX puts a line of its own between margins; the box is the formula's room. */
+.ks-slide .ks-math .katex-display {
+  margin: 0;
+}
+
+/* A formula wider than its box spills equally on both sides rather than off one. */
+.ks-slide .ks-math .katex-display > .katex {
+  max-width: none;
+}
+
+.ks-slide .ks-math-error {
+  box-sizing: border-box;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 6px 8px;
+  overflow: hidden;
+  border: 1px solid #d93025;
+  border-radius: 4px;
+  background: rgb(217 48 37 / 0.08);
+  color: #b3261e;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ks-slide .ks-math-empty {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed;
+  border-radius: 4px;
+  text-align: center;
+}

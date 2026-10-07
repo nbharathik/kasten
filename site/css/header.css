@@ -1,0 +1,114 @@
+/* The header: the mark, the sections, the theme and the demo. */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid transparent;
+  transition: background-color 200ms, border-color 200ms, backdrop-filter 200ms;
+}
+
+.site-header.is-stuck {
+  border-color: var(--line);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 64px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+  margin-inline: auto;
+}
+
+.nav a {
+  padding: 7px 12px;
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 14.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 160ms, background-color 160ms;
+}
+
+.nav a:hover {
+  background: var(--well);
+  color: var(--ink);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.menu-btn {
+  display: none;
+}
+
+/* On phones the sections fold into a menu. */
+
+@media (max-width: 900px) {
+  .menu-btn {
+    display: inline-grid;
+  }
+
+  .nav {
+    position: absolute;
+    top: 64px;
+    left: 12px;
+    right: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .nav.is-open {
+    display: flex;
+  }
+
+  .nav a {
+    padding: 11px 12px;
+    font-size: 16px;
+  }
+
+  .header-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-cta {
+    display: none;
+  }
+}

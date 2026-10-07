@@ -1,0 +1,129 @@
+/* The list of works to choose from, in the citation dialog and the format panel. */
+.ks-rl {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ks-rl-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px 6px;
+  border-bottom: 1px solid var(--ks-line);
+  color: var(--ks-muted);
+}
+.ks-rl-input {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ks-ink);
+  font: inherit;
+}
+.ks-rl-input::placeholder {
+  color: var(--ks-faint);
+}
+.ks-rl-list {
+  max-height: min(36vh, 280px);
+  margin-top: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ks-rl-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 8px;
+  border-radius: var(--ks-radius);
+  cursor: pointer;
+}
+.ks-rl-row.is-active {
+  background: var(--ks-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ks-accent) 35%, transparent);
+}
+.ks-rl-tick {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--ks-line);
+  border-radius: 4px;
+  color: var(--ks-accent-ink, var(--ks-ink));
+}
+.ks-rl-row.is-chosen .ks-rl-tick {
+  border-color: var(--ks-accent);
+  background: color-mix(in srgb, var(--ks-accent) 18%, transparent);
+}
+.ks-rl-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ks-rl-who {
+  overflow: hidden;
+  color: var(--ks-ink);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-rl-title {
+  overflow: hidden;
+  color: var(--ks-muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-rl-key {
+  flex: none;
+  max-width: 34%;
+  overflow: hidden;
+  color: var(--ks-faint);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-rl-none {
+  margin: 12px 8px;
+  color: var(--ks-muted);
+}
+.ks-rl-status {
+  margin: 4px 8px 0;
+  color: var(--ks-faint);
+  font-size: 11px;
+}
+/* The keys a citation names that the bibliography does not have. */
+.ks-ct-unknown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ks-ct-unknown li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  color: var(--ks-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.ks-ct-unknown code {
+  color: var(--ks-danger, var(--ks-ink));
+}
+.ks-ct-use {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ks-accent-ink, var(--ks-accent));
+  font: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}

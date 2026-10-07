@@ -1,0 +1,69 @@
+/* A whiteboard inside a page (board-embed.ts): a framed, live board under
+   the embed's head. Until it is clicked, a clear cover passes the page its
+   scrolling; on hover the cover says how to start. */
+
+.kasten-page-editor .kasten-embed.kasten-board-embed {
+  position: relative;
+  border-left-width: 1px;
+  cursor: default;
+
+  & .kasten-embed-head {
+    box-sizing: border-box;
+    height: 36px;
+  }
+
+  &[data-active="true"] {
+    border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+    box-shadow: 0 0 0 3px var(--color-soft);
+  }
+}
+
+.kasten-page-editor .kasten-board-embed-body {
+  position: relative;
+  height: 440px;
+  background: var(--color-panel);
+  font-size: var(--text-14);
+}
+
+.kasten-page-editor .kasten-board-embed-cover {
+  position: absolute;
+  inset: 36px 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 14px;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  font-size: var(--text-13);
+  font-weight: 500;
+
+  &:hover {
+    color: var(--color-muted);
+  }
+
+  &::after {
+    content: "";
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.kasten-page-editor .kasten-board-embed-cover:hover {
+  text-shadow: 0 0 12px var(--color-canvas);
+}
+
+.kasten-page-editor .kasten-board-embed-open {
+  padding: 2px 6px;
+  border-radius: var(--radius);
+  color: var(--notion-text-2);
+  font-size: var(--text-12);
+  font-weight: 500;
+
+  &:hover {
+    background: var(--color-hover);
+    color: var(--notion-text);
+  }
+}

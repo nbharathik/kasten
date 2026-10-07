@@ -1,0 +1,20 @@
+/* A row of a theme's colours, on a card that names it. */
+.ks-sp-strip {
+  position: relative;
+  display: flex;
+  height: 16px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.ks-sp-strip > span {
+  flex: 1;
+}
+/* A ring over the colours, so a white one still has an edge. */
+.ks-sp-strip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--ks-line-strong);
+  pointer-events: none;
+}

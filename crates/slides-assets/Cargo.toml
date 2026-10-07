@@ -1,0 +1,17 @@
+[package]
+name = "slides-assets"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "Apache-2.0"
+publish.workspace = true
+description = "Kasten Slides: the pictures a deck uses: their hash, sidecar, size and thumbnails"
+
+[dependencies]
+# Thumbnails and nothing else: the header readers in `probe` decode nothing.
+image = { version = "0.25.10", default-features = false, features = ["png", "jpeg", "gif", "webp"] }
+serde.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

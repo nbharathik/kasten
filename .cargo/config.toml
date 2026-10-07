@@ -1,0 +1,6 @@
+# ts-rs writes the TypeScript types of the Slides model here whenever the
+# tests of slides-core run (`just gen` runs only those). TS_RS_LARGE_INT keeps
+# 64-bit integers as plain numbers.
+[env]
+TS_RS_EXPORT_DIR = { value = "packages/slides-wasm/ts/generated", relative = true }
+TS_RS_LARGE_INT = "number"

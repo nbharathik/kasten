@@ -1,0 +1,229 @@
+/* The board's bars and toolbars; its popovers and menus are in menus.css. */
+
+/* ---- Bars, menus, popovers ------------------------------------------ */
+
+.kasten-toolbar,
+.kasten-bottombar,
+.kasten-zoombar,
+.kasten-crumbs,
+.kasten-board-menu,
+.kasten-pop {
+  contain: layout style;
+  border: 1px solid var(--color-line);
+  background: var(--board-card);
+  box-shadow: var(--shadow-lift);
+  color: var(--color-ink);
+  user-select: none;
+}
+
+.kasten-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--radius-xl);
+  white-space: nowrap;
+}
+
+.kasten-toolbar button {
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 4px;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+}
+
+.kasten-toolbar button:hover,
+.kasten-tool:hover:not(:disabled),
+.kasten-zoom-value:hover {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}
+
+.kasten-toolbar button[aria-pressed="true"],
+.kasten-tool[aria-pressed="true"] {
+  background: var(--color-soft);
+  color: var(--color-accent);
+}
+
+.kasten-toolbar-sep {
+  flex: none;
+  width: 1px;
+  height: 18px;
+  margin: 0 4px;
+  background: var(--color-line);
+}
+
+.kasten-board-swatches {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px;
+}
+
+.kasten-toolbar .kasten-board-swatch,
+.kasten-board-swatch {
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  border-radius: 50%;
+}
+
+.kasten-board-swatch.is-none {
+  background: linear-gradient(135deg, transparent 45%, color-mix(in srgb, var(--color-ink) 45%, transparent) 45% 55%, transparent 55%), var(--board-card);
+}
+
+.kasten-toolbar .kasten-board-swatch:hover {
+  transform: scale(1.15);
+}
+
+.kasten-board-swatch[aria-pressed="true"] {
+  box-shadow:
+    0 0 0 2px var(--board-card),
+    0 0 0 3.5px var(--color-accent);
+}
+
+.kasten-segmented {
+  display: inline-flex;
+  gap: 1px;
+  padding: 2px;
+  border-radius: var(--radius-lg);
+  background: var(--color-hover);
+}
+
+.kasten-toolbar .kasten-segmented button {
+  height: 24px;
+  padding: 0 8px;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-12);
+  font-weight: 550;
+}
+
+.kasten-toolbar .kasten-segmented button[aria-pressed="true"] {
+  background: var(--board-card);
+  box-shadow: var(--shadow-card);
+  color: var(--color-ink);
+}
+
+.kasten-bottombar {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px;
+  border-radius: var(--radius-2xl);
+  transform: translateX(-50%);
+}
+
+.kasten-tool {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-lg);
+  color: color-mix(in srgb, var(--color-ink) 82%, transparent);
+}
+
+.kasten-tool:disabled {
+  opacity: 0.35;
+}
+
+.kasten-zoombar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 4px;
+  border-radius: var(--radius-xl);
+}
+
+.kasten-zoombar .kasten-tool {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-lg);
+}
+
+.kasten-zoom-value {
+  min-width: 48px;
+  height: 30px;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+  font-size: var(--text-12);
+  font-variant-numeric: tabular-nums;
+}
+
+.kasten-minimap.react-flow__minimap {
+  margin: 58px 12px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--board-card);
+  box-shadow: var(--shadow-lift);
+}
+
+.kasten-crumbs {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  max-width: calc(100% - 24px);
+  padding: 3px;
+  border-radius: var(--radius-xl);
+  font-size: var(--text-13);
+}
+
+.kasten-crumb {
+  max-width: 220px;
+  padding: 3px 8px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+button.kasten-crumb:hover {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}
+
+.kasten-crumb.is-root {
+  display: grid;
+  place-items: center;
+  padding: 3px 5px;
+}
+
+.kasten-crumb.is-current {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.kasten-crumb-sep {
+  color: color-mix(in srgb, var(--color-muted) 60%, transparent);
+}
+
+.kasten-board-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  pointer-events: none;
+}

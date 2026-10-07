@@ -1,0 +1,312 @@
+/* The dialogs, built on the shared dialog window. */
+.ks-dg-note {
+  margin: 0;
+  color: var(--ks-muted);
+  line-height: 1.5;
+}
+.ks-dg-left {
+  margin-right: auto;
+}
+.ks-dg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ks-dg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ks-dg-field .ks-input {
+  width: 100%;
+}
+.ks-dg-field > .ks-segmented {
+  align-self: flex-start;
+}
+.ks-dg-label {
+  color: var(--ks-muted);
+  font-size: 12px;
+}
+.ks-dg-file {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ks-muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-dg-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ks-dg-section + .ks-dg-section {
+  padding-top: 12px;
+  border-top: 1px solid var(--ks-line);
+}
+.ks-dg-heading {
+  margin: 0;
+  color: var(--ks-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Layouts. */
+.ks-dg-layouts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-height: min(60vh, 520px);
+  padding: 2px;
+  overflow-y: auto;
+}
+.ks-dg-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--ks-line);
+  border-radius: var(--ks-radius-md);
+  text-align: left;
+}
+.ks-dg-layout:hover {
+  background: var(--ks-hover);
+}
+.ks-dg-layout.is-on {
+  border-color: var(--ks-accent);
+  background: var(--ks-soft);
+  box-shadow: 0 0 0 1px var(--ks-accent);
+}
+.ks-dg-layout:focus-visible,
+.ks-dg-theme:focus-visible,
+.ks-dg-slide:focus-visible,
+.ks-dg-cell:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: 1px;
+}
+.ks-dg-thumb {
+  position: relative;
+  display: block;
+}
+.ks-dg-mark {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ks-accent);
+  color: var(--ks-on-accent);
+}
+.ks-dg-layout-name {
+  font-size: 12px;
+}
+
+/* Background. */
+.ks-dg-bg-preview {
+  align-self: center;
+  height: 200px;
+  border-radius: var(--ks-radius-md);
+  box-shadow: inset 0 0 0 1px var(--ks-line-strong);
+}
+
+/* Shortcuts. */
+.ks-dg-keys {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: min(56vh, 480px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.ks-dg-keys-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ks-dg-keys-area {
+  margin: 0 0 4px;
+  color: var(--ks-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.ks-dg-keys-group li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 30px;
+  border-bottom: 1px solid var(--ks-line);
+}
+.ks-dg-keys-combos {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+.ks-dg-or {
+  color: var(--ks-faint);
+  font-size: 11px;
+}
+.ks-dg-kbd {
+  padding: 2px 6px;
+  border: 1px solid var(--ks-line-strong);
+  border-radius: var(--ks-radius);
+  background: var(--ks-panel);
+  color: var(--ks-ink);
+}
+
+/* Insert table. */
+.ks-dg-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 22px);
+  gap: 3px;
+  justify-content: center;
+}
+.ks-dg-cell {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--ks-line-strong);
+  border-radius: 3px;
+  background: var(--ks-canvas);
+  cursor: pointer;
+}
+.ks-dg-cell.is-in {
+  border-color: var(--ks-accent);
+  background: var(--ks-soft);
+}
+.ks-dg-size {
+  margin: 4px 0 0;
+  color: var(--ks-muted);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Link. */
+.ks-dg-slides {
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--ks-line-strong);
+  border-radius: var(--ks-radius-md);
+  list-style: none;
+}
+.ks-dg-slide {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 0;
+  text-align: left;
+}
+.ks-dg-slide:hover {
+  background: var(--ks-hover);
+}
+.ks-dg-slide.is-on {
+  background: var(--ks-soft);
+  color: var(--ks-accent);
+}
+.ks-dg-slide-no {
+  flex: none;
+  width: 18px;
+  color: var(--ks-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ks-dg-slide-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Theme. */
+.ks-dg-themes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.ks-dg-theme {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--ks-line-strong);
+  border-radius: var(--ks-radius-md);
+  background: var(--ks-canvas);
+  text-align: left;
+}
+.ks-dg-theme:hover {
+  background: var(--ks-hover);
+}
+.ks-dg-theme.is-on {
+  border-color: var(--ks-accent);
+  box-shadow: 0 0 0 1px var(--ks-accent);
+}
+.ks-dg-theme .ks-sp-strip {
+  height: 22px;
+}
+.ks-dg-theme-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--ks-ink);
+}
+.ks-dg-theme.is-on .ks-icon {
+  color: var(--ks-accent);
+}
+.ks-dg-colors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+}
+.ks-dg-color {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ks-dg-color .ks-sp-label {
+  width: 96px;
+}
+.ks-dg-fonts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ks-dg-font {
+  display: grid;
+  grid-template-columns: 76px 1fr 150px;
+  align-items: center;
+  gap: 8px;
+}
+.ks-dg-logo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.ks-dg-logo-pic {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 44px;
+  overflow: hidden;
+  border: 1px dashed var(--ks-line-strong);
+  border-radius: var(--ks-radius);
+}
+.ks-dg-logo-pic img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.ks-dg-logo .ks-dg-file {
+  flex: 1;
+}
+
+.ks-dialog .ks-seg:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -2px;
+}

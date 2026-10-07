@@ -1,0 +1,194 @@
+/* Sections, links, nested boards, images and other files on a board. */
+
+/* ---- Sections -------------------------------------------------------- */
+
+.kasten-section {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid color-mix(in srgb, var(--tint, var(--color-ink)) 13%, transparent);
+  border-radius: var(--radius-3xl);
+  background: color-mix(in srgb, var(--tint, var(--color-ink)) 4%, transparent);
+}
+
+.kasten-section.is-tinted {
+  border-color: color-mix(in srgb, var(--tint) 40%, transparent);
+  background: color-mix(in srgb, var(--tint) 8%, transparent);
+}
+
+.react-flow__node.selected > .kasten-section {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.kasten-section.is-folded {
+  border-style: solid;
+  background: var(--board-card);
+  box-shadow: var(--shadow-card);
+}
+
+.kasten-section.is-folded.is-tinted {
+  background: color-mix(in srgb, var(--tint) 12%, var(--board-card));
+}
+
+.kasten-section-bar {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 14px 0 8px;
+  pointer-events: all;
+  cursor: grab;
+}
+
+.kasten-section-fold {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+}
+
+.kasten-section-fold:hover {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}
+
+.kasten-section-label {
+  min-width: 0;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--tint, var(--color-ink)) 75%, var(--color-ink));
+  font-size: var(--text-16);
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-section-count {
+  flex: none;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+}
+
+.kasten-section .kasten-side-handle,
+.kasten-section .react-flow__resize-control {
+  pointer-events: all;
+}
+
+/* ---- Links, nested boards, images, files ---------------------------- */
+
+.kasten-weblink-globe,
+.kasten-nested-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 20px;
+  height: 22px;
+  color: var(--color-accent);
+}
+
+.kasten-weblink-globe svg {
+  width: 17px;
+  height: 17px;
+}
+
+.kasten-weblink-url {
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-weblink-open {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 3px 10px;
+  border-radius: var(--radius-lg);
+  background: var(--color-soft);
+  color: var(--color-accent);
+  font-size: var(--text-13);
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.kasten-weblink-open:hover {
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.kasten-nested {
+  background: color-mix(in srgb, var(--color-accent) 4%, var(--board-card));
+}
+
+.kasten-nested-map {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-ink) 3%, transparent);
+}
+
+.kasten-nested-map .is-item {
+  fill: color-mix(in srgb, var(--color-ink) 20%, transparent);
+}
+
+.kasten-nested-map .is-section {
+  fill: color-mix(in srgb, var(--color-ink) 5%, transparent);
+  stroke: color-mix(in srgb, var(--color-ink) 18%, transparent);
+  stroke-width: 0.5%;
+  vector-effect: non-scaling-stroke;
+}
+
+.kasten-nested-empty {
+  flex: 1;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+}
+
+.kasten-nested-hint {
+  flex: none;
+  color: var(--color-muted);
+  font-size: var(--text-12);
+}
+
+.kasten-image {
+  border-radius: var(--radius-xl);
+  background: var(--board-card);
+  box-shadow: var(--shadow-card);
+}
+
+.kasten-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-xl);
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.kasten-image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  padding: 12px;
+  border: 1px dashed var(--color-line);
+  border-radius: var(--radius-xl);
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.kasten-image-placeholder svg {
+  width: 28px;
+  height: 28px;
+}

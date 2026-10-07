@@ -1,0 +1,123 @@
+/* The deck as one page that scrolls, with each slide's notes under it: the page the "scroll view" opens and the exported web page
+   shows for `?view=scroll`. Colours are the page's own (light, or dark when the system asks for it); a slide's are its theme's. */
+
+.ks-show-scroll {
+  --ks-sc-bg: #f6f6f7;
+  --ks-sc-fg: #1c1c1f;
+  --ks-sc-dim: #6b6b73;
+  --ks-sc-line: #d9d9de;
+  --ks-sc-card: #fff;
+  min-height: 100%;
+  padding: 32px 16px 64px;
+  background: var(--ks-sc-bg);
+  color: var(--ks-sc-fg);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  outline: none;
+}
+
+/* Dark when the editor or the app is (data-theme), else when the system is. */
+.ks-show-scroll[data-theme="dark"] {
+  --ks-sc-bg: #16161a;
+  --ks-sc-fg: #ececef;
+  --ks-sc-dim: #9a9aa3;
+  --ks-sc-line: #34343b;
+  --ks-sc-card: #1f1f24;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ks-show-scroll:not([data-theme]) {
+    --ks-sc-bg: #16161a;
+    --ks-sc-fg: #ececef;
+    --ks-sc-dim: #9a9aa3;
+    --ks-sc-line: #34343b;
+    --ks-sc-card: #1f1f24;
+  }
+}
+
+.ks-show-scroll.is-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  overflow-y: auto;
+}
+
+.ks-show-scroll-head,
+.ks-show-scroll-item {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.ks-show-scroll-head {
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.ks-show-scroll-head h1 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.25;
+}
+
+.ks-show-scroll-head p {
+  margin: 4px 0 0;
+  color: var(--ks-sc-dim);
+}
+
+.ks-show-scroll-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 6px 14px;
+  border: 1px solid var(--ks-sc-line);
+  border-radius: 8px;
+  background: var(--ks-sc-card);
+  color: var(--ks-sc-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ks-show-scroll-item {
+  padding: 22px 0 8px;
+  border-top: 1px solid var(--ks-sc-line);
+}
+
+.ks-show-scroll-item:first-of-type {
+  border-top: 0;
+}
+
+.ks-show-scroll-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  color: var(--ks-sc-dim);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ks-show-scroll-badge {
+  padding: 1px 8px;
+  border: 1px solid var(--ks-sc-line);
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.ks-show-scroll-frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--ks-sc-line);
+  border-radius: 6px;
+  background: var(--ks-sc-card);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+
+.ks-show-scroll-slide {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}

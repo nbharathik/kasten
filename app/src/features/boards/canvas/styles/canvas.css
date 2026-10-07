@@ -1,0 +1,243 @@
+/* The whiteboard. Colours come from the app's tokens (styles.css), so the
+   board follows light and dark; JSON Canvas presets 1–6 are tuned for each.
+   Nodes are plain CSS on purpose: at 500 nodes, what a node costs to paint
+   is what a pan costs. */
+
+/* The board's tokens, also for what it shows outside itself (its menu). */
+.kasten-board,
+.kasten-board-layer {
+  --board-bg: color-mix(in srgb, var(--color-panel) 72%, var(--color-canvas));
+  --board-card: var(--color-canvas);
+  --board-dots: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  --board-edge: color-mix(in srgb, var(--color-ink) 45%, var(--board-bg));
+  --board-sticky: color-mix(in srgb, var(--color-ink) 4%, var(--board-card));
+  --board-minimap-node: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  --board-minimap-section: color-mix(in srgb, var(--color-ink) 8%, transparent);
+  --board-minimap-mask: color-mix(in srgb, var(--board-bg) 72%, transparent);
+  --board-c1: #e5484d;
+  --board-c2: #ef6c1a;
+  --board-c3: #d69e00;
+  --board-c4: #2b9a66;
+  --board-c5: #0b98b8;
+  --board-c6: #8e4ec6;
+  --xy-edge-stroke: var(--board-edge);
+  --xy-connectionline-stroke: var(--color-accent);
+  --xy-connectionline-stroke-width: 1.75;
+  --xy-selection-background-color: color-mix(in srgb, var(--color-accent) 7%, transparent);
+  --xy-selection-border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+
+.kasten-board {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--board-bg);
+  color: var(--color-ink);
+  outline: none;
+  user-select: none;
+  /* The board's size never depends on what is on it: layout inside it
+     stays inside it. (It is also the containing block for anything fixed
+     inside it, so the menu goes to the page's body.) */
+  contain: strict;
+}
+
+/* Each node is its own layout root: text changing in one card, or a
+   zoom readout ticking, never lays out the other 499. (No paint
+   containment: handles sit half outside the node.) */
+.kasten-board .react-flow__node {
+  contain: layout style;
+}
+
+:root[data-theme="dark"] .kasten-board,
+:root[data-theme="dark"] .kasten-board-layer {
+  --board-bg: #151515;
+  --board-card: #1f1f1f;
+  --board-dots: color-mix(in srgb, var(--color-ink) 15%, transparent);
+  --board-c1: #ff6b6f;
+  --board-c2: #ff8b3e;
+  --board-c3: #f5c542;
+  --board-c4: #4cc38a;
+  --board-c5: #3ec5e6;
+  --board-c6: #b98cf2;
+}
+
+.kasten-board .react-flow {
+  background: transparent;
+}
+
+.kasten-board .react-flow__pane.draggable {
+  cursor: default;
+}
+
+.kasten-board .react-flow__pane.dragging {
+  cursor: grabbing;
+}
+
+.kasten-board.is-dropping::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: 20;
+  border: 2px dashed color-mix(in srgb, var(--color-accent) 55%, transparent);
+  border-radius: var(--radius-2xl);
+  background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+  pointer-events: none;
+}
+
+.kasten-board .react-flow__selection {
+  border-radius: var(--radius);
+}
+
+/* ---- Handles and resizing ------------------------------------------- */
+
+/* The sides' middles, for React Flow to measure (nodes/parts.tsx). */
+.kasten-anchor {
+  position: absolute;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.kasten-anchor.is-top {
+  top: 0;
+  left: 50%;
+}
+
+.kasten-anchor.is-right {
+  top: 50%;
+  left: 100%;
+}
+
+.kasten-anchor.is-bottom {
+  top: 100%;
+  left: 50%;
+}
+
+.kasten-anchor.is-left {
+  top: 50%;
+  left: 0;
+}
+
+/* Handles are drawn only on the node under the pointer, selected ones and
+   the one a connection starts from (nodes/parts.tsx): 2,000 dots on a
+   500-node board would cost layout, hit-testing and store updates on every
+   frame. React Flow knows where they are from the node's data. */
+.kasten-board .kasten-side-handle {
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 50%;
+  background: var(--board-card);
+  pointer-events: all;
+  cursor: crosshair;
+}
+
+/* A bigger target than the dot. */
+.kasten-board .kasten-side-handle::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+}
+
+.kasten-board .kasten-side-handle.connectingto,
+.kasten-board .kasten-side-handle:hover {
+  background: var(--color-accent);
+}
+
+.kasten-board .react-flow__node.dragging .kasten-side-handle {
+  display: none;
+}
+
+.kasten-board .kasten-resize-handle {
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  background: var(--board-card);
+}
+
+.kasten-board .kasten-resize-line {
+  border-color: transparent;
+}
+
+/* ---- Edges ----------------------------------------------------------- */
+
+.kasten-edge-path {
+  stroke: var(--board-edge);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+}
+
+.react-flow__edge:hover .kasten-edge-path {
+  stroke-width: 2.25;
+}
+
+.kasten-edge-halo {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-opacity: 0.28;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.kasten-edge-markers {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.kasten-edge-label {
+  position: absolute;
+  z-index: 1;
+  max-width: 240px;
+  padding: 2px 9px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--board-card);
+  color: var(--color-ink);
+  font-size: var(--text-13);
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: all;
+}
+
+.kasten-edge-label.is-selected {
+  border-color: var(--color-accent);
+}
+
+.kasten-line-editor {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 120px;
+  padding: 1px 4px;
+  border: 0;
+  border-radius: var(--radius-md);
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  background: var(--board-card);
+  color: var(--color-ink);
+  font: inherit;
+  user-select: text;
+}
+
+/* React Flow's credit, kept as its makers ask of those not on its Pro
+   plan, and kept quiet: small, faint, in the corner nothing else uses. */
+.kasten-board .react-flow__attribution {
+  padding: 2px 6px;
+  background: transparent;
+
+  & a {
+    color: var(--color-faint);
+    opacity: 0.7;
+
+    &:hover {
+      color: var(--color-muted);
+      opacity: 1;
+    }
+  }
+}

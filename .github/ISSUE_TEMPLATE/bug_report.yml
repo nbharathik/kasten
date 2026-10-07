@@ -1,0 +1,48 @@
+name: Bug report
+description: Something in Kasten does not work as it should
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting it. Please leave out anything private from your notes: a few steps that make a fresh vault show the problem are best. Security problems go through the Security tab instead (Report a vulnerability).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to make it happen
+      placeholder: |
+        1. Open a new page
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Kasten version
+      description: Settings → About shows it.
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: system
+    attributes:
+      label: System
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - The browser demo
+    validations:
+      required: true
+  - type: textarea
+    id: more
+    attributes:
+      label: Anything else
+      description: Screenshots, error messages, or what `kasten verify --vault <folder>` says.

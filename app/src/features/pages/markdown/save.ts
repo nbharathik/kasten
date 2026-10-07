@@ -1,0 +1,193 @@
+// Writing a note back: copy every block the user did not change, re-serialize
+// the rest, then check that the result reopens with the structure the editor
+// holds.
+
+import { alignSequences } from "./align";
+import { contextualParser, isBlank, type MarkdownCodec, type Snapshot, type Unit } from "./codec";
+
+/** A stretch of the saved text: a block copied from the source, or current
+ * nodes written by the editor's serializer. `from`/`to` index `current`. */
+type Segment<N> =
+  | { kind: "verbatim"; unit: Unit<N>; from: number; to: number }
+  | { kind: "fresh"; gap: string | null; from: number; to: number };
+
+/** Re-serialized blocks can fuse with a neighbour (two lists with the same
+ * marker become one list), so broken regions are re-serialized together with
+ * their neighbours until the text reopens as the editor holds it. Each pass
+ * merges segments, so this terminates; the cap only bounds pathological notes. */
+const MAX_WIDENING_PASSES = 64;
+
+/** Writes `current` back, copying every unchanged block from the source. */
+export function saveMarkdown<N>(codec: MarkdownCodec<N>, snapshot: Snapshot<N>, current: readonly N[]): string {
+  const parse = contextualParser(codec, snapshot.context);
+  let segments = plan(codec, snapshot, current);
+  for (let pass = 0; pass < MAX_WIDENING_PASSES; pass++) {
+    const broken = brokenRegions(codec, snapshot, current, segments, parse);
+    if (broken.length === 0) break;
+    segments = widen(segments, broken);
+  }
+  return render(codec, snapshot, current, segments, true);
+}
+
+function plan<N>(codec: MarkdownCodec<N>, snapshot: Snapshot<N>, current: readonly N[]): Segment<N>[] {
+  const { units } = snapshot;
+  const match = alignSequences(
+    units.flatMap((u) => u.nodes),
+    current,
+    codec.eq,
+  );
+
+  // A unit is intact when all its nodes survive, in order and adjacent.
+  const placement = new Map<number, number>();
+  let k = 0;
+  units.forEach((u, ui) => {
+    const idx = match.slice(k, k + u.nodes.length);
+    k += u.nodes.length;
+    const first = idx[0];
+    if (first !== undefined && first >= 0 && idx.every((c, j) => c === first + j)) placement.set(ui, first);
+  });
+
+  const segments: Segment<N>[] = [];
+  let cursor = 0;
+  let hole: Unit<N>[] = [];
+  const flush = (upTo: number) => {
+    planHole(segments, hole, cursor, upTo);
+    cursor = upTo;
+    hole = [];
+  };
+  units.forEach((u, ui) => {
+    const at = placement.get(ui);
+    if (at === undefined) {
+      hole.push(u);
+      return;
+    }
+    flush(at);
+    segments.push({ kind: "verbatim", unit: u, from: at, to: at + u.nodes.length });
+    cursor = at + u.nodes.length;
+  });
+  flush(current.length);
+  return segments;
+}
+
+/** Units between two intact blocks, and the current nodes that stand there:
+ * edited units take their share of those nodes in order, the last takes any
+ * extra; blocks the editor cannot show stay verbatim. */
+function planHole<N>(segments: Segment<N>[], units: readonly Unit<N>[], from: number, to: number): void {
+  const visible = units.filter((u) => u.nodes.length > 0);
+  if (visible.length === 0 && to > from) segments.push({ kind: "fresh", gap: null, from, to });
+  let pos = from;
+  let v = 0;
+  for (const u of units) {
+    if (u.nodes.length === 0) {
+      segments.push({ kind: "verbatim", unit: u, from: pos, to: pos });
+      continue;
+    }
+    const last = ++v === visible.length;
+    const take = last ? to - pos : Math.min(u.nodes.length, to - pos);
+    segments.push({ kind: "fresh", gap: u.gap, from: pos, to: pos + take });
+    pos += take;
+  }
+}
+
+function render<N>(
+  codec: MarkdownCodec<N>,
+  snapshot: Snapshot<N>,
+  current: readonly N[],
+  segments: readonly Segment<N>[],
+  whole: boolean,
+): string {
+  const { eol } = snapshot;
+  // Whatever comes first starts where the note started, even if the note's
+  // first block was deleted and the new first block's gap was a separator.
+  const lead = whole ? (snapshot.units[0]?.gap ?? "") : "";
+  const out: string[] = [];
+  let last: "none" | "verbatim" | "fresh" = "none";
+  for (const seg of segments) {
+    if (seg.kind === "verbatim") {
+      const gap = last === "none" ? lead : last === "fresh" ? ensureBlankLine(seg.unit.gap, eol) : seg.unit.gap;
+      out.push(gap + seg.unit.src);
+      last = "verbatim";
+      continue;
+    }
+    const nodes = current.slice(seg.from, seg.to).filter((n) => !isBlank(codec, n));
+    if (nodes.length === 0) continue;
+    const text = codec
+      .serialize(nodes)
+      .replace(/^(?:[ \t]*\r?\n)+/, "")
+      .replace(/\s+$/, "")
+      .replace(/\r?\n/g, eol);
+    const gap = last === "none" ? lead : ensureBlankLine(seg.gap ?? eol + eol, eol);
+    out.push(gap + text);
+    last = "fresh";
+  }
+  if (!whole) return out.join("");
+  const needsNewline = snapshot.units.length === 0 && last !== "none" && !snapshot.tail.endsWith("\n");
+  return out.join("") + snapshot.tail + (needsNewline ? eol : "");
+}
+
+/** Index ranges [a, b] of segments that reopen with a different top-level
+ * structure than the nodes they stand for because a re-serialized run fuses
+ * with a neighbour. The run is checked with the visible verbatim block before
+ * it and, separately, the one after it, so only a neighbour that really fuses
+ * gets re-written. */
+function brokenRegions<N>(
+  codec: MarkdownCodec<N>,
+  snapshot: Snapshot<N>,
+  current: readonly N[],
+  segments: readonly Segment<N>[],
+  parse: (src: string) => N[],
+): [number, number][] {
+  const reopensSame = (a: number, b: number) => {
+    const region = segments.slice(a, b + 1);
+    const got = parse(render(codec, snapshot, current, region, false));
+    const expected = current.slice(region[0]!.from, region[region.length - 1]!.to).filter((n) => !isBlank(codec, n));
+    return got.length === expected.length && got.every((n, x) => codec.typeOf(n) === codec.typeOf(expected[x]!));
+  };
+  const isVisibleVerbatim = (s: Segment<N> | undefined) => s?.kind === "verbatim" && s.unit.nodes.length > 0;
+
+  const broken: [number, number][] = [];
+  for (let i = 0; i < segments.length; i++) {
+    if (segments[i]!.kind !== "fresh") continue;
+    let j = i;
+    while (segments[j + 1]?.kind === "fresh") j++;
+    if (!reopensSame(i, j)) {
+      // Pieces of the run, written separately, may fuse with each other: write
+      // them as one. A single piece that fails on its own is the editor's
+      // limit, not a fusion, and re-writing neighbours would only spread it.
+      if (j > i) broken.push([i, j]);
+    } else {
+      if (isVisibleVerbatim(segments[i - 1]) && !reopensSame(i - 1, j)) broken.push([i - 1, j]);
+      if (isVisibleVerbatim(segments[j + 1]) && !reopensSame(i, j + 1)) broken.push([i, j + 1]);
+    }
+    i = j;
+  }
+  return broken;
+}
+
+/** Re-serializes each broken region as one piece, so the serializer sees the
+ * blocks side by side. Overlapping regions merge first. The next pass checks
+ * the merged piece against its own new neighbours. */
+function widen<N>(segments: readonly Segment<N>[], broken: readonly [number, number][]): Segment<N>[] {
+  const merged: [number, number][] = [];
+  for (const [a, b] of [...broken].sort((x, y) => x[0] - y[0])) {
+    const last = merged[merged.length - 1];
+    if (last && a <= last[1]) last[1] = Math.max(last[1], b);
+    else merged.push([a, b]);
+  }
+  const out = [...segments];
+  // Right to left, so earlier indices stay valid.
+  for (const [a, b] of merged.reverse()) {
+    const first = out[a]!;
+    const gap = first.kind === "verbatim" ? first.unit.gap : first.gap;
+    out.splice(a, b - a + 1, { kind: "fresh", gap, from: first.from, to: out[b]!.to });
+  }
+  return out;
+}
+
+/** Re-serialized text must never touch its neighbour: a paragraph that used
+ * to be a heading would otherwise merge into the next line. */
+function ensureBlankLine(gap: string, eol: string): string {
+  const breaks = gap.match(/\r?\n/g)?.length ?? 0;
+  if (breaks >= 2) return gap;
+  return gap + eol.repeat(2 - breaks);
+}

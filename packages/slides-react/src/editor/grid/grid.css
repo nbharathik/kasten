@@ -1,0 +1,111 @@
+/* The grid: every slide at one size on the grey table. Sizes here are the
+   numbers in layout.ts, which the scrolling and dragging rely on. */
+.ks-grid-view {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px;
+  background: var(--ks-well);
+  /* The focus shows on the slide that is shown, below. */
+  outline: none;
+}
+
+.ks-gv-grid {
+  position: relative;
+  display: grid;
+  margin: 0 auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ks-gv-grid.is-dragging,
+.ks-gv-grid.is-dragging * {
+  cursor: grabbing;
+}
+
+/* ---- a slide */
+.ks-gv-tile {
+  display: flex;
+  flex-direction: column;
+  width: var(--gv-w);
+  height: var(--gv-h);
+  cursor: pointer;
+}
+.ks-gv-tile.is-dragging {
+  opacity: 0.45;
+}
+.ks-gv-frame {
+  position: relative;
+  flex: none;
+  height: var(--gv-frame);
+  border: 1px solid var(--ks-line-strong);
+  border-radius: 2px;
+  background: var(--ks-canvas);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+/* Too far from the window to be drawn yet: a quiet box of the same size. */
+.ks-gv-frame.is-far {
+  background: color-mix(in srgb, var(--ks-ink) 5%, var(--ks-canvas));
+}
+.ks-gv-tile:hover .ks-gv-frame {
+  border-color: var(--ks-muted);
+}
+.ks-gv-tile.is-selected:not(.is-shown) .ks-gv-frame {
+  border-color: color-mix(in srgb, var(--ks-accent) 55%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ks-accent) 55%, transparent);
+}
+.ks-gv-tile.is-shown .ks-gv-frame {
+  border-color: var(--ks-accent);
+  box-shadow: 0 0 0 2px var(--ks-accent);
+}
+.ks-grid-view:focus-visible .ks-gv-tile.is-shown .ks-gv-frame {
+  box-shadow:
+    0 0 0 2px var(--ks-accent),
+    0 0 0 5px color-mix(in srgb, var(--ks-accent) 32%, transparent);
+}
+.ks-gv-tile.is-skipped .ks-thumb {
+  opacity: 0.5;
+}
+
+/* The number under the slide, with its flags. */
+.ks-gv-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 30px;
+  color: var(--ks-muted);
+  font-size: 12.5px;
+}
+.ks-gv-num {
+  font-variant-numeric: tabular-nums;
+}
+.ks-gv-tile.is-shown .ks-gv-num {
+  color: var(--ks-accent);
+  font-weight: 600;
+}
+.ks-gv-flag {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ks-faint);
+}
+.ks-gv-flag.is-word {
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--ks-selected);
+  color: var(--ks-muted);
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ---- where a drag would land */
+.ks-gv-drop {
+  position: absolute;
+  z-index: 2;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--ks-accent);
+  pointer-events: none;
+}

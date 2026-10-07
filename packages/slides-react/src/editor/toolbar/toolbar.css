@@ -1,0 +1,211 @@
+/* The toolbar: one row, 40 px high, scrolling sideways when the window is narrow.
+   The rules that adjust the shared ones (shell.css and editor.css are read after
+   this file) name .ks-editor or .ks-toolbar first, so they win. */
+.ks-editor .ks-toolbar {
+  gap: 1px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0 8px;
+  overflow-y: hidden;
+}
+.ks-toolbar::-webkit-scrollbar {
+  display: none;
+}
+.ks-toolbar > * {
+  flex: none;
+}
+.ks-toolbar > .ks-tb-spacer {
+  flex: 1 0 8px;
+}
+.ks-toolbar .ks-divider {
+  margin: 0 5px;
+}
+
+/* Buttons: idle icons are quiet, and they come up when the pointer is on them. */
+.ks-toolbar .ks-icon-btn {
+  color: var(--ks-muted);
+}
+.ks-toolbar .ks-icon-btn:hover:not(:disabled),
+.ks-toolbar .ks-icon-btn:focus-visible {
+  color: var(--ks-ink);
+}
+.ks-toolbar .ks-icon-btn.is-on,
+.ks-toolbar .ks-icon-btn.is-on:hover:not(:disabled) {
+  color: var(--ks-accent);
+}
+.ks-toolbar .ks-icon-btn.is-on:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ks-accent) 18%, transparent);
+}
+.ks-toolbar .ks-icon-btn.has-text {
+  font-size: 13px;
+}
+.ks-toolbar .ks-icon-btn .ks-btn-text {
+  color: var(--ks-ink);
+}
+.ks-toolbar .ks-icon-btn.is-on .ks-btn-text {
+  color: var(--ks-accent);
+}
+.ks-toolbar .ks-icon-btn:disabled .ks-btn-text {
+  color: inherit;
+}
+
+/* The font and the zoom show their value as text. */
+.ks-toolbar .ks-icon-btn.ks-tb-font {
+  width: 136px;
+  justify-content: space-between;
+  padding: 0 6px 0 8px;
+}
+.ks-toolbar .ks-icon-btn.ks-tb-font .ks-btn-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-toolbar .ks-icon-btn.ks-tb-zoom {
+  min-width: 58px;
+  justify-content: space-between;
+}
+.ks-tb-hint {
+  color: var(--ks-faint);
+  font-size: 11.5px;
+}
+
+/* − [size] + */
+.ks-tb-size {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+.ks-tb-size .ks-field {
+  gap: 0;
+}
+.ks-tb-size .ks-field-label {
+  display: none;
+}
+.ks-toolbar .ks-tb-size .ks-input {
+  height: 26px;
+  padding: 0 2px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.ks-toolbar .ks-tb-size .ks-input:disabled {
+  background: transparent;
+  opacity: 0.4;
+}
+.ks-toolbar .ks-tb-size .ks-icon-btn {
+  min-width: 24px;
+  padding: 0 4px;
+}
+
+/* A colour button shows its colour as a bar under the icon. */
+.ks-toolbar .ks-icon-btn.ks-tb-color {
+  position: relative;
+}
+.ks-toolbar .ks-tb-color > .ks-icon:first-child {
+  transform: translateY(-2px);
+}
+.ks-tb-bar {
+  position: absolute;
+  left: 6px;
+  bottom: 4px;
+  width: 16px;
+  height: 3px;
+  border-radius: 1px;
+  background: var(--ks-line-strong);
+  /* A colour as dark as the bar behind it (black text in a dark window), or as light, still shows. */
+  box-shadow: 0 0 0 1px var(--ks-line-strong);
+}
+.ks-tb-bar.is-none {
+  background: linear-gradient(135deg, transparent 40%, var(--ks-danger) 40%, var(--ks-danger) 60%, transparent 60%), var(--ks-line);
+}
+.ks-tb-bar.is-mixed {
+  background: repeating-linear-gradient(90deg, var(--ks-muted) 0 3px, transparent 3px 5px);
+}
+
+/* The shapes: a scrollable grid of outlines, grouped by title. */
+.ks-shape-menu {
+  width: 246px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 4px 8px 8px;
+}
+.ks-shape-title {
+  margin: 8px 2px 4px;
+  color: var(--ks-faint);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ks-shape-grid {
+  display: grid;
+  gap: 2px;
+}
+.ks-shape-cell {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ks-radius);
+  background: transparent;
+  color: var(--ks-ink);
+  cursor: pointer;
+}
+.ks-shape-cell:hover {
+  background: var(--ks-hover);
+}
+.ks-shape-cell:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: -1px;
+}
+.ks-shape-cell.is-on {
+  background: var(--ks-soft);
+  color: var(--ks-accent);
+}
+
+/* The slide's own buttons, at the far right; below a certain width they keep only their icons. */
+.ks-tb-slide {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+.ks-toolbar.is-compact .ks-tb-slide .ks-btn-text {
+  display: none;
+}
+.ks-toolbar.is-compact .ks-tb-slide .ks-icon-btn.has-text {
+  gap: 2px;
+  padding: 0 6px;
+}
+
+/* The tooltip: drawn by the toolbar, since a scrolling row clips the kit's own. */
+.ks-toolbar [data-tip]:hover::after,
+.ks-toolbar [data-tip]:focus-visible::after {
+  content: none;
+}
+.ks-tb-tip {
+  position: fixed;
+  z-index: 60;
+  padding: 3px 8px;
+  border-radius: var(--ks-radius);
+  background: var(--ks-ink);
+  color: var(--ks-canvas);
+  font-size: 11.5px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* With the paint format in hand, the slide takes a brush for a pointer. A cursor is an image and cannot use
+   the variables: it is a dark brush with a light edge, which shows on any slide. */
+.ks-editor:has(.ks-tb-paint.is-on) .ks-page {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg id='b'%3E%3Cpath d='m14.622 17.897-10.68-2.913'/%3E%3Cpath d='M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z'/%3E%3Cpath d='M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.735 20.405 16 16.792 16 15'/%3E%3C/g%3E%3Cuse href='%23b' stroke='%23fff' stroke-width='4.5'/%3E%3Cuse href='%23b' stroke='%23222' stroke-width='1.75'/%3E%3C/svg%3E")
+      3 21,
+    copy;
+}

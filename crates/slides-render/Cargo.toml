@@ -1,0 +1,26 @@
+[package]
+name = "slides-render"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "Apache-2.0"
+publish.workspace = true
+description = "Kasten Slides drawn by a headless Chrome or Chromium: a slide or a grid of slides as PNG, PDF, the HTML export, and the size of laid-out text for lint"
+build = "build.rs"
+
+[dependencies]
+# Drives the browser over the DevTools protocol. `bytes` is left out: nothing here reads a page as bytes.
+chromiumoxide = { version = "0.9.1", default-features = false }
+# `StreamExt`, to poll chromiumoxide's handler and event streams (it does not re-export it).
+futures = { version = "0.3", default-features = false, features = ["std"] }
+serde.workspace = true
+serde_json.workspace = true
+slides-core.workspace = true
+tokio = { version = "1.53.1", features = ["rt", "sync", "time"] }
+
+[dev-dependencies]
+# Reading the pictures the tests take back, to see that they are not blank and how they differ.
+image = { version = "0.25.10", default-features = false, features = ["png"] }
+
+[lints]
+workspace = true

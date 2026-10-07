@@ -1,0 +1,1174 @@
+{
+  "format": "kasten-deck",
+  "formatVersion": 1,
+  "id": "d-e39efuxa",
+  "present": {
+    "slideNumbers": true,
+    "stepLabel": "Step {n} / {total}"
+  },
+  "size": {
+    "h": 540,
+    "w": 960
+  },
+  "slides": [
+    {
+      "elements": [
+        {
+          "id": "e-yaksc7gp",
+          "placeholder": "title",
+          "text": {
+            "paragraphs": [
+              {
+                "runs": [
+                  {
+                    "t": "Tool use in language models"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        },
+        {
+          "id": "e-u018rp6b",
+          "placeholder": "subtitle",
+          "text": {
+            "paragraphs": [
+              {
+                "runs": [
+                  {
+                    "t": "How a model decides to call a function"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        }
+      ],
+      "id": "s-b57ev6m7",
+      "layout": "title"
+    },
+    {
+      "elements": [
+        {
+          "id": "e-zlrv9qx1",
+          "placeholder": "title",
+          "text": {
+            "paragraphs": [
+              {
+                "runs": [
+                  {
+                    "t": "Why tools?"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        },
+        {
+          "id": "e-1gvxp8ih",
+          "placeholder": "body",
+          "text": {
+            "paragraphs": [
+              {
+                "level": 0,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "Models know what they were trained on"
+                  }
+                ]
+              },
+              {
+                "level": 1,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "A tool reaches what they cannot know"
+                  }
+                ]
+              },
+              {
+                "level": 1,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "Search, code, files, calendars"
+                  }
+                ]
+              },
+              {
+                "level": 0,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "Each call is one turn of a conversation"
+                  }
+                ]
+              },
+              {
+                "level": 1,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "The model asks; the host runs it; the answer comes back"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        }
+      ],
+      "id": "s-0kr3m6c6",
+      "layout": "title-body",
+      "notes": "Start with a question: what could the model not answer alone?"
+    },
+    {
+      "elements": [
+        {
+          "id": "e-gomj3kaf",
+          "placeholder": "title",
+          "text": {
+            "paragraphs": [
+              {
+                "runs": [
+                  {
+                    "t": "The loop"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        },
+        {
+          "h": 90,
+          "id": "e-2yfdx51y",
+          "shape": "roundRect",
+          "style": {
+            "fill": {
+              "color": "accent1"
+            },
+            "stroke": {
+              "alpha": 0.25,
+              "color": "text1",
+              "width": 1
+            }
+          },
+          "text": {
+            "paragraphs": [
+              {
+                "align": "center",
+                "runs": [
+                  {
+                    "b": true,
+                    "color": "bg1",
+                    "size": 24,
+                    "t": "Model"
+                  }
+                ]
+              }
+            ],
+            "valign": "middle"
+          },
+          "type": "shape",
+          "w": 220,
+          "x": 90,
+          "y": 200
+        },
+        {
+          "h": 90,
+          "id": "e-mnvef1qu",
+          "shape": "roundRect",
+          "style": {
+            "fill": {
+              "color": "accent2"
+            },
+            "stroke": {
+              "alpha": 0.25,
+              "color": "text1",
+              "width": 1
+            }
+          },
+          "text": {
+            "paragraphs": [
+              {
+                "align": "center",
+                "runs": [
+                  {
+                    "b": true,
+                    "color": "bg1",
+                    "size": 24,
+                    "t": "Host"
+                  }
+                ]
+              }
+            ],
+            "valign": "middle"
+          },
+          "type": "shape",
+          "w": 220,
+          "x": 370,
+          "y": 200
+        },
+        {
+          "h": 120,
+          "id": "e-iwquwlbx",
+          "shape": "ellipse",
+          "style": {
+            "fill": {
+              "color": "accent3"
+            },
+            "stroke": {
+              "alpha": 0.25,
+              "color": "text1",
+              "width": 1
+            }
+          },
+          "text": {
+            "paragraphs": [
+              {
+                "align": "center",
+                "runs": [
+                  {
+                    "b": true,
+                    "color": "text1",
+                    "size": 24,
+                    "t": "Tool"
+                  }
+                ]
+              }
+            ],
+            "valign": "middle"
+          },
+          "type": "shape",
+          "w": 220,
+          "x": 650,
+          "y": 185
+        },
+        {
+          "h": 60,
+          "id": "e-asl2n7jy",
+          "shape": "rightArrow",
+          "style": {
+            "fill": {
+              "color": "accent4"
+            },
+            "stroke": {
+              "alpha": 0.25,
+              "color": "text1",
+              "width": 1
+            }
+          },
+          "text": {
+            "paragraphs": [
+              {
+                "align": "center",
+                "runs": [
+                  {
+                    "b": true,
+                    "color": "bg1",
+                    "size": 24,
+                    "t": "Result goes back into the context"
+                  }
+                ]
+              }
+            ],
+            "valign": "middle"
+          },
+          "type": "shape",
+          "w": 780,
+          "x": 90,
+          "y": 340
+        },
+        {
+          "from": {
+            "el": "e-2yfdx51y",
+            "side": "right"
+          },
+          "h": 0,
+          "id": "e-s1jfqeng",
+          "route": "straight",
+          "style": {
+            "endArrow": "triangle",
+            "stroke": {
+              "color": "text1",
+              "width": 2
+            }
+          },
+          "to": {
+            "el": "e-mnvef1qu",
+            "side": "left"
+          },
+          "type": "connector",
+          "w": 60,
+          "x": 310,
+          "y": 245
+        },
+        {
+          "from": {
+            "el": "e-mnvef1qu",
+            "side": "right"
+          },
+          "h": 0,
+          "id": "e-js8qdr9q",
+          "route": "elbow",
+          "style": {
+            "endArrow": "triangle",
+            "stroke": {
+              "color": "text1",
+              "width": 2
+            }
+          },
+          "to": {
+            "el": "e-iwquwlbx",
+            "side": "left"
+          },
+          "type": "connector",
+          "w": 60,
+          "x": 590,
+          "y": 245
+        }
+      ],
+      "id": "s-9zzm6ti7",
+      "layout": "title-only"
+    },
+    {
+      "elements": [
+        {
+          "id": "e-sf9n1k48",
+          "placeholder": "title",
+          "text": {
+            "paragraphs": [
+              {
+                "runs": [
+                  {
+                    "t": "Two ways to call"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        },
+        {
+          "id": "e-9qs3jz5o",
+          "placeholder": "body",
+          "text": {
+            "paragraphs": [
+              {
+                "level": 0,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "Text in, text out"
+                  }
+                ]
+              },
+              {
+                "level": 1,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "Parse the reply yourself"
+                  }
+                ]
+              },
+              {
+                "level": 0,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "Fragile, but works anywhere"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        },
+        {
+          "id": "e-xhevvwed",
+          "placeholder": "body2",
+          "text": {
+            "paragraphs": [
+              {
+                "level": 0,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "Structured calls"
+                  }
+                ]
+              },
+              {
+                "level": 1,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "A schema for every tool"
+                  }
+                ]
+              },
+              {
+                "level": 1,
+                "list": "bullet",
+                "runs": [
+                  {
+                    "t": "The host checks the arguments"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        }
+      ],
+      "id": "s-gvhsk6tg",
+      "layout": "two-columns"
+    },
+    {
+      "elements": [
+        {
+          "id": "e-7vey3e4p",
+          "placeholder": "title",
+          "text": {
+            "paragraphs": [
+              {
+                "runs": [
+                  {
+                    "t": "What it costs"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        },
+        {
+          "columns": [
+            300,
+            240,
+            240
+          ],
+          "h": 220,
+          "headerRow": true,
+          "id": "e-ais46p6w",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "Approach"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "Latency"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "Tokens"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "height": 44
+            },
+            {
+              "cells": [
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "No tools"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "0.8 s"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "400"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "height": 44
+            },
+            {
+              "cells": [
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "One search"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "2.1 s"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "1 900"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "height": 44
+            },
+            {
+              "cells": [
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "Three-step plan"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "5.6 s"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "text": {
+                    "paragraphs": [
+                      {
+                        "runs": [
+                          {
+                            "t": "4 300"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "height": 44
+            }
+          ],
+          "type": "table",
+          "w": 780,
+          "x": 90,
+          "y": 170
+        }
+      ],
+      "id": "s-k7wlmusg",
+      "layout": "title-only"
+    },
+    {
+      "elements": [
+        {
+          "id": "e-58yz6zvv",
+          "placeholder": "quote",
+          "text": {
+            "paragraphs": [
+              {
+                "runs": [
+                  {
+                    "t": "A tool is a question the model can ask the world."
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        },
+        {
+          "id": "e-xkk380j9",
+          "placeholder": "caption",
+          "text": {
+            "paragraphs": [
+              {
+                "runs": [
+                  {
+                    "t": "Anonymous"
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "text"
+        }
+      ],
+      "id": "s-xpny1g0z",
+      "layout": "quote"
+    }
+  ],
+  "theme": {
+    "colors": {
+      "accent1": "#1a73e8",
+      "accent2": "#ea4335",
+      "accent3": "#fbbc04",
+      "accent4": "#34a853",
+      "accent5": "#ff6d01",
+      "accent6": "#46bdc6",
+      "bg1": "#ffffff",
+      "bg2": "#f1f3f4",
+      "text1": "#202124",
+      "text2": "#5f6368"
+    },
+    "dimmedOpacity": 0.25,
+    "fonts": {
+      "body": {
+        "fallback": [
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif"
+        ],
+        "family": "Inter"
+      },
+      "code": {
+        "fallback": [
+          "Consolas",
+          "monospace"
+        ],
+        "family": "Roboto Mono"
+      },
+      "heading": {
+        "fallback": [
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif"
+        ],
+        "family": "Inter"
+      }
+    },
+    "highlight": {
+      "color": "accent1",
+      "width": 2
+    },
+    "layouts": [
+      {
+        "label": "Title",
+        "name": "title",
+        "placeholders": [
+          {
+            "h": 148,
+            "kind": "text",
+            "prompt": "Click to add title",
+            "role": "title",
+            "style": "display",
+            "valign": "bottom",
+            "w": 832,
+            "x": 64,
+            "y": 140
+          },
+          {
+            "h": 96,
+            "kind": "text",
+            "prompt": "Click to add subtitle",
+            "role": "subtitle",
+            "style": "subtitle",
+            "valign": "top",
+            "w": 832,
+            "x": 64,
+            "y": 304
+          }
+        ]
+      },
+      {
+        "label": "Section",
+        "name": "section",
+        "placeholders": [
+          {
+            "h": 108,
+            "kind": "text",
+            "prompt": "Click to add title",
+            "role": "title",
+            "style": "display",
+            "valign": "bottom",
+            "w": 832,
+            "x": 64,
+            "y": 172
+          },
+          {
+            "h": 72,
+            "kind": "text",
+            "prompt": "Click to add subtitle",
+            "role": "subtitle",
+            "style": "subtitle",
+            "valign": "top",
+            "w": 832,
+            "x": 64,
+            "y": 296
+          }
+        ]
+      },
+      {
+        "label": "Title + body",
+        "name": "title-body",
+        "placeholders": [
+          {
+            "h": 96,
+            "kind": "text",
+            "prompt": "Click to add title",
+            "role": "title",
+            "style": "title",
+            "valign": "middle",
+            "w": 832,
+            "x": 64,
+            "y": 36
+          },
+          {
+            "h": 344,
+            "kind": "text",
+            "list": "bullet",
+            "prompt": "Click to add text",
+            "role": "body",
+            "style": "body",
+            "valign": "top",
+            "w": 832,
+            "x": 64,
+            "y": 148
+          }
+        ]
+      },
+      {
+        "label": "Title only",
+        "name": "title-only",
+        "placeholders": [
+          {
+            "h": 96,
+            "kind": "text",
+            "prompt": "Click to add title",
+            "role": "title",
+            "style": "title",
+            "valign": "middle",
+            "w": 832,
+            "x": 64,
+            "y": 36
+          }
+        ]
+      },
+      {
+        "label": "Two columns",
+        "name": "two-columns",
+        "placeholders": [
+          {
+            "h": 96,
+            "kind": "text",
+            "prompt": "Click to add title",
+            "role": "title",
+            "style": "title",
+            "valign": "middle",
+            "w": 832,
+            "x": 64,
+            "y": 36
+          },
+          {
+            "h": 344,
+            "kind": "text",
+            "list": "bullet",
+            "prompt": "Click to add text",
+            "role": "body",
+            "style": "body",
+            "valign": "top",
+            "w": 400,
+            "x": 64,
+            "y": 148
+          },
+          {
+            "h": 344,
+            "kind": "text",
+            "list": "bullet",
+            "prompt": "Click to add text",
+            "role": "body2",
+            "style": "body",
+            "valign": "top",
+            "w": 400,
+            "x": 496,
+            "y": 148
+          }
+        ]
+      },
+      {
+        "label": "Title + image",
+        "name": "title-image",
+        "placeholders": [
+          {
+            "h": 96,
+            "kind": "text",
+            "prompt": "Click to add title",
+            "role": "title",
+            "style": "title",
+            "valign": "middle",
+            "w": 832,
+            "x": 64,
+            "y": 36
+          },
+          {
+            "h": 344,
+            "kind": "text",
+            "list": "bullet",
+            "prompt": "Click to add text",
+            "role": "body",
+            "style": "body",
+            "valign": "top",
+            "w": 400,
+            "x": 64,
+            "y": 148
+          },
+          {
+            "h": 344,
+            "kind": "image",
+            "prompt": "Click to add image",
+            "role": "image",
+            "style": "caption",
+            "valign": "middle",
+            "w": 400,
+            "x": 496,
+            "y": 148
+          }
+        ]
+      },
+      {
+        "label": "Image + caption",
+        "name": "image-caption",
+        "placeholders": [
+          {
+            "h": 400,
+            "kind": "image",
+            "prompt": "Click to add image",
+            "role": "image",
+            "style": "caption",
+            "valign": "middle",
+            "w": 832,
+            "x": 64,
+            "y": 36
+          },
+          {
+            "h": 44,
+            "kind": "text",
+            "prompt": "Click to add caption",
+            "role": "caption",
+            "style": "caption",
+            "valign": "top",
+            "w": 832,
+            "x": 64,
+            "y": 448
+          }
+        ]
+      },
+      {
+        "label": "Code",
+        "name": "code",
+        "placeholders": [
+          {
+            "h": 96,
+            "kind": "text",
+            "prompt": "Click to add title",
+            "role": "title",
+            "style": "title",
+            "valign": "middle",
+            "w": 832,
+            "x": 64,
+            "y": 36
+          },
+          {
+            "h": 344,
+            "kind": "text",
+            "prompt": "Click to add code",
+            "role": "code",
+            "style": "code",
+            "valign": "top",
+            "w": 832,
+            "x": 64,
+            "y": 148
+          }
+        ]
+      },
+      {
+        "label": "Comparison",
+        "name": "comparison",
+        "placeholders": [
+          {
+            "h": 96,
+            "kind": "text",
+            "prompt": "Click to add title",
+            "role": "title",
+            "style": "title",
+            "valign": "middle",
+            "w": 832,
+            "x": 64,
+            "y": 36
+          },
+          {
+            "h": 44,
+            "kind": "text",
+            "prompt": "Click to add label",
+            "role": "label",
+            "style": "subtitle",
+            "valign": "bottom",
+            "w": 400,
+            "x": 64,
+            "y": 148
+          },
+          {
+            "h": 44,
+            "kind": "text",
+            "prompt": "Click to add label",
+            "role": "label2",
+            "style": "subtitle",
+            "valign": "bottom",
+            "w": 400,
+            "x": 496,
+            "y": 148
+          },
+          {
+            "h": 292,
+            "kind": "text",
+            "list": "bullet",
+            "prompt": "Click to add text",
+            "role": "body",
+            "style": "body",
+            "valign": "top",
+            "w": 400,
+            "x": 64,
+            "y": 200
+          },
+          {
+            "h": 292,
+            "kind": "text",
+            "list": "bullet",
+            "prompt": "Click to add text",
+            "role": "body2",
+            "style": "body",
+            "valign": "top",
+            "w": 400,
+            "x": 496,
+            "y": 200
+          }
+        ]
+      },
+      {
+        "label": "Big number",
+        "name": "big-number",
+        "placeholders": [
+          {
+            "h": 176,
+            "kind": "text",
+            "prompt": "Click to add number",
+            "role": "number",
+            "style": "big-number",
+            "valign": "bottom",
+            "w": 832,
+            "x": 64,
+            "y": 144
+          },
+          {
+            "h": 72,
+            "kind": "text",
+            "prompt": "Click to add label",
+            "role": "label",
+            "style": "subtitle",
+            "valign": "top",
+            "w": 832,
+            "x": 64,
+            "y": 328
+          }
+        ]
+      },
+      {
+        "label": "Quote",
+        "name": "quote",
+        "placeholders": [
+          {
+            "h": 232,
+            "kind": "text",
+            "prompt": "Click to add quote",
+            "role": "quote",
+            "style": "quote",
+            "valign": "bottom",
+            "w": 768,
+            "x": 96,
+            "y": 124
+          },
+          {
+            "h": 48,
+            "kind": "text",
+            "prompt": "Click to add attribution",
+            "role": "caption",
+            "style": "caption",
+            "valign": "top",
+            "w": 768,
+            "x": 96,
+            "y": 372
+          }
+        ]
+      },
+      {
+        "label": "Blank",
+        "name": "blank",
+        "placeholders": []
+      }
+    ],
+    "master": [
+      {
+        "h": 24,
+        "id": "master-number",
+        "text": {
+          "paragraphs": [
+            {
+              "align": "right",
+              "runs": [
+                {
+                  "field": "slideNumber",
+                  "t": "‹#›"
+                }
+              ],
+              "style": "caption"
+            }
+          ]
+        },
+        "type": "text",
+        "w": 80,
+        "x": 860,
+        "y": 500
+      }
+    ],
+    "name": "Light",
+    "textStyles": {
+      "big-number": {
+        "bold": true,
+        "color": "accent1",
+        "font": "heading",
+        "size": 96
+      },
+      "body": {
+        "color": "text1",
+        "font": "body",
+        "lineSpacing": 1.15,
+        "size": 22,
+        "spaceAfter": 6
+      },
+      "caption": {
+        "color": "text2",
+        "font": "body",
+        "size": 14
+      },
+      "citation": {
+        "color": "text2",
+        "font": "body",
+        "size": 10
+      },
+      "code": {
+        "color": "text1",
+        "font": "code",
+        "size": 16
+      },
+      "display": {
+        "bold": true,
+        "color": "text1",
+        "font": "heading",
+        "size": 44
+      },
+      "quote": {
+        "color": "text1",
+        "font": "heading",
+        "italic": true,
+        "size": 32
+      },
+      "subtitle": {
+        "color": "text2",
+        "font": "body",
+        "size": 20
+      },
+      "title": {
+        "bold": true,
+        "color": "text1",
+        "font": "heading",
+        "size": 36
+      }
+    }
+  },
+  "title": "Tool use in language models"
+}

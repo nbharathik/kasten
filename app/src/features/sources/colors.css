@@ -1,0 +1,63 @@
+/* Highlight colours, shared by the reader and the Highlights view: marker ink
+   over a PDF's white paper, and swatches for menus and edges. The ink is a
+   page's own highlight in light mode (--color-highlight-* in styles.css),
+   kept light in dark mode because the paper stays white. The swatches share
+   one lightness and strength too. */
+
+:root {
+  --hl-yellow: rgb(248 230 165);
+  --hl-green: rgb(203 235 208);
+  --hl-blue: rgb(199 230 253);
+  --hl-pink: rgb(250 214 229);
+  --hl-purple: rgb(232 218 250);
+  --swatch-yellow: #e9c944;
+  --swatch-green: #5bbd74;
+  --swatch-blue: #44a8e7;
+  --swatch-pink: #de77ab;
+  --swatch-purple: #ad80dd;
+}
+
+.kasten-hl-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-lg);
+  transition: background-color var(--motion-fast);
+
+  &::before {
+    content: "";
+    display: block;
+    width: 14px;
+    height: 14px;
+    margin: auto;
+    border-radius: 50%;
+    background: var(--swatch-yellow);
+    box-shadow: inset 0 0 0 1px rgb(15 15 15 / 0.12);
+  }
+
+  &.is-green::before {
+    background: var(--swatch-green);
+  }
+
+  &.is-blue::before {
+    background: var(--swatch-blue);
+  }
+
+  &.is-pink::before {
+    background: var(--swatch-pink);
+  }
+
+  &.is-purple::before {
+    background: var(--swatch-purple);
+  }
+
+  &:hover {
+    background: var(--color-hover);
+  }
+
+  &[aria-checked="true"]::before {
+    box-shadow:
+      0 0 0 2px var(--color-canvas),
+      0 0 0 3.5px var(--color-ink);
+  }
+}
+

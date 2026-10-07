@@ -1,0 +1,9 @@
+name: resource
+color: purple
+properties:
+  - {key: topic, type: text}
+  - {key: kind, type: select, options: [Article, Book, Video, Course, Note]}
+  - {key: source, type: url}
+views:
+  - {name: Library, type: gallery}
+  - {name: By kind, type: kanban, group_by: kind}

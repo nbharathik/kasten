@@ -1,0 +1,320 @@
+/* The images drawer: beside the filmstrip, a search box, filters, a grid of
+   small copies and the details of the one picked. Colours are the editor's. */
+.ks-gallery {
+  position: relative;
+  flex: none;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  width: 288px;
+  min-height: 0;
+  border-right: 1px solid var(--ks-line);
+  background: var(--ks-panel);
+  color: var(--ks-ink);
+}
+.ks-gallery.is-over::after {
+  content: "Drop pictures to keep them";
+  position: absolute;
+  inset: 6px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--ks-accent);
+  border-radius: var(--ks-radius-lg);
+  background: color-mix(in srgb, var(--ks-panel) 88%, transparent);
+  color: var(--ks-accent);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.ks-gal-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 8px 4px 12px;
+}
+.ks-gal-bar h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.ks-gal-count {
+  margin-left: 4px;
+  color: var(--ks-muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.ks-gal-search {
+  position: relative;
+  flex: none;
+  margin: 4px 12px 6px;
+}
+.ks-gal-search svg {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ks-muted);
+  pointer-events: none;
+}
+.ks-gal-search input {
+  width: 100%;
+  padding-left: 28px;
+}
+
+.ks-gal-filters {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0 12px 8px;
+}
+.ks-gal-chip {
+  padding: 2px 9px;
+  border: 1px solid var(--ks-line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ks-ink);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ks-gal-chip:hover {
+  background: var(--ks-hover);
+}
+.ks-gal-chip.is-on {
+  border-color: var(--ks-accent);
+  background: var(--ks-soft);
+  color: var(--ks-accent);
+}
+.ks-gal-chip:focus-visible,
+.ks-gal-jump:focus-visible,
+.ks-gal-place:focus-visible {
+  outline: 2px solid var(--ks-accent);
+  outline-offset: 1px;
+}
+
+.ks-gal-scroll {
+  position: relative;
+  flex: 1;
+  min-height: 120px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.ks-gal-note {
+  padding: 16px 12px;
+  color: var(--ks-muted);
+  font-size: 13px;
+}
+.ks-gal-note p {
+  margin: 0 0 8px;
+}
+.ks-gal-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* The grid: two columns; a row is a tile and its gap, 136px, which the windowing in GalleryDrawer.tsx counts in. */
+.ks-gal-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 128px;
+  gap: 8px;
+  padding: 4px 12px 12px;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ks-gal-list:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--ks-accent);
+}
+.ks-gal-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px;
+  border: 1px solid var(--ks-line);
+  border-radius: var(--ks-radius-md);
+  background: var(--ks-canvas);
+  cursor: pointer;
+}
+.ks-gal-tile:hover {
+  border-color: var(--ks-line-strong);
+}
+.ks-gal-tile.is-selected {
+  border-color: var(--ks-accent);
+  background: var(--ks-soft);
+}
+.ks-gal-thumb {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--ks-well);
+}
+.ks-gal-thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.ks-gal-name {
+  overflow: hidden;
+  color: var(--ks-muted);
+  font-size: 11px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-gal-badge {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--ks-panel) 85%, transparent);
+  color: var(--ks-muted);
+}
+
+/* The picked image. */
+.ks-gal-details {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 52%;
+  padding: 10px 12px 12px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  border-top: 1px solid var(--ks-line);
+}
+.ks-gal-head {
+  display: flex;
+  gap: 10px;
+}
+.ks-gal-preview {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--ks-well);
+}
+.ks-gal-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.ks-gal-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  color: var(--ks-muted);
+  font-size: 12px;
+}
+.ks-gal-facts strong {
+  overflow: hidden;
+  color: var(--ks-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ks-gal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--ks-muted);
+  font-size: 12px;
+}
+.ks-gal-field p {
+  margin: 0;
+  color: var(--ks-ink);
+}
+.ks-gal-field textarea,
+.ks-gal-field input {
+  width: 100%;
+  font: inherit;
+  resize: vertical;
+}
+.ks-gal-used h3 {
+  margin: 4px 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ks-gal-used p {
+  margin: 0;
+  color: var(--ks-muted);
+  font-size: 12px;
+}
+.ks-gal-used ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ks-gal-used li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.ks-gal-used li svg {
+  flex: none;
+  color: var(--ks-muted);
+}
+.ks-gal-where {
+  color: var(--ks-muted);
+}
+.ks-gal-jump {
+  min-width: 24px;
+  padding: 1px 6px;
+  border: 1px solid var(--ks-line-strong);
+  border-radius: var(--ks-radius);
+  background: transparent;
+  color: var(--ks-accent);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.ks-gal-jump:hover {
+  background: var(--ks-soft);
+}
+button.ks-gal-place {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ks-ink);
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--ks-line-strong);
+  cursor: pointer;
+}
+
+/* Where a drop from the drawer or the computer would land. */
+.ks-drop-hot {
+  outline: 2px dashed var(--ks-accent);
+  outline-offset: -2px;
+}
+.ks-page.ks-drop-hot {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ks-accent);
+}

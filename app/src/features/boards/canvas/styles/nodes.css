@@ -1,0 +1,365 @@
+/* Cards and stickies on a board (see canvas.css for the colours). */
+
+/* ---- Nodes ---------------------------------------------------------- */
+
+/* Not positioned: React Flow's wrapper already is, and holds the handles
+   and resize controls. Every positioned box is a layer the browser tracks
+   on each frame, 500 times over. */
+.kasten-node {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+/* Node boxes do not clip: their side and resize handles sit half outside
+   them. What is inside clips itself. */
+.kasten-weblink,
+.kasten-nested,
+.kasten-card-face {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+/* A card's face and its far-out title share one grid cell. */
+.kasten-card {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+}
+
+.kasten-card > * {
+  grid-area: 1 / 1;
+}
+
+.kasten-card,
+.kasten-weblink,
+.kasten-nested {
+  padding: 13px 16px 12px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--board-card);
+  box-shadow: var(--shadow-card);
+  transition:
+    box-shadow var(--motion-base) var(--ease-standard),
+    border-color var(--motion-base) var(--ease-standard);
+}
+
+.kasten-card.is-tinted,
+.kasten-weblink.is-tinted,
+.kasten-nested.is-tinted {
+  border-color: color-mix(in srgb, var(--tint) 45%, var(--color-line));
+  background: color-mix(in srgb, var(--tint) 9%, var(--board-card));
+}
+
+.react-flow__node:hover > .kasten-card,
+.react-flow__node:hover > .kasten-weblink,
+.react-flow__node:hover > .kasten-nested,
+.react-flow__node.dragging > .kasten-node {
+  box-shadow: var(--shadow-lift);
+}
+
+.react-flow__node.selected > .kasten-node:not(.kasten-section) {
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    var(--shadow-lift);
+}
+
+.kasten-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  flex: none;
+}
+
+.kasten-card-icon {
+  flex: none;
+  width: 20px;
+  font-size: var(--text-16);
+  line-height: 22px;
+  text-align: center;
+}
+
+.kasten-card-title {
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--text-16);
+  font-weight: 620;
+  line-height: 22px;
+  letter-spacing: -0.005em;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+
+/* An agent wrote some of the note and no one has edited or accepted it;
+   the page shows where. */
+.kasten-card-agent {
+  flex: none;
+  margin: 2px 0 0 auto;
+  padding: 0 5px;
+  border-radius: var(--radius-lg);
+  background: var(--kasten-agent-bg);
+  color: var(--kasten-agent);
+  font-size: var(--text-11);
+  line-height: 18px;
+}
+
+.kasten-card-excerpt {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: var(--text-13);
+  line-height: 19.5px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--lines, 4);
+  overflow-wrap: anywhere;
+}
+
+.kasten-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+  overflow: hidden;
+  max-height: 22px;
+  color: color-mix(in srgb, var(--color-accent) 80%, var(--color-ink));
+  font-size: var(--text-12);
+  font-weight: 500;
+}
+
+.kasten-card-tags span {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--color-soft);
+}
+
+/* Title only: one line. */
+.kasten-card.is-title {
+  padding: 0 14px;
+}
+
+.kasten-card.is-title .kasten-card-face {
+  justify-content: center;
+}
+
+.kasten-card.is-title .kasten-card-head {
+  align-items: center;
+}
+
+.kasten-card.is-title .kasten-card-title {
+  -webkit-line-clamp: 1;
+}
+
+/* The whole note, editable. */
+.kasten-card.is-expanded:has(> .kasten-card-expanded) {
+  padding: 0;
+  gap: 0;
+}
+
+.kasten-card.is-expanded > .kasten-card-far {
+  padding: 13px 16px;
+}
+
+.kasten-card-expanded {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.kasten-card-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+  height: 28px;
+  padding: 0 5px 0 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-line) 70%, transparent);
+  cursor: grab;
+}
+
+.kasten-card-grip {
+  width: 22px;
+  height: 4px;
+  border-radius: var(--radius-xs);
+  background: var(--color-line);
+}
+
+.kasten-card-bar button {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-lg);
+  color: var(--color-muted);
+}
+
+.kasten-card-bar button:hover {
+  background: var(--color-hover);
+  color: var(--color-ink);
+}
+
+.kasten-card-page {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  cursor: auto;
+  user-select: text;
+}
+
+.kasten-card-page.is-scrolling {
+  overflow: auto;
+}
+
+.kasten-card-page .kasten-page.is-compact {
+  --page-gutter: 16px;
+  font-size: var(--text-14);
+  /* The card's own colour shows through, however short the page. */
+  background: transparent;
+}
+
+.kasten-card-page .kasten-page.is-compact .kasten-page-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.kasten-card-page .kasten-page.is-compact .kasten-page-icon {
+  width: 30px;
+  height: 30px;
+  font-size: var(--text-24);
+}
+
+.kasten-card-page .kasten-page.is-compact .kasten-page-controls {
+  display: none;
+}
+
+.kasten-card-page .kasten-page.is-compact .kasten-page-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--text-20);
+}
+
+/* A card whose file is gone. */
+.kasten-missing {
+  border-style: dashed;
+  background: color-mix(in srgb, var(--board-card) 60%, transparent);
+  box-shadow: none;
+  opacity: 0.85;
+}
+
+/* ---- Stickies -------------------------------------------------------- */
+
+.kasten-sticky {
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 9%, transparent);
+  border-radius: var(--radius-xl);
+  background: var(--board-sticky);
+  box-shadow: var(--shadow-card);
+  font-size: var(--text-14);
+  line-height: 1.45;
+}
+
+.kasten-sticky.is-tinted {
+  border-color: color-mix(in srgb, var(--tint) 42%, transparent);
+  background: color-mix(in srgb, var(--tint) 17%, var(--board-card));
+}
+
+.kasten-sticky-text {
+  height: 100%;
+  overflow: hidden;
+}
+
+.kasten-sticky-text p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.kasten-sticky-text code {
+  padding: 0 4px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+  font-size: var(--text-13);
+}
+
+.kasten-sticky-h1 {
+  font-size: var(--text-20);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.kasten-sticky-h2 {
+  font-size: var(--text-16);
+  font-weight: 650;
+}
+
+.kasten-sticky-h3 {
+  font-weight: 650;
+}
+
+.kasten-sticky-bullet,
+.kasten-sticky-numbered {
+  padding-left: 16px;
+}
+
+.kasten-sticky-bullet::before,
+.kasten-sticky-numbered::before {
+  display: inline-block;
+  width: 16px;
+  margin-left: -16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kasten-sticky-bullet::before {
+  content: "•";
+  text-indent: 3px;
+}
+
+.kasten-sticky-numbered::before {
+  content: attr(data-n);
+}
+
+.kasten-sticky-task.is-done {
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+
+.kasten-sticky-quote {
+  padding-left: 10px;
+  border-left: 3px solid color-mix(in srgb, var(--tint, var(--color-ink)) 35%, transparent);
+}
+
+.kasten-sticky-gap {
+  height: 0.6em;
+}
+
+.kasten-sticky-link {
+  color: var(--color-accent);
+}
+
+.kasten-sticky-empty {
+  margin: 0;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.kasten-sticky-editor {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  cursor: text;
+  user-select: text;
+}

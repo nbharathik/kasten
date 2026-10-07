@@ -1,0 +1,379 @@
+/* The AI section: a chat that makes a change you can keep or undo, beside
+   the limits every agent works within. */
+
+.ai-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+
+.demo-ai {
+  display: flex;
+  flex-direction: column;
+  height: 560px;
+}
+
+.da-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 10px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 13.5px;
+}
+
+.da-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+}
+
+.da-context {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 7px;
+  background: var(--well);
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.da-context .i {
+  width: 13px;
+  height: 13px;
+}
+
+.da-replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.da-log {
+  display: grid;
+  flex: 1;
+  align-content: start;
+  gap: 14px;
+  overflow-y: auto;
+  padding: 20px 18px;
+  scroll-behavior: smooth;
+}
+
+.msg {
+  animation: msg-in 380ms var(--ease) both;
+}
+
+.msg-user {
+  justify-self: end;
+  max-width: 82%;
+  padding: 10px 14px;
+  border-radius: 14px 14px 4px 14px;
+  background: var(--btn);
+  color: var(--on-btn);
+  font-size: 15px;
+}
+
+.msg-ai {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.msg-ai > svg {
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  border-radius: 8px;
+  background: var(--well);
+}
+
+.msg-ai.is-thinking .km-cards {
+  animation: cards-rise 1.2s var(--ease) infinite;
+}
+
+.msg-ai b {
+  font-weight: 650;
+}
+
+.msg-ai p {
+  margin-top: 10px;
+}
+
+.steps {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: msg-in 300ms var(--ease) both;
+}
+
+.steps .i {
+  width: 14px;
+  height: 14px;
+  color: var(--ok);
+}
+
+.card-box {
+  margin-top: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  animation: msg-in 400ms var(--ease) both;
+}
+
+.card-box header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.card-box.is-review header {
+  background: var(--hl-orange);
+}
+
+.card-box ul {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 8px 12px;
+  list-style: none;
+  font-size: 14px;
+}
+
+.card-box li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-box li.is-gone {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.card-box li small {
+  margin-left: auto;
+  color: var(--muted);
+}
+
+.chg {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  font: 700 12px/1 var(--mono);
+}
+
+.chg-add {
+  background: var(--hl-green);
+}
+
+.chg-edit {
+  background: var(--hl-blue);
+}
+
+.chg-trash {
+  background: var(--hl-orange);
+}
+
+.card-box footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--line);
+}
+
+.card-box footer p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.da-foot {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.da-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.da-chips button {
+  padding: 6px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 160ms, background-color 160ms;
+}
+
+.da-chips button:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.da-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* The limits. */
+
+.checks {
+  display: grid;
+  gap: 18px;
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.checks li {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 14px;
+  color: var(--muted);
+}
+
+.checks li > .i {
+  width: 38px;
+  height: 38px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.checks b {
+  display: block;
+  color: var(--ink);
+}
+
+.code-card {
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: #151514;
+  color: #e8e7e3;
+}
+
+.code-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 10px 16px;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  color: #a19e98;
+  font-size: 13px;
+}
+
+.copy-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 5px 10px;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 6%);
+  color: #e8e7e3;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.copy-btn.is-done {
+  border-color: #3fbf85;
+  color: #3fbf85;
+}
+
+.code-card pre {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+  font: 14px/1.6 var(--mono);
+}
+
+.code-note {
+  margin: 0;
+  padding: 0 16px 14px;
+  color: #a19e98;
+  font-size: 13px;
+}
+
+.c-dim {
+  color: #8f8b85;
+}
+
+.ai-models {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 14.5px;
+}
+
+@keyframes msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes cards-rise {
+  50% {
+    transform: translateY(-2.2px);
+  }
+}
+
+@media (max-width: 900px) {
+  .ai-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .demo-ai {
+    height: 520px;
+  }
+}

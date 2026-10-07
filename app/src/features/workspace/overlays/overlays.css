@@ -1,0 +1,271 @@
+/* The palette, the shortcut sheet and toasts float over the whole window.
+   The palette and the sheet are modals (ui/Modal.tsx), which dim the
+   window behind them. */
+
+.kasten-palette,
+.kasten-shortcuts {
+  display: flex;
+  flex-direction: column;
+  width: min(640px, calc(100vw - 32px));
+  max-height: 70vh;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  animation: kasten-enter var(--motion-base) var(--ease-standard);
+  background: var(--notion-menu-bg);
+  box-shadow: var(--shadow-modal);
+  color: var(--notion-text);
+  font-family: var(--notion-font);
+}
+
+.kasten-palette-input {
+  height: 52px;
+  padding: 0 18px;
+  border: none;
+  border-bottom: 1px solid var(--notion-line-soft);
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-16);
+}
+
+.kasten-palette-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.kasten-palette-empty {
+  margin: 0;
+  padding: 18px;
+  color: var(--notion-text-3);
+  font-size: var(--text-14);
+}
+
+.kasten-palette-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 36px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &[aria-selected="true"] {
+    background: color-mix(in srgb, var(--notion-accent) 10%, transparent);
+  }
+
+  & kbd {
+    color: var(--notion-text-3);
+    font-family: inherit;
+    font-size: var(--text-12);
+  }
+}
+
+.kasten-palette-icon {
+  width: 22px;
+  flex: none;
+  font-size: var(--text-16);
+  text-align: center;
+  color: var(--notion-text-2);
+}
+
+.kasten-palette-text {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.kasten-palette-label {
+  overflow: hidden;
+  font-size: var(--text-14);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-palette-detail {
+  overflow: hidden;
+  color: var(--notion-text-3);
+  font-size: var(--text-12);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kasten-palette-foot {
+  display: flex;
+  gap: 16px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--notion-line-soft);
+  color: var(--notion-text-3);
+  font-size: var(--text-12);
+}
+
+.kasten-shortcuts {
+  width: min(880px, calc(100vw - 32px));
+  max-height: 80vh;
+  outline: none;
+}
+
+.kasten-shortcuts-bar {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 16px 20px 10px;
+  border-bottom: 1px solid var(--notion-line-soft);
+
+  & h2 {
+    margin: 0;
+    font-size: var(--text-16);
+    font-weight: 600;
+  }
+
+  & .kasten-shortcuts-edit {
+    margin-left: auto;
+    color: var(--notion-accent);
+    font-size: var(--text-13);
+  }
+
+  & button {
+    padding: 2px 6px;
+    border: none;
+    border-radius: var(--radius);
+    background: none;
+    color: var(--notion-text-2);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+  }
+}
+
+.kasten-shortcuts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 8px 28px;
+  padding: 12px 20px 20px;
+  overflow-y: auto;
+
+  & h3 {
+    margin: 10px 0 6px;
+    color: var(--notion-text-2);
+    font-size: var(--text-12);
+    font-weight: 500;
+  }
+
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-13);
+  }
+
+  & td {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--notion-line-soft);
+  }
+
+  & td:last-child {
+    text-align: right;
+  }
+
+  & kbd {
+    padding: 1px 6px;
+    border-radius: var(--radius);
+    background: var(--notion-hover);
+    font-family: inherit;
+    font-size: var(--text-12);
+    white-space: nowrap;
+  }
+}
+
+.kasten-toasts {
+  position: fixed;
+  /* Below a pane's tabs and top bar, clear of the page's actions. */
+  top: 84px;
+  right: 14px;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  max-width: calc(100vw - 28px);
+  pointer-events: none;
+}
+
+.kasten-toast {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 340px;
+  min-height: 32px;
+  padding: 4px 4px 4px 12px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  background: var(--color-raised);
+  box-shadow: var(--shadow-pop);
+  color: var(--color-ink);
+  font-size: var(--text-13);
+  line-height: 1.4;
+  pointer-events: auto;
+  animation: kasten-enter-side var(--motion-slow) var(--ease-standard);
+  transition:
+    opacity var(--motion-base) var(--ease-standard),
+    transform var(--motion-base) var(--ease-standard);
+
+  &.is-leaving {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+
+  & .kasten-toast-text {
+    min-width: 0;
+    padding: 2px 4px 2px 0;
+    overflow-wrap: anywhere;
+  }
+
+  & button {
+    flex-shrink: 0;
+    border: none;
+    border-radius: var(--radius-md);
+    background: none;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  & .kasten-toast-action {
+    padding: 2px 7px;
+    color: var(--color-accent);
+    font-weight: 600;
+
+    &:hover {
+      background: var(--color-soft);
+    }
+  }
+
+  & .kasten-toast-close {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    color: var(--color-faint);
+
+    &:hover {
+      background: var(--color-hover);
+      color: var(--color-ink);
+    }
+  }
+
+  & button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -1px;
+  }
+}
+

@@ -1,0 +1,174 @@
+// Everything the palette can run. Keys for them live in the person's keymap
+// (features/shortcuts); the page editor's own keys are listed here for the
+// shortcut sheet.
+
+import { useShell } from "../../../lib/store";
+import { addDays, isoDay } from "../../../lib/dates";
+import { zoomBy } from "../../../lib/zoom";
+import { dayOfPath } from "../../journal/feed";
+import { pickDay } from "../../journal/JournalBar";
+import { startNewBoard } from "../../boards/store";
+import { searchLibrary } from "../../library/request";
+import { pickPdfs } from "../../sources/import";
+import { openHistory } from "../../panel/panel-store";
+import { flipTheme } from "../theme";
+import { usePrefs } from "../prefs";
+import { flushOpenPage } from "../page/open-page";
+import { useWorkspace } from "../store";
+import { movable, noteAt } from "../tree";
+import { PAGE_COMMANDS } from "./page-commands";
+
+export interface Command {
+  id: string;
+  label: string;
+  /** Extra words the palette matches. */
+  words?: string;
+  /** Whether it applies here; without it, always. */
+  when?(): boolean;
+  run(): void;
+}
+
+const workspace = () => useWorkspace.getState();
+const shell = () => useShell.getState();
+
+export const COMMANDS: Command[] = [
+  { id: "new-page", label: "New page", words: "create add", run: () => newPageHere() },
+  { id: "templates", label: "New page from a template…", words: "template gallery travel trip meeting recipe budget plan spec", run: () => shell().openGallery({}) },
+  { id: "kits", label: "Add a starter kit…", words: "kit daily planner second brain para zettelkasten gtd getting things done", run: () => shell().openGallery({ kits: true }) },
+  { id: "new-card", label: "Quick note in the Inbox", words: "capture card create", run: () => captureCard() },
+  { id: "journal", label: "Journal", words: "daily day today diary", run: () => workspace().go({ view: "journal" }) },
+  { id: "prev-day", label: "Journal: previous day", words: "yesterday back earlier day before", run: () => stepDay(-1) },
+  { id: "next-day", label: "Journal: next day", words: "tomorrow forward later day after", run: () => stepDay(1) },
+  { id: "journal-page", label: "Open today's journal page", words: "daily day today diary", run: () => void workspace().openJournal() },
+  { id: "home", label: "Go to Home", words: "start", run: () => workspace().go({ view: "home" }) },
+  { id: "inbox", label: "Go to Inbox", run: () => workspace().go({ view: "inbox" }) },
+  { id: "library", label: "Go to Card Library", words: "all pages", run: () => workspace().go({ view: "library" }) },
+  { id: "search", label: "Search everything", words: "find full text filter tag project", run: () => searchLibrary() },
+  { id: "tasks", label: "Go to Tasks", words: "todo to-do checklist", run: () => workspace().go({ view: "tasks" }) },
+  { id: "tags", label: "Go to Tag Database", words: "tags database kanban board table properties schema", run: () => workspace().go({ view: "tags" }) },
+  { id: "calendar", label: "Go to Calendar", words: "month week dates due schedule", run: () => workspace().go({ view: "calendar" }) },
+  { id: "boards", label: "Go to Whiteboards", words: "board canvas map spatial heptabase", run: () => workspace().go({ view: "boards" }) },
+  { id: "new-board", label: "New whiteboard", words: "board canvas map brainstorm create", run: () => startNewBoard() },
+  { id: "highlights", label: "Go to Highlights", words: "pdf reader sources papers annotations quotes", run: () => workspace().go({ view: "highlights" }) },
+  { id: "import-pdf", label: "Import a PDF…", words: "open file paper source reader highlight", run: () => pickPdfs() },
+  { id: "import-notes", label: "Import notes…", words: "obsidian notion heptabase markdown vault export migrate move bring", run: () => workspace().go({ view: "import" }) },
+  { id: "chat-dock", label: "Chat about the pages open", words: "ai ask assistant chat dock side panel claude", run: () => shell().toggleChat() },
+  { id: "chat", label: "Go to Chat", words: "ai assistant ask claude model llm conversation", run: () => workspace().go({ view: "chat" }) },
+  { id: "trash", label: "Go to Trash", words: "deleted restore", run: () => workspace().go({ view: "trash" }) },
+  { id: "history", label: "Go to History", words: "changes versions agents sessions undo", run: () => workspace().go({ view: "history" }) },
+  { id: "review", label: "Go to Review", words: "agents proposals accept reject", run: () => workspace().go({ view: "review" }) },
+  { id: "settings", label: "Settings", words: "preferences options", run: () => workspace().go({ view: "settings" }) },
+  { id: "theme", label: "Switch light / dark", words: "theme dark mode night", run: () => toggleTheme() },
+  { id: "sidebar", label: "Show or hide the sidebar", run: () => shell().toggleSidebar() },
+  { id: "panel", label: "Show or hide the right panel", words: "outline properties tags links backlinks details word count", run: () => shell().togglePanel(workspace().layout.focus) },
+  { id: "page-history", label: "Page history", words: "versions restore time machine undo", run: () => openHistory() },
+  { id: "focus", label: "Focus mode", words: "zen distraction free", run: () => shell().toggleFocus() },
+  { id: "markdown", label: "Show the Markdown file", words: "source raw", run: () => shell().toggleSource() },
+  { id: "move", label: "Move this page to…", words: "project relocate file", run: () => moveOpenPage() },
+  { id: "duplicate", label: "Duplicate this page", words: "copy clone", run: () => onOpenPage((path) => void workspace().duplicate(path)) },
+  { id: "full-width", label: "Full width pages", words: "wide", run: () => usePrefs.getState().set({ fullWidth: !usePrefs.getState().fullWidth }) },
+  { id: "print", label: "Print or save as PDF", words: "export pdf paper", run: () => window.print() },
+  { id: "save", label: "Save now", run: () => void flushOpenPage() },
+  { id: "new-tab", label: "New tab", words: "open", run: () => workspace().openTab({ view: "home" }) },
+  { id: "close-tab", label: "Close tab", run: () => workspace().closeTab() },
+  { id: "reopen-tab", label: "Reopen closed tab", words: "undo close", run: () => workspace().reopenTab() },
+  { id: "split", label: "Open in split view", words: "side by side pane", run: () => workspace().splitRight() },
+  { id: "stack", label: "Show or hide the side stack", words: "heptabase cards side panel beside", run: () => workspace().toggleStack() },
+  { id: "stack-page", label: "Open this page in the side stack", words: "beside heptabase", run: () => onOpenPage((path) => workspace().openInStack(path)) },
+  { id: "shortcuts", label: "Keyboard shortcuts", words: "help keys", run: () => shell().setShortcuts(true) },
+  ...PAGE_COMMANDS,
+  { id: "zoom-in", label: "Zoom in", words: "bigger larger scale magnify", run: () => void zoomBy(1).then(sayZoom) },
+  { id: "zoom-out", label: "Zoom out", words: "smaller scale", run: () => void zoomBy(-1).then(sayZoom) },
+  { id: "zoom-reset", label: "Actual size", words: "zoom reset 100", run: () => void zoomBy(0).then(sayZoom) },
+];
+
+const sayZoom = (level: number) => workspace().toast(`Zoom ${Math.round(level * 100)}%`);
+
+/** Runs `action` on the open page when it is a page or card. */
+function onOpenPage(action: (path: string) => void): void {
+  const { place, notes } = workspace();
+  const note = place.view === "page" && place.path ? noteAt(notes, place.path) : undefined;
+  if (note && movable(note)) action(note.path);
+}
+
+/** The journal a day before or after the one shown, or today's neighbour. */
+function stepDay(by: number): void {
+  const { place } = workspace();
+  const today = isoDay(new Date());
+  pickDay(addDays(place.view === "journal" ? dayOfPath(place.path, today) : today, by));
+}
+
+function moveOpenPage(): void {
+  onOpenPage((path) => shell().setMoving(path));
+}
+
+export function toggleTheme(): void {
+  const prefs = usePrefs.getState();
+  prefs.setTheme(flipTheme(prefs.theme));
+}
+
+/** A new page where you are: in the project of the page open, else the library. */
+export function newPageHere(): void {
+  const { place, notes, newPage } = workspace();
+  const here = place.view === "page" ? notes.find((n) => n.path === place.path) : undefined;
+  newPage({ project: here?.project ?? null });
+}
+
+/** A quick note: into the capture box when one is on screen (the focused
+ * pane's first), else a new card as a draft, which makes no file until
+ * written in. */
+export function captureCard(): void {
+  const box = document.querySelector<HTMLTextAreaElement>(".kasten-pane.is-focused [data-capture-box]") ?? document.querySelector<HTMLTextAreaElement>("[data-capture-box]");
+  if (box && !box.disabled) return box.focus();
+  const { place, notes, newPage } = workspace();
+  const here = place.view === "page" ? notes.find((n) => n.path === place.path) : undefined;
+  newPage({ kind: "card", project: here?.project ?? null });
+}
+
+/** The page editor's keys for the shortcut sheet, by section. They are the
+ * editor's own and not configurable. */
+export const EDITOR_SHORTCUTS: { title: string; rows: [string, string][] }[] = [
+  {
+    title: "Writing",
+    rows: [
+      ["Ctrl+B / I / U", "Bold, italic, underline"],
+      ["Ctrl+Shift+S", "Strikethrough"],
+      ["Ctrl+E", "Inline code"],
+      ["Ctrl+K (text selected)", "Link"],
+      ["Ctrl+Shift+H", "Highlight with the last colour"],
+      ["[[ or @", "Link a page or a day"],
+      ["/", "Insert any block"],
+      ["Ctrl+F", "Find in the page"],
+      ["Ctrl+Alt+F", "Find and replace"],
+    ],
+  },
+  {
+    title: "Blocks",
+    rows: [
+      ["Ctrl+Alt+0", "Text"],
+      ["Ctrl+Alt+1 / 2 / 3", "Headings"],
+      ["Ctrl+Alt+4", "To-do"],
+      ["Ctrl+Alt+5 / 6", "Bulleted / numbered list"],
+      ["Ctrl+Alt+7", "Toggle"],
+      ["Ctrl+Alt+8", "Code"],
+      ["Ctrl+D", "Duplicate"],
+      ["Ctrl+Shift+↑ / ↓", "Move up / down"],
+      ["Ctrl+Enter", "Tick a to-do, open a toggle"],
+      ["Esc, then ↑ / ↓", "Select blocks"],
+      ["Ctrl+/", "Turn into, colour, delete"],
+    ],
+  },
+  {
+    title: "Typing",
+    rows: [
+      ["# ## ### + space", "Headings"],
+      ["- or 1. + space", "Lists"],
+      ["[] + space", "To-do"],
+      ["> + space", "Toggle"],
+      ['" + space', "Quote"],
+      ["---", "Divider"],
+      ["```", "Code block"],
+      ["-> <- =>", "→ ← ⇒"],
+    ],
+  },
+];

@@ -1,0 +1,160 @@
+/* Agent marks (blocks/agent-marks.ts): a margin beside the blocks an agent
+   wrote, a badge naming the agent in the right margin of the first block of
+   each mark, and the card the badge opens. Colours come from tokens.css. */
+
+.kasten-page-editor .milkdown .ProseMirror > .kasten-agent-block {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: -9px;
+    width: 3px;
+    border-radius: var(--radius-xs);
+    background: var(--kasten-agent);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+
+/* The badge's anchor sits between blocks and takes no room. */
+.kasten-page-editor .milkdown .ProseMirror > .kasten-agent-anchor {
+  position: relative;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Its top and width are measured (blocks/agent-badge.ts): the first line of
+   the block, and the room before the edge of the page. */
+.kasten-agent-badge {
+  position: absolute;
+  top: 5px;
+  left: calc(100% + 12px);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: max(20px, calc(var(--page-gutter, 96px) - 20px));
+  height: 20px;
+  padding: 0 7px;
+  border: none;
+  border-radius: var(--radius-xl);
+  background: var(--kasten-agent-bg);
+  color: var(--kasten-agent);
+  font: 500 var(--text-12)/20px var(--notion-font);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: filter var(--motion-fast) var(--ease-standard);
+
+  &:hover {
+    filter: brightness(0.96) saturate(1.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--kasten-agent);
+    outline-offset: 1px;
+  }
+}
+
+.kasten-agent-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* A narrow margin (the side stack, a journal day, a card on a board, a
+   narrow window): the star alone, the agent's name in its tooltip and card. */
+.kasten-page.is-compact .kasten-agent-badge {
+  left: calc(100% + 1px);
+}
+
+.kasten-page.is-compact .kasten-agent-badge,
+.kasten-agent-badge.is-narrow {
+  padding: 0 5px;
+
+  & .kasten-agent-name {
+    display: none;
+  }
+}
+
+.kasten-agent-card {
+  position: fixed;
+  z-index: 1000;
+  width: 330px;
+  max-width: calc(100vw - 16px);
+  padding: 10px 12px 12px;
+  border-radius: var(--radius-lg);
+  background: var(--notion-menu-bg);
+  box-shadow: var(--notion-shadow);
+  color: var(--notion-text);
+  font: var(--text-14)/1.4 var(--notion-font);
+}
+
+.kasten-agent-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: var(--text-13);
+  font-weight: 600;
+
+  & .kasten-agent-star {
+    color: var(--kasten-agent);
+  }
+}
+
+.kasten-agent-card-time {
+  color: var(--notion-text-2);
+  font-weight: 400;
+}
+
+.kasten-agent-card-text {
+  margin: 6px 0 10px;
+  color: var(--notion-text-2);
+  font-size: var(--text-13);
+
+  &.is-failed {
+    color: var(--notion-red);
+  }
+}
+
+.kasten-agent-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  & button {
+    height: 28px;
+    padding: 0 10px;
+    border: 1px solid var(--notion-line);
+    border-radius: var(--radius-lg);
+    background: transparent;
+    color: var(--notion-text);
+    font: 500 var(--text-13) var(--notion-font);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--notion-hover);
+    }
+
+    &:disabled {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    &.is-primary {
+      border-color: transparent;
+      background: var(--kasten-agent);
+      color: #fff;
+
+      &:hover {
+        filter: brightness(1.08);
+      }
+    }
+
+    &.is-danger {
+      color: var(--notion-red);
+    }
+  }
+}

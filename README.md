@@ -10,6 +10,8 @@
 </p>
 
 <p align="center">
+  <a href="https://nbharathik.github.io/kasten/">Website</a> ·
+  <a href="https://nbharathik.github.io/kasten/demo/">Browser demo</a> ·
   <a href="docs/guide.md">User guide</a> ·
   <a href="CONTRIBUTING.md">Build from source</a> ·
   <a href="docs/community/SECURITY.md">Security</a>

@@ -140,7 +140,10 @@ script tests. The CI workflow can also run these checks by hand.
 
 Pushing a `v*` release tag runs the full Rust and frontend checks on Linux,
 macOS and Windows before building installers. Signing and draft release
-creation follow the successful builds. Website deployment remains manual.
+creation follow the successful builds. The same tag deploys the website and
+browser demo independently of the installer release. A `site-v*` tag (for
+example `site-v1.0.0-1`) deploys only the website and demo. The Website workflow
+can also be started manually; ordinary branch pushes do not deploy it.
 
 Source builds have no release repository configured. Before distributing
 installers, set `package.repository` in `app/src-tauri/Cargo.toml` to the public

@@ -1,10 +1,12 @@
 name: Website
 
 # Publishes the website and the browser demo to GitHub Pages: site/ at the
-# root and the app's browser preview under demo/. Runs only when started by
-# hand (Actions → Website → Run workflow). Pages must be
-# set to deploy from GitHub Actions in the repository's settings.
+# root and the app's browser preview under demo/. Release tags publish both;
+# site-v* tags publish only the website, without building installers. It can
+# also be started by hand. Pages must deploy from GitHub Actions in settings.
 on:
+  push:
+    tags: ["v*", "site-v*"]
   workflow_dispatch:
 
 permissions:
@@ -35,8 +37,11 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
       - run: npm install --global pnpm@${{ env.PNPM_VERSION }}
       - run: pnpm install --frozen-lockfile
+      - name: Test the website build and workflow setup
+        run: node --test scripts/build-site.test.mjs scripts/workflows.test.mjs
       - name: Install the pinned Rust toolchain
         run: |
           channel=$(sed -n 's/^channel = "\(.*\)"/\1/p' rust-toolchain.toml)
